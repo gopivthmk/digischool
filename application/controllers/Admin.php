@@ -792,6 +792,32 @@ class Admin extends CI_Controller
       echo $this->db->get_where('demat_master' , array('student_id' => $student_id))->row()->total_fees;
     }
 
+    function get_due_amount($student_id)
+    {
+      echo $this->db->get_where('demat_master' , array('student_id' => $student_id))->row()->due_amount;
+    }
+
+    function get_fees_categories($student_id)
+    {
+      $this->db->select('fees_master_category_id');
+      $fees_catergory_ids = $this->db->get_where('fees_master_category' , array('isdefault' => '0'))->result_array();
+
+      $this->db->select('fees_master_category_id');
+      $student_fees_catergory_ids = $this->db->get_where('fees_master_category_mapping' , array('student_id' => $student_id))->result_array();
+
+      $common_values_categories = array();
+
+      foreach ($fees_catergory_ids as $value) {
+        foreach ($student_fees_catergory_ids as $innervalue) {
+          if($innervalue['fees_master_category_id'] == $value['fees_master_category_id']){
+            array_push($common_values_categories, $innervalue['fees_master_category_id']);
+          }
+        }
+      }
+
+      echo json_encode($common_values_categories);
+    }
+
     function get_class_students_mass($class_id)
     {
         $students = $this->db->get_where('enroll' , array(
@@ -1419,10 +1445,36 @@ class Admin extends CI_Controller
             $data['amount_paid']        = $this->input->post('amount_paid');
             $data['due']                = $data['amount'] - $data['amount_paid'];
             $data['status']             = $this->input->post('status');
+            $data['payment_type']       = $this->input->post('payment_mode');
+            $data['lmtime']             = Date('Y-m-d H:m:s');
+            //$fee_category               = $this->input->post('fees_category');
+            //print_r($fees_category);
+            //exit;
+
+            $selected_category_total_amount = 0;
+
+            foreach ($this->input->post('fees_category') as $items) {
+              $dataFMCMapping['student_id']               = $data['student_id'];
+              $dataFMCMapping['fees_master_category_id']  = $items;
+              $dataFMCMapping['lmtime']  = Date('Y-m-d H:m:s');
+
+              $this->db->insert('fees_master_category_mapping', $dataFMCMapping);
+
+              $selected_category_total_amount += $this->db->get_where('fees_master_category' , array('fees_master_category_id' => $dataFMCMapping['fees_master_category_id']))->row()->fees_category_amount;
+            }
+
             //$data['creation_timestamp'] = strtotime($this->input->post('date'));
             $data['year']               = $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description;
-
             $this->db->insert('invoice', $data);
+
+            //updating the demat_master for new total_fees amount (including new fees)
+            $data_demat['total_fees'] = $selected_category_total_amount + $this->db->get_where('demat_master' , array('student_id' => $this->input->post('student_id')))->row()->total_fees;
+            $data_demat['paid_amount'] = $this->input->post('amount_paid');
+            $data_demat['due_amount'] = $this->input->post('amount') - $this->input->post('amount_paid');
+
+            $this->db->where('student_id', $this->input->post('student_id'));
+            $this->db->update('demat_master', $data_demat);
+
             $invoice_id = $this->db->insert_id();
 
             $data2['invoice_id']        =   $invoice_id;

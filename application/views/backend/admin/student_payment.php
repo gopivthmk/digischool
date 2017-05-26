@@ -96,7 +96,7 @@
                             <div class="panel-body">
 
 															<div class="form-group">
-																	<label class="col-sm-3 control-label"><?php echo get_phrase('fees_category');?></label>
+																	<label class="col-sm-3 control-label"><?php echo get_phrase('Additional Fees');?></label>
 																	<div class="col-sm-9">
 
 																				<?php
@@ -107,6 +107,7 @@
 																					<input type="checkbox" class="fees_category"
 																					id="fees_category<?php echo $row['fees_master_category_id']; ?>"
 																					style="padding:5px; float:left;"
+																					name="fees_category[]"
 																					value="<?php echo $row['fees_master_category_id'];?>"
 																					amount="<?php echo $row['fees_category_amount'];?>"
 																					/>
@@ -123,9 +124,16 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label"><?php echo get_phrase('total');?></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="amount" id="amount" 
+                                        <input type="text" class="form-control" name="amount" id="amount"
                                             placeholder="<?php echo get_phrase('enter_total_amount');?>"
                                                 data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"/>
+                                    </div>
+                                </div>
+
+																<div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo get_phrase('Due Amount');?></label>
+                                    <div class="col-sm-9">
+                                        <span id="due_amount">0</span>
                                     </div>
                                 </div>
 
@@ -254,11 +262,44 @@ jQuery(document).ready(function() {
         });
     }
 		function get_total_amount(student_id){
+			//Updaing the total amount
 			$.ajax({
 					url: '<?php echo base_url();?>index.php?admin/get_total_amount/' + student_id ,
 					success: function(response)
 					{
 							jQuery('#amount').val(response);
+					}
+			});
+
+			//Updating the additional fees checkbox
+			$.ajax({
+					url: '<?php echo base_url();?>index.php?admin/get_fees_categories/' + student_id ,
+					success: function(response)
+					{
+							response = $.parseJSON(response);
+							var response_count = response.length;
+							//alert(response_count);
+							if(response_count > 0){
+								//alert("Hello if");
+							jQuery.each( response, function( i, val ) {
+								jQuery('#fees_category' + val).attr('checked', 'checked');
+								jQuery('#fees_category' + val).attr('disabled', true);
+							});
+						}
+						else{
+							//alert("Hello else");
+							jQuery('.fees_category').prop('checked', false);
+							jQuery('.fees_category').prop('disabled', false);
+						}
+					}
+			});
+
+			//Updaing the total amount
+			$.ajax({
+					url: '<?php echo base_url();?>index.php?admin/get_due_amount/' + student_id ,
+					success: function(response)
+					{
+							jQuery('#due_amount').text(response);
 					}
 			});
 		}

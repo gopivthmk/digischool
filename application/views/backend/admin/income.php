@@ -77,13 +77,13 @@
 
                                     <?php if ($row['due'] != 0):?>
 
-                                    <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_take_payment/<?php echo $row['invoice_id'];?>');">
+                                  <!--  <li>
+                                        <a href="#" onclick="showAjaxModal('<?php //echo base_url();?>index.php?modal/popup/modal_take_payment/<?php //echo $row['invoice_id'];?>');">
                                             <i class="entypo-bookmarks"></i>
-                                                <?php echo get_phrase('take_payment');?>
+                                                <?php //echo get_phrase('take_payment');?>
                                         </a>
                                     </li>
-                                    <li class="divider"></li>
+                                    <li class="divider"></li>-->
                                     <?php endif;?>
 
                                     <!-- VIEWING LINK -->
@@ -93,15 +93,15 @@
                                                 <?php echo get_phrase('view_invoice');?>
                                             </a>
                                                     </li>
-                                    <li class="divider"></li>
+                                    <!--<li class="divider"></li>
 
-                                    <!-- EDITING LINK -->
+                                     EDITING LINK
                                     <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_edit_invoice/<?php echo $row['invoice_id'];?>');">
+                                        <a href="#" onclick="showAjaxModal('<?php //echo base_url();?>index.php?modal/popup/modal_edit_invoice/<?php //echo $row['invoice_id'];?>');">
                                             <i class="entypo-pencil"></i>
-                                                <?php echo get_phrase('edit');?>
+                                                <?php //echo get_phrase('edit');?>
                                         </a>
-                                    </li>
+                                    </li>-->
                                     <!--<li class="divider"></li>
 
                                      DELETION LINK -->
