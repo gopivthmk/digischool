@@ -33,6 +33,7 @@
 	                                    <label class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
 	                                    <div class="col-sm-9">
 	                                        <select name="class_id" class="form-control selectboxit"
+																					data-validate="required"
 	                                        	onchange="return get_class_students(this.value)">
 	                                        	<option value=""><?php echo get_phrase('select_class');?></option>
 	                                        	<?php
@@ -49,9 +50,12 @@
 	                                <div class="form-group">
 		                                <label class="col-sm-3 control-label"><?php echo get_phrase('student');?></label>
 		                                <div class="col-sm-9">
-		                                    <select name="student_id" class="form-control" style="width:100%;" id="student_selection_holder">
+		                                    <select name="student_id" class="form-control"
+																				style="width:100%;"
+																				data-validate="required"
+																				id="student_selection_holder"
+																				onchange="return get_total_amount(this.value)">
 		                                        <option value=""><?php echo get_phrase('select_class_first');?></option>
-
 		                                    </select>
 		                                </div>
 		                            </div>
@@ -74,7 +78,9 @@
 	                                    <label class="col-sm-3 control-label"><?php echo get_phrase('date');?></label>
 	                                    <div class="col-sm-9">
 	                                        <input type="text" class="datepicker form-control" name="date"
-                                                data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"/>
+                                                data-validate="required"
+																								data-message-required="<?php echo get_phrase('value_required');?>"
+																								value="<?php echo date('m/d/Y'); ?>"/>
 	                                    </div>
 	                                </div>
 
@@ -92,24 +98,32 @@
 															<div class="form-group">
 																	<label class="col-sm-3 control-label"><?php echo get_phrase('fees_category');?></label>
 																	<div class="col-sm-9">
-																			<select name="fees_category_id" class="form-control selectboxit"
-																				onchange="return get_fees_category_amount(this.value)">
-																				<option value=""><?php echo get_phrase('select_fees_category');?></option>
+
 																				<?php
-																					$classes = $this->db->get('fees_master_category')->result_array();
+																					$classes = $this->db->get_where('fees_master_category' , array('isdefault' => '0'))->result_array();
 																					foreach ($classes as $row):
 																				?>
-																				<option value="<?php echo $row['fees_master_category_id'];?>"><?php echo $row['fees_category_name'];?></option>
+																				<span style="clear:both; float:left;">
+																					<input type="checkbox" class="fees_category"
+																					id="fees_category<?php echo $row['fees_master_category_id']; ?>"
+																					style="padding:5px; float:left;"
+																					value="<?php echo $row['fees_master_category_id'];?>"
+																					amount="<?php echo $row['fees_category_amount'];?>"
+																					/>
+																					<span style="padding:5px; float:left;">
+																						<?php echo $row['fees_category_name'];?>
+																					</span>
+																				</span>
 																				<?php endforeach;?>
 
-																			</select>
+
 																	</div>
 															</div>
 
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label"><?php echo get_phrase('total');?></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="amount" id="amount"
+                                        <input type="text" class="form-control" name="amount" id="amount" 
                                             placeholder="<?php echo get_phrase('enter_total_amount');?>"
                                                 data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"/>
                                     </div>
@@ -124,13 +138,34 @@
                                     </div>
                                 </div>
 
+																<div class="form-group">
+																		<label class="col-sm-3 control-label"><?php echo get_phrase('payment_mode');?></label>
+																		<div class="col-sm-9">
+																				<select name="payment_mode" class="form-control selectboxit">
+																					<option value=""><?php echo get_phrase('select_payment_mode');?></option>
+																					<?php
+																						$classes = $this->db->get('payment_master')->result_array();
+																						foreach ($classes as $row):
+																					?>
+																					<option value="<?php echo $row['payment_master_id'];?>"><?php echo $row['payment_name'];?></option>
+																					<?php endforeach;?>
+
+																				</select>
+																		</div>
+																</div>
+
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label"><?php echo get_phrase('status');?></label>
                                     <div class="col-sm-9">
                                         <select name="status" class="form-control selectboxit">
-                                            <option value="paid"><?php echo get_phrase('paid');?></option>
-                                            <option value="unpaid"><?php echo get_phrase('unpaid');?></option>
-																						<option value="partial"><?php echo get_phrase('partial');?></option>
+																					<option value=""><?php echo get_phrase('payment_status');?></option>
+																					<?php
+																						$classes = $this->db->get('payment_type')->result_array();
+																						foreach ($classes as $row):
+																					?>
+																					<option value="<?php echo $row['payment_type_id'];?>"><?php echo $row['payment_type'];?></option>
+																					<?php endforeach;?>
+
                                         </select>
                                     </div>
                                 </div>
@@ -150,7 +185,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-5">
-                                <button type="submit" class="btn btn-info"><?php echo get_phrase('add_invoice');?></button>
+                                <button type="submit" class="btn btn-info"><?php echo get_phrase('generate_invoice');?></button>
                             </div>
                         </div>
                     </div>
@@ -162,114 +197,7 @@
 				<!-- creation of single invoice -->
 
 				</div>
-				<div class="tab-pane" id="paid">
 
-				<!-- creation of mass invoice -->
-				<?php echo form_open(base_url() . 'index.php?admin/invoice/create_mass_invoice' , array('class' => 'form-horizontal form-groups-bordered validate', 'id'=> 'mass' ,'target'=>'_top'));?>
-				<br>
-				<div class="row">
-				<div class="col-md-1"></div>
-				<div class="col-md-5">
-
-					<div class="form-group">
-                        <label class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
-                        <div class="col-sm-9">
-                            <select name="class_id" class="form-control selectboxit"
-                            	onchange="return get_class_students_mass(this.value)">
-                            	<option value=""><?php echo get_phrase('select_class');?></option>
-                            	<?php
-                            		$classes = $this->db->get('class')->result_array();
-                            		foreach ($classes as $row):
-                            	?>
-                            	<option value="<?php echo $row['class_id'];?>"><?php echo $row['name'];?></option>
-                            	<?php endforeach;?>
-
-                            </select>
-                        </div>
-                    </div>
-
-
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label"><?php echo get_phrase('title');?></label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="title"
-                                data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label"><?php echo get_phrase('description');?></label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="description"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label"><?php echo get_phrase('total');?></label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="amount"
-                                placeholder="<?php echo get_phrase('enter_total_amount');?>"
-                                    data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label"><?php echo get_phrase('payment');?></label>
-                        <div class="col-sm-9">
-                            <input type="text" class="form-control" name="amount_paid"
-                                placeholder="<?php echo get_phrase('enter_payment_amount');?>"
-                                    data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label"><?php echo get_phrase('status');?></label>
-                        <div class="col-sm-9">
-                            <select name="status" class="form-control selectboxit">
-                                <option value="paid"><?php echo get_phrase('paid');?></option>
-                                <option value="unpaid"><?php echo get_phrase('unpaid');?></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label"><?php echo get_phrase('method');?></label>
-                        <div class="col-sm-9">
-                            <select name="method" class="form-control selectboxit">
-                                <option value="1"><?php echo get_phrase('cash');?></option>
-                                <option value="2"><?php echo get_phrase('check');?></option>
-                                <option value="3"><?php echo get_phrase('card');?></option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label"><?php echo get_phrase('date');?></label>
-                        <div class="col-sm-9">
-                            <input type="text" class="datepicker form-control" name="date"
-                                data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="col-sm-5 col-sm-offset-3">
-                            <button type="submit" class="btn btn-info"><?php echo get_phrase('add_invoice');?></button>
-                        </div>
-                    </div>
-
-
-
-				</div>
-				<div class="col-md-6">
-					<div id="student_selection_holder_mass"></div>
-				</div>
-				</div>
-				<?php echo form_close();?>
-
-				<!-- creation of mass invoice -->
-
-				</div>
 
 			</div>
 
@@ -301,6 +229,21 @@
 </script>
 
 <script type="text/javascript">
+jQuery(document).ready(function() {
+	jQuery('.fees_category').change(function(){
+		var selectedCategoryAmount = jQuery(this).attr('amount');
+		var amount = jQuery('#amount').val();
+		var totalAmount = 0;
+		if(jQuery(this).prop('checked')){
+			totalAmount = parseInt(selectedCategoryAmount) + parseInt(amount);
+		}
+		else{
+			totalAmount =  parseInt(amount) - parseInt(selectedCategoryAmount);
+		}
+		jQuery('#amount').val(totalAmount);
+	});
+});
+
     function get_class_students(class_id) {
         $.ajax({
             url: '<?php echo base_url();?>index.php?admin/get_class_students/' + class_id ,
@@ -310,6 +253,15 @@
             }
         });
     }
+		function get_total_amount(student_id){
+			$.ajax({
+					url: '<?php echo base_url();?>index.php?admin/get_total_amount/' + student_id ,
+					success: function(response)
+					{
+							jQuery('#amount').val(response);
+					}
+			});
+		}
 		function get_fees_category_amount(fees_category_id) {
         $.ajax({
             url: '<?php echo base_url();?>index.php?admin/get_fees_category_amount/' + fees_category_id ,

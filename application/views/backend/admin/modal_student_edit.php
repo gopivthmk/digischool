@@ -157,8 +157,9 @@ foreach ($edit_data as $row):
 															<option value=""><?php echo get_phrase('select');?></option>
 															<?php
 								$classes = $this->db->get('concession_master')->result_array();
+								$concession_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->concession_master_id;
 								foreach($classes as $row):
-									$concession_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->concession_master_id;
+
 									if($row['concession_master_id'] == $concession_id){
 									?>
 																<option value="<?php echo $row['concession_master_id'];?>" selected="selected">

@@ -26,7 +26,7 @@ class Admin extends CI_Controller
 
     }
 
-    /***default functin, redirects to login page if no admin logged in yet***/
+    /***default functin, redirects n page if no admin logged in yet***/
     public function index()
     {
         if ($this->session->userdata('admin_login') != 1)
@@ -174,7 +174,7 @@ class Admin extends CI_Controller
             $data['email']        = $this->input->post('email');
             $data['concession_master_id'] = $this->input->post('concession_master_id');
             //$data['password']     = sha1($this->input->post('password'));
-            //$data['parent_id']    = $this->input->post('parent_id');
+            $data['parent_id']    = $this->input->post('parent_id');
             //$data['dormitory_id'] = $this->input->post('dormitory_id');
             //$data['transport_id'] = $this->input->post('transport_id');
             $data['nationality'] = $this->input->post('nationality');
@@ -206,6 +206,47 @@ class Admin extends CI_Controller
             $data2['date_added']     = strtotime(date("Y-m-d H:i:s"));
             $data2['year']           = $running_year;
             $this->db->insert('enroll', $data2);
+
+            $students_fees_list =   $this->db->get_where('fees_master_category' , array(
+                'class_id' => $this->input->post('class_id')
+            ))->result_array();
+
+            $total_fees = 0;
+            $concession_amount = 0;
+
+            foreach ($students_fees_list as $value) {
+              $dataFeesList['student_id'] = $student_id;
+              $dataFeesList['fees_master_category_id'] = $value['fees_master_category_id'];
+              $dataFeesList['lmtime'] = date('Y-m-d H:i:s');
+              $total_fees += $value['fees_category_amount'];
+              $this->db->insert('fees_master_category_mapping', $dataFeesList);
+            }
+
+
+            $students_concession_details =   $this->db->get_where('concession_master' , array(
+                'concession_master_id' => $this->input->post('concession_master_id')
+            ))->result_array();
+
+            foreach($students_concession_details as $row)
+            {
+                if($row['amount'] != null)
+                {
+                  $concession_amount = $row['amount'];
+                }
+                else if($row['percentage'] != null)
+                {
+                  $concession_amount = $total_fees/100 * $row['percentage'];
+                }
+            }
+
+            $dataDematDetails['student_id'] = $student_id;
+            $dataDematDetails['total_fees'] = $total_fees;
+            $dataDematDetails['concession_amount'] = $concession_amount;
+            $dataDematDetails['year'] = $running_year;
+            $dataDematDetails['lmtime'] = date('Y-m-d H:i:s');
+
+            $this->db->insert('demat_master', $dataDematDetails);
+
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_image/' . $student_id . '.jpg');
             $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
             $this->email_model->account_opening_email('student', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
@@ -219,7 +260,7 @@ class Admin extends CI_Controller
             //$data['phone']          = $this->input->post('phone');
             $data['email']          = $this->input->post('email');
             $data['concession_master_id'] = $this->input->post('concession_master_id');
-            //$data['parent_id']      = $this->input->post('parent_id');
+            $data['parent_id']      = $this->input->post('parent_id');
             //$data['dormitory_id']   = $this->input->post('dormitory_id');
             //$data['transport_id']   = $this->input->post('transport_id');
             $data['nationality'] = $this->input->post('nationality');
@@ -448,7 +489,12 @@ class Admin extends CI_Controller
             $data['class_id']    = $this->input->post('class_id');
             $data['fees_category_amount']         = $this->input->post('fees_category_amount');
 
-            $this->db->insert('fees_category', $data);
+            $this->db->insert('fees_master_category', $data);
+            $fees_master_category_id = $this->db->insert_id();
+
+            $dataforupdate['payment_order']  = $fees_master_category_id;
+            $this->db->where('fees_master_category_id', $fees_master_category_id);
+            $this->db->update('fees_master_category', $dataforupdate);
             //$teacher_id = $this->db->insert_id();
             //move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $teacher_id . '.jpg');
             //$this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
@@ -460,8 +506,8 @@ class Admin extends CI_Controller
             $data['class_id']    = $this->input->post('class_id');
             $data['fees_category_amount']         = $this->input->post('fees_category_amount');
 
-            $this->db->where('fees_category_id', $param2);
-            $this->db->update('fees_category', $data);
+            $this->db->where('fees_master_category_id', $param2);
+            $this->db->update('fees_master_category', $data);
             //move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $param2 . '.jpg');
           //  $this->session->set_flashdata('flash_message' , get_phrase('data_updated'));
             redirect(base_url() . 'index.php?admin/fees_category/', 'refresh');
@@ -474,12 +520,12 @@ class Admin extends CI_Controller
           //  ))->result_array();
         }
         if ($param1 == 'delete') {
-          $this->db->where('fees_category_id', $param2);
-          $this->db->delete('fees_category');
+          $this->db->where('fees_master_category_id', $param2);
+          $this->db->delete('fees_master_category');
           $this->session->set_flashdata('flash_message' , get_phrase('data_deleted'));
           redirect(base_url() . 'index.php?admin/fees_category/', 'refresh');
         }
-        $page_data['fees_category']   = $this->db->get('fees_category')->result_array();
+        $page_data['fees_category']   = $this->db->get('fees_master_category')->result_array();
         $page_data['page_name']  = 'fees_category';
         $page_data['page_title'] = get_phrase('fees_category');
         $this->load->view('backend/index', $page_data);
@@ -729,13 +775,21 @@ class Admin extends CI_Controller
         ))->result_array();
         foreach ($students as $row) {
             $name = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->name;
-            echo '<option value="' . $row['student_id'] . '">' . $name . '</option>';
+            $admission_no = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->admission_no;
+            $parent_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->parent_id;
+            $parent_name = $this->db->get_where('parent' , array('parent_id' => $parent_id))->row()->name;
+            echo '<option value="' . $row['student_id'] . '">' . $admission_no."-".$name."-".$parent_name.'</option>';
         }
     }
 
     function get_fees_category_amount($fees_category_id)
     {
       echo $this->db->get_where('fees_master_category' , array('fees_master_category_id' => $fees_category_id))->row()->fees_category_amount;
+    }
+
+    function get_total_amount($student_id)
+    {
+      echo $this->db->get_where('demat_master' , array('student_id' => $student_id))->row()->total_fees;
     }
 
     function get_class_students_mass($class_id)
@@ -1365,7 +1419,7 @@ class Admin extends CI_Controller
             $data['amount_paid']        = $this->input->post('amount_paid');
             $data['due']                = $data['amount'] - $data['amount_paid'];
             $data['status']             = $this->input->post('status');
-            $data['creation_timestamp'] = strtotime($this->input->post('date'));
+            //$data['creation_timestamp'] = strtotime($this->input->post('date'));
             $data['year']               = $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description;
 
             $this->db->insert('invoice', $data);
@@ -1384,7 +1438,7 @@ class Admin extends CI_Controller
             $this->db->insert('payment' , $data2);
 
             $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
-            redirect(base_url() . 'index.php?admin/student_payment', 'refresh');
+            redirect(base_url() . 'index.php?admin/income', 'refresh');
         }
 
         if ($param1 == 'create_mass_invoice') {
@@ -1490,8 +1544,12 @@ class Admin extends CI_Controller
 
         $page_data['page_name']  = 'income';
         $page_data['page_title'] = get_phrase('student_payments');
-        $this->db->order_by('creation_timestamp', 'desc');
-        $page_data['invoices'] = $this->db->get('invoice')->result_array();
+        //$this->db->order_by('creation_timestamp', 'desc');
+        $this->db->from('invoice');
+        $this->db->order_by("invoice_id", "desc");
+        $query = $this->db->get();
+        //echo $this->db->last_query();
+        $page_data['invoices'] = $query->result_array();
         $page_data['active_tab']  = $param1;
         $this->load->view('backend/index', $page_data);
     }
@@ -2199,8 +2257,9 @@ class Admin extends CI_Controller
             redirect(base_url(), 'refresh');
         }
 
-       $data['edit_data'] = $this->db->get_where('fees_category', array(
-             'fees_category_id' => 1
+       $data['edit_data'] = $this->db->get_where('fees_master_category', array(
+             'fees_master_category_id
+             ' => 1
           ))->result_array();
 
         $data['page_name']  = 'edit_fees_category';

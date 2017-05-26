@@ -39,7 +39,7 @@
 							<td>
 								<span class="label label-<?php if($row['status']=='paid')echo 'success';else echo 'secondary';?>"><?php echo $row['status'];?></span>
 							</td>
-							<td><?php echo date('d M,Y', $row['creation_timestamp']);?></td>
+							<td><?php //echo date('d M,Y', $row['creation_timestamp']);?></td>
 							<td>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
@@ -77,12 +77,12 @@
                                     <li class="divider"></li>
 
                                     <!-- DELETION LINK -->
-                                    <li>
-                                        <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?admin/invoice/delete/<?php echo $row['invoice_id'];?>');">
+                                    <!--<li>
+                                        <a href="#" onclick="confirm_modal('<?php //echo base_url();?>index.php?admin/invoice/delete/<?php //echo $row['invoice_id'];?>');">
                                             <i class="entypo-trash"></i>
-                                                <?php echo get_phrase('delete');?>
+                                                <?php //echo get_phrase('delete');?>
                                             </a>
-                                                    </li>
+																					</li>-->
                                 </ul>
                             </div>
         					</td>

@@ -15,7 +15,7 @@
                     </thead>
                     <tbody>
                         <?php
-                                $fees_category	=	$this->db->get('fees_category')->result_array();
+                                $fees_category	=	$this->db->get('fees_master_category')->result_array();
                                 //print_r($fees_category);
                                 foreach($fees_category as $row):?>
                         <tr>

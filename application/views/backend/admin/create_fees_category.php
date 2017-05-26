@@ -10,7 +10,7 @@
                         <div class="form-group">
                           <label class="col-sm-3 control-label"><?php echo get_phrase('Fees Category');?></label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="fees_category_name"
+                            <input type="text" class="form-control" name="fees_category_name" id="fees_category_name"
                                   data-validate="required" data-message-required="<?php echo get_phrase('Type name');?>"/>
                           </div>
                       </div>

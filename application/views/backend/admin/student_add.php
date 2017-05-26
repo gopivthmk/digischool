@@ -19,25 +19,25 @@
 						</div>
 					</div>
 
-					<!--<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('parent');?></label>
+					<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('parent');?></label>
 
 						<div class="col-sm-5">
 							<select name="parent_id" class="form-control select2">
-                              <option value=""><?php //echo get_phrase('select');?></option>
+                              <option value=""><?php echo get_phrase('select');?></option>
                               <?php
-								//$parents = $this->db->get('parent')->result_array();
-								//foreach($parents as $row):
+								$parents = $this->db->get('parent')->result_array();
+								foreach($parents as $row):
 									?>
-                            		<option value="<?php //echo $row['parent_id'];?>">
-										<?php //echo $row['name'];?>
+                            		<option value="<?php echo $row['parent_id'];?>">
+										<?php echo $row['name'];?>
                                     </option>
                                 <?php
-								//endforeach;
+								endforeach;
 							  ?>
                           </select>
 						</div>
-					</div>-->
+					</div>
 
 					<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
