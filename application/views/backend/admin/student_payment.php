@@ -86,6 +86,7 @@
 
 	                            </div>
 	                        </div>
+													<div id="generate_invoice_message" style="color:red; font-size:18px; "></div>
 	                    </div>
 
 	                    <div class="col-md-6">
@@ -134,6 +135,7 @@
                                     <label class="col-sm-3 control-label"><?php echo get_phrase('Due Amount');?></label>
                                     <div class="col-sm-9">
                                         <span id="due_amount">0</span>
+																				<input type="hidden" class="form-control" name="due_amount_hidden" id="due_amount_hidden"/>
                                     </div>
                                 </div>
 
@@ -193,7 +195,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-5">
-                                <button type="submit" class="btn btn-info"><?php echo get_phrase('generate_invoice');?></button>
+                                <button type="submit" class="btn btn-info" id="generate_invoice"><?php echo get_phrase('generate_invoice');?></button>
                             </div>
                         </div>
                     </div>
@@ -244,11 +246,17 @@ jQuery(document).ready(function() {
 		var totalAmount = 0;
 		if(jQuery(this).prop('checked')){
 			totalAmount = parseInt(selectedCategoryAmount) + parseInt(amount);
+			jQuery('#due_amount').text(parseInt(jQuery('#due_amount_hidden').val()) + parseInt(selectedCategoryAmount));
+			jQuery('#due_amount_hidden').val(parseInt(jQuery('#due_amount_hidden').val()) + parseInt(selectedCategoryAmount));
 		}
 		else{
 			totalAmount =  parseInt(amount) - parseInt(selectedCategoryAmount);
+			jQuery('#due_amount').text(parseInt(jQuery('#due_amount_hidden').val()) - parseInt(selectedCategoryAmount));
+			jQuery('#due_amount_hidden').val(parseInt(jQuery('#due_amount_hidden').val()) - parseInt(selectedCategoryAmount));
 		}
 		jQuery('#amount').val(totalAmount);
+		//jQuery('#due_amount').text(totalAmount);
+
 	});
 });
 
@@ -300,6 +308,16 @@ jQuery(document).ready(function() {
 					success: function(response)
 					{
 							jQuery('#due_amount').text(response);
+							jQuery('#due_amount_hidden').val(response);
+							var due_amount = jQuery('#due_amount_hidden').val();
+							if(due_amount == 0){
+								jQuery('#generate_invoice').attr('disabled', true);
+								jQuery('#generate_invoice_message').html('The student is cleared all the fees.');
+							}
+							else{
+								jQuery('#generate_invoice').attr('disabled', false);
+								jQuery('#generate_invoice_message').html('');
+							}
 					}
 			});
 		}

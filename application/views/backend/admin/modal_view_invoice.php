@@ -2,110 +2,6 @@
 $edit_data = $this->db->get_where('invoice', array('invoice_id' => $param2))->result_array();
 foreach ($edit_data as $row):
 ?>
-<center>
-    <a onClick="PrintElem('#invoice_print')" class="btn btn-default btn-icon icon-left hidden-print pull-right">
-        Print Invoice
-        <i class="entypo-print"></i>
-    </a>
-</center>
-
-    <br><br>
-
-    <div id="invoice_print">
-        <table width="100%" border="0">
-            <tr>
-                <td align="right">
-                    <h5><?php echo get_phrase('creation_date'); ?> : <?php echo date('d M,Y', $row['creation_timestamp']);?></h5>
-                    <h5><?php echo get_phrase('title'); ?> : <?php echo $row['title'];?></h5>
-                    <h5><?php echo get_phrase('description'); ?> : <?php echo $row['description'];?></h5>
-                    <h5><?php echo get_phrase('status'); ?> : <?php echo $row['status']; ?></h5>
-                </td>
-            </tr>
-        </table>
-        <hr>
-        <table width="100%" border="0">    
-            <tr>
-                <td align="left"><h4><?php echo get_phrase('payment_to'); ?> </h4></td>
-                <td align="right"><h4><?php echo get_phrase('bill_to'); ?> </h4></td>
-            </tr>
-
-            <tr>
-                <td align="left" valign="top">
-                    <?php echo $this->db->get_where('settings', array('type' => 'system_name'))->row()->description; ?><br>
-                    <?php echo $this->db->get_where('settings', array('type' => 'address'))->row()->description; ?><br>
-                    <?php echo $this->db->get_where('settings', array('type' => 'phone'))->row()->description; ?><br>            
-                </td>
-                <td align="right" valign="top">
-                    <?php echo $this->db->get_where('student', array('student_id' => $row['student_id']))->row()->name; ?><br>
-                    <?php 
-                        $class_id = $this->db->get_where('enroll' , array(
-                            'student_id' => $row['student_id'],
-                                'year' => $this->db->get_where('settings', array('type' => 'running_year'))->row()->description
-                        ))->row()->class_id;
-                        echo get_phrase('class') . ' ' . $this->db->get_where('class', array('class_id' => $class_id))->row()->name;
-                    ?><br>
-                </td>
-            </tr>
-        </table>
-        <hr>
-
-        <table width="100%" border="0">    
-            <tr>
-                <td align="right" width="80%"><?php echo get_phrase('total_amount'); ?> :</td>
-                <td align="right"><?php echo $row['amount']; ?></td>
-            </tr>
-            <tr>
-                <td align="right" width="80%"><h4><?php echo get_phrase('paid_amount'); ?> :</h4></td>
-                <td align="right"><h4><?php echo $row['amount_paid']; ?></h4></td>
-            </tr>
-            <?php if ($row['due'] != 0):?>
-            <tr>
-                <td align="right" width="80%"><h4><?php echo get_phrase('due'); ?> :</h4></td>
-                <td align="right"><h4><?php echo $row['due']; ?></h4></td>
-            </tr>
-            <?php endif;?>
-        </table>
-
-        <hr>
-
-        <!-- payment history -->
-        <h4><?php echo get_phrase('payment_history'); ?></h4>
-        <table class="table table-bordered" width="100%" border="1" style="border-collapse:collapse;">
-            <thead>
-                <tr>
-                    <th><?php echo get_phrase('date'); ?></th>
-                    <th><?php echo get_phrase('amount'); ?></th>
-                    <th><?php echo get_phrase('method'); ?></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $payment_history = $this->db->get_where('payment', array('invoice_id' => $row['invoice_id']))->result_array();
-                foreach ($payment_history as $row2):
-                    ?>
-                    <tr>
-                        <td><?php echo date("d M, Y", $row2['timestamp']); ?></td>
-                        <td><?php echo $row2['amount']; ?></td>
-                        <td>
-                            <?php 
-                                if ($row2['method'] == 1)
-                                    echo get_phrase('cash');
-                                if ($row2['method'] == 2)
-                                    echo get_phrase('check');
-                                if ($row2['method'] == 3)
-                                    echo get_phrase('card');
-                                if ($row2['method'] == 'paypal')
-                                    echo 'paypal';
-                            ?>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-            <tbody>
-        </table>
-    </div>
-<?php endforeach; ?>
-
 
 <script type="text/javascript">
 
@@ -132,3 +28,197 @@ foreach ($edit_data as $row):
     }
 
 </script>
+<style>
+.main
+{
+  width: 525px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  color: #333;
+}
+.header_title, .middle_title
+{
+  font-size: 24px;
+  font-weight: bold;
+}
+.header_address span
+{
+    /*float: left;*/
+    clear: both;
+    padding-top:5px;
+    text-align: center;
+}
+.middle_row
+{
+  clear: both;
+}
+.tbl_receipt
+{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.tbl_receipt td{
+  border:1px solid #333;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  clear: both;
+  float: left;
+  margin-top: 10px;
+  min-width: 100% !important;
+}
+th,
+td {
+  padding: 10px 15px;
+}
+thead {
+  background: #395870;
+  color: #fff;
+}
+th {
+  font-weight: bold;
+}
+tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+td {
+  border-bottom: 1px solid #cecfd5;
+  border-right: 1px solid #cecfd5;
+}
+td:first-child {
+  border-left: 1px solid #cecfd5;
+}
+.tbl_receipt_content
+{
+clear: both;
+float: left;
+border: 1px solid #cecfd5;
+margin-top: 10px;
+padding: 10px;
+text-align: justify;
+}
+</style>
+<center>
+    <a onClick="PrintElem('#invoice_print')" class="btn btn-default btn-icon icon-left hidden-print pull-right">
+        Print Invoice
+        <i class="entypo-print"></i>
+    </a>
+</center>
+
+    <br><br>
+
+    <div id="invoice_print">
+      <div class="main">
+        <div class="header_content">
+            <div class="header_title">
+              Venkateshwaraa Matriculation School (JVMS)
+            </div>
+            <div class="header_sub_title">
+              (A Unit of M.P. Soman Educational Trust)
+            </div>
+            <div class="header_address">
+              <span>No 7, Bharathi Nagar(Opp TNHB), Thirumullaivoyal, Chennai - 600 062</span><br/>
+              <span>Phone: 26372527, 9444389775 Email : vms_mpsoman@yahoo.com</span>
+            </div>
+        </div>
+        <div class="middle_content">
+          <div class="middle_title">
+            Fees Receipt
+          </div>
+          <div class="middle_inner_content">
+            <div class="middle_row">
+              <span style="float:left">No&nbsp;:&nbsp;</span><span style="float:left"><?php echo $row['invoice_id'] ?></span>
+              <span style="float:right"><?php echo date('d/m/Y', strtotime($row['lmtime'])); ?></span><span style="float:right">Date&nbsp;:&nbsp;</span>
+            </div>
+            <div class="middle_row">
+              <span style="float:left">Name&nbsp;:&nbsp;</span><span style="float:left">
+                <?php
+                echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->name;
+                $enroll = $this->db->get_where('enroll' , array('student_id' => $row['student_id']))->result_array();
+                //print_r($enroll);
+                 ?>
+              </span>
+            </div>
+            <div class="middle_row">
+              <span style="float:left">Std&nbsp;:&nbsp;</span><span style="float:left"><?php
+              echo $this->db->get_where('class' , array('class_id' => $enroll[0]['class_id']))->row()->name;
+               ?></span>
+              <span style="float:right">
+                <?php echo date("F"); ?>
+              </span>
+              <span style="float:right">Month / Term&nbsp;:&nbsp;</span>
+            </div>
+          </div>
+        </div>
+        <div class="body_content">
+<?php
+$category_mapping = $this->db->get_where('fees_master_category_mapping' , array(
+    'student_id' => $row['student_id']
+))->result_array();
+//print_r($category_mapping);
+ ?>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Particulars</th>
+
+          <th scope="col">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        $total_paid = $row['amount_paid'];
+        $isnegative = false;
+        $current_total = 0;
+        foreach ($category_mapping as $items):
+                $master_category_mapping = $this->db->get_where('fees_master_category' , array(
+                   'fees_master_category_id' => $items['fees_master_category_id']
+                ))->result_array();
+                //print_r($master_category_mapping);
+                $total_paid = $total_paid - $master_category_mapping[0]['fees_category_amount'];
+                  //echo $total_paid."<br/>";
+                if(preg_match('/^\d+$/D',$total_paid) && ($total_paid>0)){
+
+          ?>
+        <tr>
+          <td><?php echo $master_category_mapping[0]['fees_category_name']; ?></td>
+          <td><?php
+          //$current_total += $master_category_mapping[0]['fees_category_amount'];
+          echo "&#8377;".$master_category_mapping[0]['fees_category_amount'];
+          ?></td>
+        </tr>
+      <?php
+    }else if(($total_paid < 0) && ($isnegative == false)){
+    ?>
+    <tr>
+      <td><?php echo $master_category_mapping[0]['fees_category_name']." <span style='color:red;'>Partially Paid</span>"; ?></td>
+      <td><?php
+      //$current_total += ($master_category_mapping[0]['fees_category_amount'] + $total_paid);
+      //echo $total_paid;
+      echo "&#8377;".($master_category_mapping[0]['fees_category_amount'] + $total_paid); ?></td>
+    </tr>
+    <?php
+    $isnegative = true;
+  }
+      endforeach ?>
+      </tbody>
+      <tfoot>
+          <td >Total</td>
+          <td><?php echo "&#8377;".$row['amount_paid']; ?></td>
+        </tr>
+      </tfoot>
+    </table>
+
+
+          <div class="tbl_receipt_content">
+            Special fees includes SMS, Web Access, Stationary, Notes, Accessories, ECA, Clud fees,  Health & Amentities, Karate, Counselling,
+            External Assessment, Handwork and Skill Development, Training, Workshops, Books & Note Books & Other Activities
+          </div>
+        </div>
+      </div>
+    </div>
+<?php endforeach; ?>

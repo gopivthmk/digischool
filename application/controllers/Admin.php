@@ -241,6 +241,7 @@ class Admin extends CI_Controller
 
             $dataDematDetails['student_id'] = $student_id;
             $dataDematDetails['total_fees'] = $total_fees;
+            $dataDematDetails['due_amount'] = $total_fees;
             $dataDematDetails['concession_amount'] = $concession_amount;
             $dataDematDetails['year'] = $running_year;
             $dataDematDetails['lmtime'] = date('Y-m-d H:i:s');
@@ -773,6 +774,7 @@ class Admin extends CI_Controller
         $students = $this->db->get_where('enroll' , array(
             'class_id' => $class_id , 'year' => $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description
         ))->result_array();
+        echo '<option value="0">Select Student</option>';
         foreach ($students as $row) {
             $name = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->name;
             $admission_no = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->admission_no;
@@ -1443,7 +1445,7 @@ class Admin extends CI_Controller
             //$data['description']        = $this->input->post('description');
             $data['amount']             = $this->input->post('amount');
             $data['amount_paid']        = $this->input->post('amount_paid');
-            $data['due']                = $data['amount'] - $data['amount_paid'];
+            $data['due']                = $this->input->post('due_amount_hidden') - $data['amount_paid'];
             $data['status']             = $this->input->post('status');
             $data['payment_type']       = $this->input->post('payment_mode');
             $data['lmtime']             = Date('Y-m-d H:m:s');
@@ -1470,7 +1472,7 @@ class Admin extends CI_Controller
             //updating the demat_master for new total_fees amount (including new fees)
             $data_demat['total_fees'] = $selected_category_total_amount + $this->db->get_where('demat_master' , array('student_id' => $this->input->post('student_id')))->row()->total_fees;
             $data_demat['paid_amount'] = $this->input->post('amount_paid');
-            $data_demat['due_amount'] = $this->input->post('amount') - $this->input->post('amount_paid');
+            $data_demat['due_amount'] = $this->input->post('due_amount_hidden') - $this->input->post('amount_paid');
 
             $this->db->where('student_id', $this->input->post('student_id'));
             $this->db->update('demat_master', $data_demat);
