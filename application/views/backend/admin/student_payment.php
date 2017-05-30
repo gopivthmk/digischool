@@ -32,7 +32,7 @@
 	                                <div class="form-group">
 	                                    <label class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
 	                                    <div class="col-sm-9">
-	                                        <select name="class_id" class="form-control selectboxit"
+	                                        <select name="class_id" class="form-control selectboxit" id="class_id"
 																					data-validate="required"
 	                                        	onchange="return get_class_students(this.value)">
 	                                        	<option value=""><?php echo get_phrase('select_class');?></option>
@@ -96,34 +96,74 @@
                             </div>
                             <div class="panel-body">
 
-															<div class="form-group">
-																	<label class="col-sm-3 control-label"><?php echo get_phrase('Additional Fees');?></label>
+															<!--<div class="form-group">
+																	<label class="col-sm-3 control-label"><?php// echo get_phrase('Additional Fees');?></label>
 																	<div class="col-sm-9">
 
 																				<?php
-																					$classes = $this->db->get_where('fees_master_category' , array('isdefault' => '0'))->result_array();
-																					foreach ($classes as $row):
+																					//$classes = $this->db->get_where('student_fees_category' , array('isdefault' => '0'))->result_array();
+																					//foreach ($classes as $row):
 																				?>
 																				<span style="clear:both; float:left;">
 																					<input type="checkbox" class="fees_category"
-																					id="fees_category<?php echo $row['fees_master_category_id']; ?>"
+																					id="fees_category<?php //echo $row['student_fees_category_id']; ?>"
 																					style="padding:5px; float:left;"
 																					name="fees_category[]"
-																					value="<?php echo $row['fees_master_category_id'];?>"
-																					amount="<?php echo $row['fees_category_amount'];?>"
+																					value="<?php //echo $row['student_fees_category_id'];?>"
+																					amount="<?php //echo $row['fees_category_amount'];?>"
 																					/>
 																					<span style="padding:5px; float:left;">
-																						<?php echo $row['fees_category_name'];?>
+																						<?php
+																						//1$classes = //$this->db->get_where('fees_category_master' , array('fees_category_master_id' => $row['fees_category_master_id']))->result_array();
+																						//echo $classes[0]['category_name'];
+																						?>
 																					</span>
 																				</span>
-																				<?php endforeach;?>
+																				<?php //endforeach;?>
 
 
 																	</div>
-															</div>
+															</div>-->
+
+															<!--<div class="form-group">
+																	<label class="col-sm-3 control-label"><?php //echo get_phrase('Additional Fees');?></label>
+																	<div class="col-sm-9">
+
+																				<?php
+																					//$classes = $this->db->get_where('student_fees_category' , array('isdefault' => '0'))->result_array();
+																					//foreach ($classes as $row):
+																				?>
+																				<span style="clear:both; float:left;">
+																					<input type="checkbox" class="fees_category"
+																					id="fees_category<?php //echo $row['student_fees_category_id']; ?>"
+																					style="padding:5px; float:left;"
+																					name="fees_category[]"
+																					value="<?php //echo $row['student_fees_category_id'];?>"
+																					amount="<?php //echo $row['fees_category_amount'];?>"
+																					/>
+																					<span style="padding:5px; float:left;">
+																						<?php
+																						//$classes = $this->db->get_where('fees_category_master' , array('fees_category_master_id' => $row['fees_category_master_id']))->result_array();
+																						//echo $classes[0]['category_name'];
+																						?>
+																					</span>
+																				</span>
+																				<?php //endforeach;?>
+
+
+																	</div>
+															</div>-->
+
+															<div class="form-group">
+																<label class="col-sm-3 control-label"><?php echo get_phrase('Additional Fees');?></label>
+																<div class="col-sm-9 fees_category_holder" style="color: green; text-transform:capitalize;
+																 font-size: 12px;">
+																	Categories will be fill out, based on class
+																</div>
+														</div>
 
                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label"><?php echo get_phrase('total');?></label>
+                                    <label class="col-sm-3 control-label"><?php echo get_phrase('Payable amount');?></label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="amount" id="amount"
                                             placeholder="<?php echo get_phrase('enter_total_amount');?>"
@@ -136,6 +176,14 @@
                                     <div class="col-sm-9">
                                         <span id="due_amount">0</span>
 																				<input type="hidden" class="form-control" name="due_amount_hidden" id="due_amount_hidden"/>
+                                    </div>
+                                </div>
+
+																<div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo get_phrase('Concession Amount');?></label>
+                                    <div class="col-sm-9">
+																				<input type="text" class="form-control" disabled="disabled" name="concession_amount"
+																				id="concession_amount"/>
                                     </div>
                                 </div>
 
@@ -180,16 +228,12 @@
                                     </div>
                                 </div>
 
-                                <!--<div class="form-group">
-                                    <label class="col-sm-3 control-label"><?php echo get_phrase('method');?></label>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"><?php echo get_phrase('payment_details');?></label>
                                     <div class="col-sm-9">
-                                        <select name="method" class="form-control selectboxit">
-                                            <option value="1"><?php echo get_phrase('cash');?></option>
-                                            <option value="2"><?php echo get_phrase('check');?></option>
-                                            <option value="3"><?php echo get_phrase('card');?></option>
-                                        </select>
+                                        <textarea name="payment_details" rows="5" cols="60"></textarea>
                                     </div>
-                                </div>-->
+                                </div>
 
                             </div>
                         </div>
@@ -240,9 +284,11 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function() {
-	jQuery('.fees_category').change(function(){
+	/*jQuery('.fees_category').on('change', function(){
 		var selectedCategoryAmount = jQuery(this).attr('amount');
+	alert(selectedCategoryAmount);
 		var amount = jQuery('#amount').val();
+		alert(amount);
 		var totalAmount = 0;
 		if(jQuery(this).prop('checked')){
 			totalAmount = parseInt(selectedCategoryAmount) + parseInt(amount);
@@ -257,7 +303,7 @@ jQuery(document).ready(function() {
 		jQuery('#amount').val(totalAmount);
 		//jQuery('#due_amount').text(totalAmount);
 
-	});
+	});*/
 });
 
     function get_class_students(class_id) {
@@ -268,28 +314,74 @@ jQuery(document).ready(function() {
                 jQuery('#student_selection_holder').html(response);
             }
         });
+
+				$.ajax({
+            url: '<?php echo base_url();?>index.php?admin/get_class_fees_category/' + class_id ,
+            success: function(response)
+            {
+							//alert(response);
+                jQuery('.fees_category_holder').html(response);
+								jQuery('.fees_category').attr('disabled', true);
+								jQuery('.fees_category').on('change', function(){
+									var selectedCategoryAmount = jQuery(this).attr('amount');
+								//alert(selectedCategoryAmount);
+									var amount = jQuery('#amount').val();
+									//alert(amount);
+									var totalAmount = 0;
+									if(jQuery(this).prop('checked')){
+										totalAmount = parseInt(selectedCategoryAmount) + parseInt(amount);
+										jQuery('#due_amount').text(parseInt(jQuery('#due_amount_hidden').val()) + parseInt(selectedCategoryAmount));
+										jQuery('#due_amount_hidden').val(parseInt(jQuery('#due_amount_hidden').val()) + parseInt(selectedCategoryAmount));
+									}
+									else{
+										totalAmount =  parseInt(amount) - parseInt(selectedCategoryAmount);
+										jQuery('#due_amount').text(parseInt(jQuery('#due_amount_hidden').val()) - parseInt(selectedCategoryAmount));
+										jQuery('#due_amount_hidden').val(parseInt(jQuery('#due_amount_hidden').val()) - parseInt(selectedCategoryAmount));
+									}
+									jQuery('#amount').val(totalAmount);
+									//jQuery('#due_amount').text(totalAmount);
+
+								});
+            }
+        });
+
+
     }
 		function get_total_amount(student_id){
 			//Updaing the total amount
+			var class_id = $('#class_id').find(":selected").val();
 			$.ajax({
-					url: '<?php echo base_url();?>index.php?admin/get_total_amount/' + student_id ,
+					url: '<?php echo base_url();?>index.php?admin/get_total_amount/' + student_id,
 					success: function(response)
 					{
 							jQuery('#amount').val(response);
+							jQuery('.fees_category').attr('disabled', false);
+					}
+			});
+
+			$.ajax({
+					url: '<?php echo base_url();?>index.php?admin/get_concession_amount/' + student_id,
+					success: function(response)
+					{
+							jQuery('#concession_amount').val(response);
+							//Query('.fees_category').attr('disabled', false);
 					}
 			});
 
 			//Updating the additional fees checkbox
 			$.ajax({
-					url: '<?php echo base_url();?>index.php?admin/get_fees_categories/' + student_id ,
+					url: '<?php echo base_url();?>index.php?admin/get_fees_categories/' + student_id  + '/' + class_id,
 					success: function(response)
 					{
+						//alert(response);
+						//return false;
 							response = $.parseJSON(response);
 							var response_count = response.length;
 							//alert(response_count);
 							if(response_count > 0){
 								//alert("Hello if");
 							jQuery.each( response, function( i, val ) {
+								alert(val);
 								jQuery('#fees_category' + val).attr('checked', 'checked');
 								jQuery('#fees_category' + val).attr('disabled', true);
 							});

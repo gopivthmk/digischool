@@ -170,25 +170,22 @@ class Admin extends CI_Controller
             $data['birthday']     = $this->input->post('birthday');
             $data['sex']          = $this->input->post('sex');
             $data['address']      = $this->input->post('address');
-            //$data['phone']        = $this->input->post('phone');
             $data['email']        = $this->input->post('email');
             $data['concession_master_id'] = $this->input->post('concession_master_id');
             //$data['password']     = sha1($this->input->post('password'));
             $data['parent_id']    = $this->input->post('parent_id');
-            //$data['dormitory_id'] = $this->input->post('dormitory_id');
-            //$data['transport_id'] = $this->input->post('transport_id');
             $data['nationality'] = $this->input->post('nationality');
             $data['caste_community'] = $this->input->post('caste');
             $data['mode_of_transport'] = $this->input->post('transport');
             $data['personal_identification_number'] = $this->input->post('PIM');
             $data['medications'] = $this->input->post('medications');
             $data['admission_no'] = $this->input->post('admission_no');
-            $data['date_of_admission'] = $this->input->post('admission_date');
-            $data['father_name'] = $this->input->post('father_name');
-            $data['mother_name'] = $this->input->post('mother_name');
-            $data['father_mobile'] = $this->input->post('father_mobile');
-            $data['mother_mobile'] = $this->input->post('mother_mobile');
-            $data['date_of_tc'] = $this->input->post('tc_date');
+            $data['date_of_admission'] = date('Y-m-d H:i:s', strtotime($this->input->post('date_of_admission')));
+            //$data['father_name'] = $this->input->post('father_name');
+            //$data['mother_name'] = $this->input->post('mother_name');
+            //$data['father_mobile'] = $this->input->post('father_mobile');
+            ///$data['mother_mobile'] = $this->input->post('mother_mobile');
+            //$data['date_of_tc'] = $this->input->post('tc_date');
             $data['status'] = $this->input->post('status');
             $data['emins_no'] = $this->input->post('emins_no');
             $data['aadhar_card_no'] = $this->input->post('aadhar_number');
@@ -207,8 +204,9 @@ class Admin extends CI_Controller
             $data2['year']           = $running_year;
             $this->db->insert('enroll', $data2);
 
-            $students_fees_list =   $this->db->get_where('fees_master_category' , array(
-                'class_id' => $this->input->post('class_id')
+            $students_fees_list =   $this->db->get_where('student_fees_category' , array(
+                'class_id' => $this->input->post('class_id'),
+                'isdefault' => 1
             ))->result_array();
 
             $total_fees = 0;
@@ -216,13 +214,15 @@ class Admin extends CI_Controller
 
             foreach ($students_fees_list as $value) {
               $dataFeesList['student_id'] = $student_id;
-              $dataFeesList['fees_master_category_id'] = $value['fees_master_category_id'];
-              $dataFeesList['lmtime'] = date('Y-m-d H:i:s');
+              $dataFeesList['student_fees_category_id'] = $value['student_fees_category_id'];
+              $dataFeesList['created_date'] = date('Y-m-d H:i:s');
               $total_fees += $value['fees_category_amount'];
               $this->db->insert('fees_master_category_mapping', $dataFeesList);
             }
 
-
+            /*
+            *Concession calculations
+            */
             $students_concession_details =   $this->db->get_where('concession_master' , array(
                 'concession_master_id' => $this->input->post('concession_master_id')
             ))->result_array();
@@ -239,6 +239,9 @@ class Admin extends CI_Controller
                 }
             }
 
+            /*
+            *Demat details insertions
+            */
             $dataDematDetails['student_id'] = $student_id;
             $dataDematDetails['total_fees'] = $total_fees;
             $dataDematDetails['due_amount'] = $total_fees;
@@ -246,13 +249,26 @@ class Admin extends CI_Controller
             $dataDematDetails['year'] = $running_year;
             $dataDematDetails['lmtime'] = date('Y-m-d H:i:s');
 
-            $this->db->insert('demat_master', $dataDematDetails);
+            $this->db->insert('demand_master', $dataDematDetails);
+            $demand_id = $this->db->insert_id();
 
+            $data_mapping['demand_master_id'] = $demand_id;
+
+            $this->db->where('student_id', $student_id);
+            $this->db->update('fees_master_category_mapping', $data_mapping);
+
+            /*
+            Uploading Student images
+            */
             move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/student_image/' . $student_id . '.jpg');
             $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
             $this->email_model->account_opening_email('student', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
             redirect(base_url() . 'index.php?admin/student_add/', 'refresh');
         }
+
+        /*
+        *Updating student informations
+        */
         if ($param1 == 'do_update') {
             $data['name']           = $this->input->post('name');
             $data['birthday']       = $this->input->post('birthday');
@@ -261,7 +277,7 @@ class Admin extends CI_Controller
             //$data['phone']          = $this->input->post('phone');
             $data['email']          = $this->input->post('email');
             $data['concession_master_id'] = $this->input->post('concession_master_id');
-            $data['parent_id']      = $this->input->post('parent_id');
+            //$data['parent_id']      = $this->input->post('parent_id');
             //$data['dormitory_id']   = $this->input->post('dormitory_id');
             //$data['transport_id']   = $this->input->post('transport_id');
             $data['nationality'] = $this->input->post('nationality');
@@ -269,13 +285,13 @@ class Admin extends CI_Controller
             $data['mode_of_transport'] = $this->input->post('transport');
             $data['personal_identification_number'] = $this->input->post('PIM');
             $data['medications'] = $this->input->post('medications');
-            $data['admission_no'] = $this->input->post('admission_no');
-            $data['date_of_admission'] = $this->input->post('admission_date');
-            $data['father_name'] = $this->input->post('father_name');
-            $data['mother_name'] = $this->input->post('mother_name');
-            $data['father_mobile'] = $this->input->post('father_mobile');
-            $data['mother_mobile'] = $this->input->post('mother_mobile');
-            $data['date_of_tc'] = $this->input->post('tc_date');
+            //$data['admission_no'] = $this->input->post('admission_no');
+            //$data['date_of_admission'] = $this->input->post('admission_date');
+            //$data['father_name'] = $this->input->post('father_name');
+            //$data['mother_name'] = $this->input->post('mother_name');
+            //$data['father_mobile'] = $this->input->post('father_mobile');
+            //$data['mother_mobile'] = $this->input->post('mother_mobile');
+            //$data['date_of_tc'] = $this->input->post('tc_date');
             $data['status'] = $this->input->post('status');
             $data['emins_no'] = $this->input->post('emins_no');
             $data['aadhar_card_no'] = $this->input->post('aadhar_number');
@@ -485,17 +501,23 @@ class Admin extends CI_Controller
     {
         if ($this->session->userdata('admin_login') != 1)
             redirect(base_url(), 'refresh');
+            $student_fees_category_id = 0;
         if ($param1 == 'create') {
-            $data['fees_category_name']        = $this->input->post('fees_category_name');
+            $data['fees_category_master_id']        = $this->input->post('fees_category_master_id');
             $data['class_id']    = $this->input->post('class_id');
             $data['fees_category_amount']         = $this->input->post('fees_category_amount');
+            $data['isdefault']         = $this->input->post('is_default');
 
-            $this->db->insert('fees_master_category', $data);
-            $fees_master_category_id = $this->db->insert_id();
+            if($data['isdefault'] == ""){
+              $data['isdefault'] = 0;
+            }
 
-            $dataforupdate['payment_order']  = $fees_master_category_id;
-            $this->db->where('fees_master_category_id', $fees_master_category_id);
-            $this->db->update('fees_master_category', $dataforupdate);
+            $this->db->insert('student_fees_category', $data);
+            $student_fees_category_id = $this->db->insert_id();
+
+            $dataforupdate['payment_order']  = $student_fees_category_id;
+            $this->db->where('student_fees_category_id', $student_fees_category_id);
+            $this->db->update('student_fees_category', $dataforupdate);
             //$teacher_id = $this->db->insert_id();
             //move_uploaded_file($_FILES['userfile']['tmp_name'], 'uploads/teacher_image/' . $teacher_id . '.jpg');
             //$this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
@@ -521,12 +543,12 @@ class Admin extends CI_Controller
           //  ))->result_array();
         }
         if ($param1 == 'delete') {
-          $this->db->where('fees_master_category_id', $param2);
-          $this->db->delete('fees_master_category');
+          $this->db->where('student_fees_category_id', $param2);
+          $this->db->delete('student_fees_category');
           $this->session->set_flashdata('flash_message' , get_phrase('data_deleted'));
           redirect(base_url() . 'index.php?admin/fees_category/', 'refresh');
         }
-        $page_data['fees_category']   = $this->db->get('fees_master_category')->result_array();
+        $page_data['fees_category']   = $this->db->get('student_fees_category')->result_array();
         $page_data['page_name']  = 'fees_category';
         $page_data['page_title'] = get_phrase('fees_category');
         $this->load->view('backend/index', $page_data);
@@ -791,33 +813,59 @@ class Admin extends CI_Controller
 
     function get_total_amount($student_id)
     {
-      echo $this->db->get_where('demat_master' , array('student_id' => $student_id))->row()->total_fees;
+      echo $this->db->get_where('demand_master' , array('student_id' => $student_id))->row()->total_fees;
+    }
+
+    function get_concession_amount($student_id)
+    {
+      echo $this->db->get_where('demand_master' , array('student_id' => $student_id))->row()->concession_amount;
     }
 
     function get_due_amount($student_id)
     {
-      echo $this->db->get_where('demat_master' , array('student_id' => $student_id))->row()->due_amount;
+      echo $this->db->get_where('demand_master' , array('student_id' => $student_id))->row()->due_amount;
     }
 
-    function get_fees_categories($student_id)
+    function get_fees_categories($student_id, $class_id)
     {
-      $this->db->select('fees_master_category_id');
-      $fees_catergory_ids = $this->db->get_where('fees_master_category' , array('isdefault' => '0'))->result_array();
+      $this->db->select('student_fees_category_id');
+      $fees_catergory_ids = $this->db->get_where('student_fees_category' ,
+      array('isdefault' => '0', 'class_id' => $class_id))->result_array();
+      //echo $this->db->last_query();
 
-      $this->db->select('fees_master_category_id');
-      $student_fees_catergory_ids = $this->db->get_where('fees_master_category_mapping' , array('student_id' => $student_id))->result_array();
+      $this->db->select('student_fees_category_id');
+      $student_fees_catergory_ids = $this->db->get_where('fees_master_category_mapping' ,
+      array('student_id' => $student_id))->result_array();
+      //echo $this->db->last_query();
+
 
       $common_values_categories = array();
 
       foreach ($fees_catergory_ids as $value) {
+        //print_r($value);
         foreach ($student_fees_catergory_ids as $innervalue) {
-          if($innervalue['fees_master_category_id'] == $value['fees_master_category_id']){
-            array_push($common_values_categories, $innervalue['fees_master_category_id']);
+            //print_r($innervalue);
+          if($innervalue['student_fees_category_id'] == $value['student_fees_category_id']){
+            array_push($common_values_categories, $innervalue['student_fees_category_id']);
           }
         }
       }
 
       echo json_encode($common_values_categories);
+    }
+
+    function get_class_fees_category($class_id)
+    {
+      $fees_catergories = $this->db->get_where('student_fees_category' ,
+      array('isdefault' => '0', 'class_id' => $class_id))->result_array();
+
+      foreach ($fees_catergories as $value) {
+        $name = $this->db->get_where('fees_category_master' , array('fees_category_master_id' => $value['fees_category_master_id']))->row()->category_name;
+        //echo "<input type='checkbox' id='fees_category "+ $value['fees_category_master_id'] + "' name='fees_category[]' class='fees_category'/>" + $name;
+        echo '<div class="checkbox">
+                <label><input type="checkbox" class="check fees_category" amount="'. $value['fees_category_amount'] .'" name="fees_category[]" id="fees_category' .$value['student_fees_category_id'] . '" value="' .$value['student_fees_category_id'] . '">' . $name .'</label>
+            </div>';
+      }
     }
 
     function get_class_students_mass($class_id)
@@ -1440,46 +1488,169 @@ class Admin extends CI_Controller
             redirect(base_url(), 'refresh');
 
         if ($param1 == 'create') {
-            $data['student_id']         = $this->input->post('student_id');
-            //$data['title']              = $this->input->post('title');
-            //$data['description']        = $this->input->post('description');
-            $data['amount']             = $this->input->post('amount');
-            $data['amount_paid']        = $this->input->post('amount_paid');
-            $data['due']                = $this->input->post('due_amount_hidden') - $data['amount_paid'];
-            $data['status']             = $this->input->post('status');
-            $data['payment_type']       = $this->input->post('payment_mode');
-            $data['lmtime']             = Date('Y-m-d H:m:s');
+            $data['student_id']           = $this->input->post('student_id');
+            $data['receipt_date']         = Date('Y-m-d H:m:s');
+            $data['payment_type_id']      = $this->input->post('status');
+            $data['payment_mode_id']      = $this->input->post('payment_mode');
+            $data['payment_details']      = $this->input->post('payment_details');
+
             //$fee_category               = $this->input->post('fees_category');
             //print_r($fees_category);
             //exit;
 
-            $selected_category_total_amount = 0;
-
-            foreach ($this->input->post('fees_category') as $items) {
-              $dataFMCMapping['student_id']               = $data['student_id'];
-              $dataFMCMapping['fees_master_category_id']  = $items;
-              $dataFMCMapping['lmtime']  = Date('Y-m-d H:m:s');
-
-              $this->db->insert('fees_master_category_mapping', $dataFMCMapping);
-
-              $selected_category_total_amount += $this->db->get_where('fees_master_category' , array('fees_master_category_id' => $dataFMCMapping['fees_master_category_id']))->row()->fees_category_amount;
-            }
-
             //$data['creation_timestamp'] = strtotime($this->input->post('date'));
             $data['year']               = $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description;
-            $this->db->insert('invoice', $data);
+            $this->db->insert('receipt', $data);
+            $receipt_id = $this->db->insert_id();
+
+            //$data_receipt['receipt_id']              =
+            //$data_receipt['amount_to_be_payable']    = $this->input->post('amount');
+            //$data_receipt['paid_amount']             = $this->input->post('amount_paid');
+            //$data_receipt['due_amount']              = $this->input->post('due_amount_hidden') - $data['amount_paid'];
+
+
+
+            $selected_category_total_amount = 0;
+
+            $existing_demand_id =  $this->db->get_where('fees_master_category_mapping' , array('student_id' => $data['student_id']))->row()->demand_master_id;
+
+            foreach ($this->input->post('fees_category') as $items) {
+
+              $dataFMCMapping['student_id']               = $data['student_id'];
+              $dataFMCMapping['student_fees_category_id']  = $items;
+              $dataFMCMapping['demand_master_id'] = $existing_demand_id;
+              $dataFMCMapping['created_date']  = Date('Y-m-d H:m:s');
+              $this->db->insert('fees_master_category_mapping', $dataFMCMapping);
+
+              $selected_category_total_amount += $this->db->get_where('student_fees_category' , array('student_fees_category_id' => $dataFMCMapping['student_fees_category_id']))->row()->fees_category_amount;
+            }
 
             //updating the demat_master for new total_fees amount (including new fees)
-            $data_demat['total_fees'] = $selected_category_total_amount + $this->db->get_where('demat_master' , array('student_id' => $this->input->post('student_id')))->row()->total_fees;
+            $data_demat['total_fees'] = $selected_category_total_amount + $this->db->get_where('demand_master' , array('student_id' => $this->input->post('student_id')))->row()->total_fees;
             $data_demat['paid_amount'] = $this->input->post('amount_paid');
             $data_demat['due_amount'] = $this->input->post('due_amount_hidden') - $this->input->post('amount_paid');
 
             $this->db->where('student_id', $this->input->post('student_id'));
-            $this->db->update('demat_master', $data_demat);
+            $this->db->update('demand_master', $data_demat);
 
-            $invoice_id = $this->db->insert_id();
+            /*$this->db->order_by('fees_master_category_mapping_id', 'asc');
+            $category_mapping = $this->db->get_where('fees_master_category_mapping' , array(
+                'student_id' =>  $this->input->post('student_id')
+            ))->result_array();*/
 
-            $data2['invoice_id']        =   $invoice_id;
+
+
+            $this->db->order_by('receipt_category_mapping_id', 'asc');
+            $category_mapping_receipt = $this->db->get_where('receipt_category_mapping' , array(
+                'student_id' =>  $this->input->post('student_id')
+            ))->result_array();
+
+            $existing_ids = "";
+            $tmp_negative = false;
+            foreach($category_mapping_receipt as $items_child){
+              $existing_ids .= $items_child['fees_master_category_mapping_id'].",";
+
+              if($items_child['due_amount'] != 0)
+              {
+                $data_demat['paid_amount'] = $data_demat['paid_amount'] - $items_child['due_amount'];
+                $tmp_paid_amount = $data_demat['paid_amount'];
+                if(preg_match('/^\d+$/D',$tmp_paid_amount) && ($tmp_paid_amount>=0)){
+
+                  $tmp_data_mapping['receipt_id'] = $receipt_id;
+                  $tmp_data_mapping['student_id'] = $items_child['student_id'];
+                  $tmp_data_mapping['fees_master_category_mapping_id'] =  $items_child['fees_master_category_mapping_id'];
+                  $tmp_data_mapping['amount_to_be_payable'] = $items_child['amount_to_be_payable'];
+                  $tmp_data_mapping['due_amount'] = 0;
+                  $tmp_data_mapping['paid_amount'] = $items_child['due_amount'];
+
+                  $this->db->insert('receipt_category_mapping', $tmp_data_mapping);
+
+                }
+                else if($tmp_negative == false){
+
+                  $tmp_data_mapping['receipt_id'] = $receipt_id;
+                  $tmp_data_mapping['student_id'] = $items_child['student_id'];
+                  $tmp_data_mapping['fees_master_category_mapping_id'] =  $items_child['fees_master_category_mapping_id'];
+                  $tmp_data_mapping['amount_to_be_payable'] = $items_child['amount_to_be_payable'];
+                  $tmp_data_mapping['due_amount'] = $data_demat['due_amount'] - $data_demat['paid_amount'];
+                  $tmp_data_mapping['paid_amount'] = $data_demat['paid_amount'];
+
+                  $this->db->insert('receipt_category_mapping', $tmp_data_mapping);
+
+                  $tmp_negative = true;
+                }
+              }
+            }
+
+            $existing_ids = rtrim($existing_ids,",");
+            $existing_ids = explode(",", $existing_ids);
+
+            $this->db->from('fees_master_category_mapping');
+            $this->db->order_by('fees_master_category_mapping_id', 'asc');
+            $this->db->where('student_id', $this->input->post('student_id'));
+            $this->db->where_not_in('fees_master_category_mapping_id', $existing_ids);
+            $query = $this->db->get();
+            $category_mapping = $query->result_array();
+            //echo $this->db->last_query();
+
+            //print_r($remaining_category_ids);exit;
+
+            $total_paid = $data_demat['paid_amount'];
+
+            ///$existingbalance = $this->db->get_where('demand_master' , array('student_id' => $this->input->post('student_id')))->row()->due_amount;
+
+            $is_negative = false;
+            $last_balance = 0;
+            foreach($category_mapping as $items){
+                    $master_category_mapping = $this->db->get_where('student_fees_category' , array(
+                       'student_fees_category_id' => $items['student_fees_category_id']
+                    ))->result_array();
+                    //echo $this->db->last_query();
+                    //exit;
+                    //echo $total_paid. "==". $master_category_mapping[0]['fees_category_amount']; exit;
+                    $current_balance = $total_paid;
+                    $total_paid = $total_paid - $master_category_mapping[0]['fees_category_amount'];
+                    $insert_due_amount = 0;
+                    $insert_paid_amount = 0;
+
+                    if(preg_match('/^\d+$/D',$total_paid) && ($total_paid>=0)){
+
+                      $insert_paid_amount = $master_category_mapping[0]['fees_category_amount'];
+                      $last_balance = $total_paid;
+
+
+                      $data_receipt_mapping['receipt_id'] = $receipt_id;
+                      $data_receipt_mapping['student_id'] = $data['student_id'];;
+                      $data_receipt_mapping['fees_master_category_mapping_id'] =  $items['fees_master_category_mapping_id'];
+                      $data_receipt_mapping['amount_to_be_payable'] = $master_category_mapping[0]['fees_category_amount'];
+                      $data_receipt_mapping['due_amount'] = $insert_due_amount;
+                      $data_receipt_mapping['paid_amount'] = $insert_paid_amount;
+
+                      $this->db->insert('receipt_category_mapping', $data_receipt_mapping);
+                    }
+                    else if($is_negative == false){
+
+                      //$last_balance = $total_paid;
+
+                      $insert_due_amount = $master_category_mapping[0]['fees_category_amount'] - $current_balance;
+                      $insert_paid_amount = $current_balance;
+
+
+                      $data_receipt_mapping['receipt_id'] = $receipt_id;
+                      $data_receipt_mapping['student_id'] = $data['student_id'];;
+                      $data_receipt_mapping['fees_master_category_mapping_id'] =  $items['fees_master_category_mapping_id'];
+                      $data_receipt_mapping['amount_to_be_payable'] = $master_category_mapping[0]['fees_category_amount'];
+                      $data_receipt_mapping['due_amount'] = $insert_due_amount;
+                      $data_receipt_mapping['paid_amount'] = $insert_paid_amount;
+
+                      $this->db->insert('receipt_category_mapping', $data_receipt_mapping);
+
+                      $is_negative = true;
+                    }
+            }
+
+
+            $data2['invoice_id']        =   $receipt_id;
             $data2['student_id']        =   $this->input->post('student_id');
             //$data2['title']             =   $this->input->post('title');
             //$data2['description']       =   $this->input->post('description');
@@ -1599,11 +1770,11 @@ class Admin extends CI_Controller
         $page_data['page_name']  = 'income';
         $page_data['page_title'] = get_phrase('student_payments');
         //$this->db->order_by('creation_timestamp', 'desc');
-        $this->db->from('invoice');
-        $this->db->order_by("invoice_id", "desc");
+        $this->db->from('receipt');
+        $this->db->order_by("receipt_id", "desc");
         $query = $this->db->get();
         //echo $this->db->last_query();
-        $page_data['invoices'] = $query->result_array();
+        $page_data['receipts'] = $query->result_array();
         $page_data['active_tab']  = $param1;
         $this->load->view('backend/index', $page_data);
     }

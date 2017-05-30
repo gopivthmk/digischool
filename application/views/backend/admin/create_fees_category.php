@@ -8,14 +8,27 @@
                         <?php echo form_open(base_url() . 'index.php?admin/fees_category/create/' , array('class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data'));?>
 
                         <div class="form-group">
-                          <label class="col-sm-3 control-label"><?php echo get_phrase('Fees Category');?></label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="fees_category_name" id="fees_category_name"
-                                  data-validate="required" data-message-required="<?php echo get_phrase('Type name');?>"/>
-                          </div>
+                        <label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Fees Category');?></label>
+
+                        <div class="col-sm-5">
+                          <select name="fees_category_master_id" class="form-control"
+                          id="fees_category_master_id"
+                          data-validate="required"
+                            data-message-required="<?php echo get_phrase('value_required');?>">
+                                          <option value=""><?php echo get_phrase('select');?></option>
+                                          <?php
+                            $classes = $this->db->get('fees_category_master')->result_array();
+                            foreach($classes as $row):
+                              ?>
+                                            <option value="<?php echo $row['fees_category_master_id'];?>">
+                                  <?php echo $row['category_name'];?>
+                                                        </option>
+                                            <?php
+                            endforeach;
+                            ?>
+                                      </select>
+                        </div>
                       </div>
-
-
 
                       <div class="form-group">
                         <label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
@@ -44,6 +57,13 @@
                               <div class="col-sm-9">
                                   <input type="text" class="form-control" name="fees_category_amount"
                                         data-validate="required" data-message-required="<?php echo get_phrase('fees_category_amount');?>"/>
+                              </div>
+                          </div>
+
+                          <div class="form-group" style="clear:both;">
+                              <label class="col-sm-3 control-label"><?php echo get_phrase('Default');?></label>
+                              <div class="col-sm-9">
+                                  <input type="checkbox"  name="is_default"  id="is_default"  class="form-control" style="margin:0px; padding:0px; width:10px;" checked="checked"/>
                               </div>
                           </div>
 

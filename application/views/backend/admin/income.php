@@ -44,30 +44,34 @@
                     		$this->db->where('year' , $running_year);
                     		//$this->db->order_by('creation_timestamp' , 'desc');
                     		//$invoices = $this->db->get('invoice')->result_array();
-												$this->db->from('invoice');
-												$this->db->order_by("invoice_id", "desc");
+												$this->db->from('receipt');
+												$this->db->order_by("receipt_id", "desc");
 												$query = $this->db->get();
-												$invoices = $query->result_array();
+												$receipts = $query->result_array();
 
-                    		foreach($invoices as $row):
+                    		foreach($receipts as $row):
                     	?>
                         <tr>
                         	<td><?php echo $count++;?></td>
 							<td><?php echo $this->crud_model->get_type_name_by_id('student',$row['student_id']);?></td>
 
-							<td><?php echo $row['amount'];?></td>
-                            <td><?php echo $row['amount_paid'];?></td>
+							<td><?php
+ 							echo $this->db->get_where('demand_master' , array('student_id' => $row['student_id']))->row()->total_fees;
+							//echo $row['amount'];?></td>
+                            <td><?php
+														echo $this->db->get_where('demand_master' , array('student_id' => $row['student_id']))->row()->paid_amount;
+														//echo $row['amount_paid'];?></td>
                             <?php //if($row['due'] == 0):?>
 
                             <?php //endif;?>
                             <?php //if($row['due'] > 0):?>
                             	<td>
                             		<button class="btn btn-danger btn-xs">
-																	<?php echo $this->crud_model->get_type_name_by_id('payment_type',$row['status'], 'payment_type');?>
+																	<?php echo $this->crud_model->get_type_name_by_id('payment_type',$row['payment_type_id'], 'payment_type');?>
 																</button>
                             	</td>
                             <?php // endif;?>
-							<td><?php //echo date('d M,Y', $row['creation_timestamp']);?></td>
+							<td><?php echo date('d M,Y', strtotime($row['receipt_date']));?></td>
 							<td>
                             <div class="btn-group">
                                 <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">

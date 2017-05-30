@@ -157,7 +157,8 @@ text-align: justify;
         <div class="body_content">
 <?php
 $category_mapping = $this->db->get_where('fees_master_category_mapping' , array(
-    'student_id' => $row['student_id']
+    'student_id' => $row['student_id'],
+    'invoice_id' => $row['invoice_id']
 ))->result_array();
 //print_r($category_mapping);
  ?>
@@ -182,7 +183,6 @@ $category_mapping = $this->db->get_where('fees_master_category_mapping' , array(
                 $total_paid = $total_paid - $master_category_mapping[0]['fees_category_amount'];
                   //echo $total_paid."<br/>";
                 if(preg_match('/^\d+$/D',$total_paid) && ($total_paid>0)){
-
           ?>
         <tr>
           <td><?php echo $master_category_mapping[0]['fees_category_name']; ?></td>

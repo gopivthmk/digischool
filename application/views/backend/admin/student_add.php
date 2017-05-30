@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-8">
+	<div class="col-md-8" style="width:100%">
 		<div class="panel panel-primary" data-collapsed="0">
         	<div class="panel-heading">
             	<div class="panel-title" >
@@ -23,7 +23,10 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('parent');?></label>
 
 						<div class="col-sm-5">
-							<select name="parent_id" class="form-control select2">
+							<span style="width:50%; float:left;">
+							<select name="parent_id"
+							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
+							class="form-control select2">
                               <option value=""><?php echo get_phrase('select');?></option>
                               <?php
 								$parents = $this->db->get('parent')->result_array();
@@ -36,6 +39,14 @@
 								endforeach;
 							  ?>
                           </select>
+												</span>
+												<span style="float: left; width: 50%; margin-left: -55px; margin-top: 10px;">
+													<a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_parent_add/');"
+															class="btn btn-primary pull-right">
+															<i class="entypo-plus-circled"></i>
+															<?php echo get_phrase('add_new_parent');?>
+															</a>
+														</span>
 						</div>
 					</div>
 
@@ -64,11 +75,35 @@
 					<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('section');?></label>
 		                    <div class="col-sm-5">
-		                        <select name="section_id" class="form-control" id="section_selector_holder">
+		                        <select name="section_id"
+														data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
+														class="form-control" id="section_selector_holder">
 		                            <option value=""><?php echo get_phrase('select_class_first');?></option>
 
 			                    </select>
 			                </div>
+					</div>
+
+					<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('gender');?></label>
+
+						<div class="col-sm-5">
+							<select name="sex"
+							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
+							class="form-control selectboxit">
+															<option value=""><?php echo get_phrase('select');?></option>
+															<option value="male"><?php echo get_phrase('male');?></option>
+															<option value="female"><?php echo get_phrase('female');?></option>
+													</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Aadhar Number');?></label>
+
+						<div class="col-sm-5">
+							<input type="text" class="form-control" name="aadhar_number" value="" data-start-view="2">
+						</div>
 					</div>
 
 					<div class="form-group">
@@ -83,7 +118,9 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('blood_group');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="blood_group" value="" >
+							<input type="text" class="form-control"
+							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
+							name="blood_group" value="" >
 						</div>
 					</div>
 
@@ -91,7 +128,9 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('birthday');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker" name="birthday" value="" data-start-view="2">
+							<input type="text" class="form-control datepicker"
+							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
+							name="birthday" value="" data-start-view="2">
 						</div>
 					</div>
 
@@ -99,7 +138,9 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('nationlaity');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="nationality" value="" data-start-view="2">
+							<input type="text" class="form-control" name="nationality"
+							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
+							value="" >
 						</div>
 					</div>
 
@@ -107,7 +148,9 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('caste / community');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="caste" value="" data-start-view="2">
+							<input type="text" class="form-control" name="caste"
+							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
+							value="" >
 						</div>
 					</div>
 
@@ -117,10 +160,17 @@
 						<div class="col-sm-5">
 							<!--<input type="text" class="form-control" name="transport" value="" data-start-view="2">-->
 							<select name="transport" class="form-control" id="transport">
-									<option value=""><?php echo get_phrase('By Walk');?></option>
-									<option value=""><?php echo get_phrase('By Van');?></option>
-									<option value=""><?php echo get_phrase('By Bus');?></option>
-									<option value=""><?php echo get_phrase('By Own Vehicle');?></option>
+								<option value=""><?php echo get_phrase('select');?></option>
+								<?php
+	$transport = $this->db->get('transport_type')->result_array();
+	foreach($transport as $row):
+		?>
+									<option value="<?php echo $row['transport_type_id'];?>">
+				<?php echo $row['transport_type'];?>
+															</option>
+									<?php
+	endforeach;
+	?>
 						</select>
 						</div>
 					</div>
@@ -129,8 +179,8 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('concession');?></label>
 
 						<div class="col-sm-5">
-							<select name="concession_master_id" class="form-control" data-validate="required" id="concession_master_id"
-								data-message-required="<?php echo get_phrase('value_required');?>">
+							<select name="concession_master_id" class="form-control" id="concession_master_id">
+
                               <option value=""><?php echo get_phrase('select');?></option>
                               <?php
 								$classes = $this->db->get('concession_master')->result_array();
@@ -174,12 +224,13 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Date of Admission');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker" name="admission_date" value="" data-start-view="2">
+							<input type="text" class="form-control datepicker" name="date_of_admission"
+							value="<?php echo date('m/d/Y'); ?>" data-start-view="3">
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Father / Guardian name');?></label>
+					<!--<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('Father / Guardian name');?></label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="father_name" value="" data-start-view="2">
@@ -187,7 +238,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Mother name');?></label>
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('Mother name');?></label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="mother_name" value="" data-start-view="2">
@@ -195,7 +246,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Father / Guardian Mobile');?></label>
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('Father / Guardian Mobile');?></label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="father_mobile" value="" data-start-view="2">
@@ -203,7 +254,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Mother Mobile');?></label>
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('Mother Mobile');?></label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="mother_mobile" value="" data-start-view="2">
@@ -211,12 +262,12 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Date of TC');?></label>
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('Date of TC');?></label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control datepicker" name="tc_date" value="" data-start-view="2">
 						</div>
-					</div>
+					</div>-->
 
 					<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Status');?></label>
@@ -239,26 +290,6 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Aadhar Number');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="aadhar_number" value="" data-start-view="2">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('gender');?></label>
-
-						<div class="col-sm-5">
-							<select name="sex" class="form-control selectboxit">
-                              <option value=""><?php echo get_phrase('select');?></option>
-                              <option value="male"><?php echo get_phrase('male');?></option>
-                              <option value="female"><?php echo get_phrase('female');?></option>
-                          </select>
-						</div>
-					</div>
-
-					<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('address');?></label>
 
 						<div class="col-sm-5">
@@ -277,7 +308,8 @@
 					<div class="form-group">
 						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email');?></label>
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="email" data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>" value="">
+							<input type="text" class="form-control" name="email"
+							 value="">
 						</div>
 					</div>
 
@@ -351,7 +383,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    <!--<div class="col-md-4">
 		<blockquote class="blockquote-blue">
 			<p>
 				<strong>Student Admission Notes</strong>
@@ -362,7 +394,7 @@
 				to edit his/her class,roll,section without promoting to the next session.
 			</p>
 		</blockquote>
-	</div>
+	</div>-->
 
 </div>
 

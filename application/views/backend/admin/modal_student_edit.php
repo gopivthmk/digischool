@@ -2,6 +2,11 @@
 $edit_data		=	$this->db->get_where('enroll' , array(
 	'student_id' => $param2 , 'year' => $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description
 ))->result_array();
+
+$student_data = $this->db->get_where('student' , array(
+	'student_id' => $param2
+))->result_array();
+//print_r($student_data);
 foreach ($edit_data as $row):
 ?>
 <div class="row">
@@ -49,6 +54,8 @@ foreach ($edit_data as $row):
 						</div>
 					</div>
 
+					
+
 					<div class="form-group">
 						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
 
@@ -72,6 +79,31 @@ foreach ($edit_data as $row):
                               	<?php if($row['section_id'] == $row2['section_id']) echo 'selected';?>><?php echo $row2['name'];?></option>
                           <?php endforeach;?>
                           </select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('gender');?></label>
+
+						<div class="col-sm-5">
+							<select name="sex" class="form-control selectboxit">
+							<?php
+								$gender = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->sex;
+							?>
+															<option value=""><?php echo get_phrase('select');?></option>
+															<option value="male" <?php if($gender == 'male')echo 'selected';?>><?php echo get_phrase('male');?></option>
+															<option value="female"<?php if($gender == 'female')echo 'selected';?>><?php echo get_phrase('female');?></option>
+													</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Aadhar Number');?></label>
+
+						<div class="col-sm-5">
+							<input type="text" class="form-control" name="aadhar_number"
+							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->aadhar_card_no; ?>"
+							data-start-view="2">
 						</div>
 					</div>
 
@@ -142,9 +174,26 @@ foreach ($edit_data as $row):
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Mode of transport');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="transport"
-							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->mode_of_transport; ?>"
-							data-start-view="2">
+							<!--<input type="text" class="form-control" name="transport" value="" data-start-view="2">-->
+							<select name="transport" class="form-control" id="transport">
+								<option value=""><?php echo get_phrase('select');?></option>
+								<?php
+	$transport = $this->db->get('transport_type')->result_array();
+	foreach($transport as $rows):
+		if($rows['transport_type_id'] == $student_data[0]['transport_id']){
+		?>
+									<option value="<?php echo $rows['transport_type_id'];?>" selected="selected">
+				<?php echo $rows['transport_type'];?>
+															</option>
+<?php } else {?>
+															<option value="<?php echo $rows['transport_type_id'];?>">
+										<?php echo $rows['transport_type'];?>
+																					</option>
+									<?php
+								}
+	endforeach;
+	?>
+						</select>
 						</div>
 					</div>
 
@@ -212,61 +261,12 @@ foreach ($edit_data as $row):
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Date of Admission');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker" name="admission_date"
-							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->admission_date; ?>"
+							<input type="text" class="form-control datepicker" disabled="disabled" name="admission_date"
+							value="<?php echo date('m/d/Y H:i:s', strtotime($this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->admission_date)); ?>"
 							data-start-view="2">
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Father / Guardian name');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="father_name"
-							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->father_name; ?>"
-							data-start-view="2">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Mother name');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="mother_name"
-							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->mother_name; ?>"
-							data-start-view="2">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Father / Guardian Mobile');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="father_mobile"
-							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->father_mobile; ?>"
-							data-start-view="2">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Mother Mobile');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="mother_mobile"
-							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->mother_mobile; ?>"
-							data-start-view="2">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Date of TC');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker" name="tc_date"
-							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->date_of_tc; ?>"
-							data-start-view="2">
-						</div>
-					</div>
 
 					<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Status');?></label>
@@ -290,32 +290,6 @@ foreach ($edit_data as $row):
 							<input type="text" class="form-control" name="emins_no"
 							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->emins_no; ?>"
 							data-start-view="2">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Aadhar Number');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="aadhar_number"
-							value="<?php echo $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->aadhar_card_no; ?>"
-							data-start-view="2">
-						</div>
-					</div>
-
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('gender');?></label>
-
-						<div class="col-sm-5">
-							<select name="sex" class="form-control selectboxit">
-							<?php
-								$gender = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->sex;
-							?>
-                              <option value=""><?php echo get_phrase('select');?></option>
-                              <option value="male" <?php if($gender == 'male')echo 'selected';?>><?php echo get_phrase('male');?></option>
-                              <option value="female"<?php if($gender == 'female')echo 'selected';?>><?php echo get_phrase('female');?></option>
-                          </select>
 						</div>
 					</div>
 
@@ -361,25 +335,25 @@ foreach ($edit_data as $row):
                           		<?php //endforeach;?>
                           </select>
 						</div>
-					</div>-->
+					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('transport_route');?></label>
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('transport_route');?></label>
 
 						<div class="col-sm-5">
 							<select name="transport_id" class="form-control selectboxit">
-                              <option value=""><?php echo get_phrase('select');?></option>
+                              <option value=""><?php //echo get_phrase('select');?></option>
 	                              <?php
-	                              	$trans_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->transport_id;
-	                              	$transports = $this->db->get('transport')->result_array();
-	                              	foreach($transports as $row2):
+	                              	//$trans_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->transport_id;
+	                              	//$transports = $this->db->get('transport')->result_array();
+	                              	//foreach($transports as $row2):
 	                              ?>
-                              		<option value="<?php echo $row2['transport_id'];?>"
-                              			<?php if($trans_id == $row2['transport_id']) echo 'selected';?>><?php echo $row2['route_name'];?></option>
-                          		<?php endforeach;?>
+                              		<option value="<?php //echo $row2['transport_id'];?>"
+                              			<?php //if($trans_id == $row2['transport_id']) echo 'selected';?>><?php //echo $row2['route_name'];?></option>
+                          		<?php// endforeach;?>
                           </select>
 						</div>
-					</div>
+					</div>-->
 
                     <div class="form-group">
 						<div class="col-sm-offset-3 col-sm-5">
