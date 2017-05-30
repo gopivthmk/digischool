@@ -87,6 +87,7 @@
 	                            </div>
 	                        </div>
 													<div id="generate_invoice_message" style="color:red; font-size:18px; "></div>
+													<div id="show_previous_invoice"> </div>
 	                    </div>
 
 	                    <div class="col-md-6">
@@ -344,8 +345,6 @@ jQuery(document).ready(function() {
 								});
             }
         });
-
-
     }
 		function get_total_amount(student_id){
 			//Updaing the total amount
@@ -381,7 +380,7 @@ jQuery(document).ready(function() {
 							if(response_count > 0){
 								//alert("Hello if");
 							jQuery.each( response, function( i, val ) {
-								alert(val);
+								//alert(val);
 								jQuery('#fees_category' + val).attr('checked', 'checked');
 								jQuery('#fees_category' + val).attr('disabled', true);
 							});
@@ -410,6 +409,58 @@ jQuery(document).ready(function() {
 								jQuery('#generate_invoice').attr('disabled', false);
 								jQuery('#generate_invoice_message').html('');
 							}
+					}
+			});
+
+			//alert(student_id);
+
+			$.ajax({
+					url: '<?php echo base_url();?>index.php?admin/get_invoice_details/' + student_id,
+					success: function(response)
+					{
+						response = $.parseJSON(response);
+						var response_count = response.length;
+
+						var invoice_details = new Array();
+						var sno = 1;
+						invoice_details.push(['id', 'particular', 'total amount', 'due amount'])
+						jQuery.each( response, function( i, val ) {
+
+							//alert(val['receipt_category_mapping_id']);
+							invoice_details.push([sno, val['fees_master_category_mapping_id'], val['amount_to_be_payable'], val['due_amount']])
+							sno = sno+1;
+						});
+
+						var table = jQuery("<table />");
+						//Create a HTML Table element.
+						//var table = jQuery("<table />");
+						//table[0].border = "1";
+
+						//Get the count of columns.
+						var columnCount = invoice_details[0].length;
+
+						//Add the header row.
+						var row = jQuery(table[0].insertRow(-1));
+						for (var i = 0; i < columnCount; i++) {
+						    var headerCell = jQuery("<th />");
+						    headerCell.html(invoice_details[0][i]);
+						    row.append(headerCell);
+						}
+
+						//Add the data rows.
+						for (var i = 1; i < invoice_details.length; i++) {
+						    row = jQuery(table[0].insertRow(-1));
+						    for (var j = 0; j < columnCount; j++) {
+						        var cell = jQuery("<td />");
+						        cell.html(invoice_details[i][j]);
+						        row.append(cell);
+						    }
+						}
+
+						var dvTable = jQuery("#show_previous_invoice");
+						dvTable.html("");
+						dvTable.append(table);
+
 					}
 			});
 		}

@@ -56,11 +56,11 @@
 							<td><?php echo $this->crud_model->get_type_name_by_id('student',$row['student_id']);?></td>
 
 							<td><?php
- 							echo $this->db->get_where('demand_master' , array('student_id' => $row['student_id']))->row()->total_fees;
-							//echo $row['amount'];?></td>
+ 							//echo $this->db->get_where('demand_master' , array('student_id' => $row['student_id']))->row()->total_fees;
+							echo $row['total_fees'];?></td>
                             <td><?php
-														echo $this->db->get_where('demand_master' , array('student_id' => $row['student_id']))->row()->paid_amount;
-														//echo $row['amount_paid'];?></td>
+														//echo $this->db->get_where('demand_master' , array('student_id' => $row['student_id']))->row()->paid_amount;
+														echo $row['paid_amount'];?></td>
                             <?php //if($row['due'] == 0):?>
 
                             <?php //endif;?>

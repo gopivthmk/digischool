@@ -1493,6 +1493,14 @@ class Admin extends CI_Controller
             $data['payment_type_id']      = $this->input->post('status');
             $data['payment_mode_id']      = $this->input->post('payment_mode');
             $data['payment_details']      = $this->input->post('payment_details');
+            if($this->input->post('due_amount_hidden') > 0){
+              $data['total_fees']           = $this->input->post('due_amount_hidden');
+            }
+            else{
+              $data['total_fees']           = $this->input->post('amount') - $this->input->post('amount_paid');
+            }
+            $data['paid_amount']          = $this->input->post('amount_paid');
+            $data['due_amount']           = $this->input->post('due_amount_hidden') - $data['paid_amount'];
 
             //$fee_category               = $this->input->post('fees_category');
             //print_r($fees_category);
@@ -1540,17 +1548,19 @@ class Admin extends CI_Controller
 
 
 
-            $this->db->order_by('receipt_category_mapping_id', 'asc');
+            $this->db->order_by('receipt_id', 'desc');
+            $this->db->order_by('fees_master_category_mapping_id', 'desc');
             $category_mapping_receipt = $this->db->get_where('receipt_category_mapping' , array(
                 'student_id' =>  $this->input->post('student_id')
             ))->result_array();
 
             $existing_ids = "";
             $tmp_negative = false;
+            $is_done_due_amount_detection = false;
             foreach($category_mapping_receipt as $items_child){
               $existing_ids .= $items_child['fees_master_category_mapping_id'].",";
 
-              if($items_child['due_amount'] != 0)
+              if($items_child['due_amount'] != 0 && $is_done_due_amount_detection == false)
               {
                 $data_demat['paid_amount'] = $data_demat['paid_amount'] - $items_child['due_amount'];
                 $tmp_paid_amount = $data_demat['paid_amount'];
@@ -1572,13 +1582,14 @@ class Admin extends CI_Controller
                   $tmp_data_mapping['student_id'] = $items_child['student_id'];
                   $tmp_data_mapping['fees_master_category_mapping_id'] =  $items_child['fees_master_category_mapping_id'];
                   $tmp_data_mapping['amount_to_be_payable'] = $items_child['amount_to_be_payable'];
-                  $tmp_data_mapping['due_amount'] = $data_demat['due_amount'] - $data_demat['paid_amount'];
-                  $tmp_data_mapping['paid_amount'] = $data_demat['paid_amount'];
+                  $tmp_data_mapping['due_amount'] = $items_child['due_amount'] - $this->input->post('amount_paid');
+                  $tmp_data_mapping['paid_amount'] = $this->input->post('amount_paid');
 
                   $this->db->insert('receipt_category_mapping', $tmp_data_mapping);
 
                   $tmp_negative = true;
                 }
+                $is_done_due_amount_detection = true;
               }
             }
 
@@ -1598,55 +1609,64 @@ class Admin extends CI_Controller
             $total_paid = $data_demat['paid_amount'];
 
             ///$existingbalance = $this->db->get_where('demand_master' , array('student_id' => $this->input->post('student_id')))->row()->due_amount;
+            if($total_paid > 0){
+              $is_negative = false;
+              $last_balance = 0;
+              foreach($category_mapping as $items){
+                $master_category_mapping = $this->db->get_where('student_fees_category' , array(
+                   'student_fees_category_id' => $items['student_fees_category_id']
+                ))->result_array();
+                //echo $this->db->last_query();
+                //exit;
+                //echo $total_paid. "==". $master_category_mapping[0]['fees_category_amount']; exit;
+                $current_balance = $total_paid;
+                $total_paid = $total_paid - $master_category_mapping[0]['fees_category_amount'];
+                $insert_due_amount = 0;
+                $insert_paid_amount = 0;
 
-            $is_negative = false;
-            $last_balance = 0;
-            foreach($category_mapping as $items){
-                    $master_category_mapping = $this->db->get_where('student_fees_category' , array(
-                       'student_fees_category_id' => $items['student_fees_category_id']
-                    ))->result_array();
-                    //echo $this->db->last_query();
-                    //exit;
-                    //echo $total_paid. "==". $master_category_mapping[0]['fees_category_amount']; exit;
-                    $current_balance = $total_paid;
-                    $total_paid = $total_paid - $master_category_mapping[0]['fees_category_amount'];
-                    $insert_due_amount = 0;
-                    $insert_paid_amount = 0;
+                if(preg_match('/^\d+$/D',$total_paid) && ($total_paid>=0)){
 
-                    if(preg_match('/^\d+$/D',$total_paid) && ($total_paid>=0)){
-
-                      $insert_paid_amount = $master_category_mapping[0]['fees_category_amount'];
-                      $last_balance = $total_paid;
-
-
-                      $data_receipt_mapping['receipt_id'] = $receipt_id;
-                      $data_receipt_mapping['student_id'] = $data['student_id'];;
-                      $data_receipt_mapping['fees_master_category_mapping_id'] =  $items['fees_master_category_mapping_id'];
-                      $data_receipt_mapping['amount_to_be_payable'] = $master_category_mapping[0]['fees_category_amount'];
-                      $data_receipt_mapping['due_amount'] = $insert_due_amount;
-                      $data_receipt_mapping['paid_amount'] = $insert_paid_amount;
-
-                      $this->db->insert('receipt_category_mapping', $data_receipt_mapping);
-                    }
-                    else if($is_negative == false){
-
-                      //$last_balance = $total_paid;
-
-                      $insert_due_amount = $master_category_mapping[0]['fees_category_amount'] - $current_balance;
-                      $insert_paid_amount = $current_balance;
+                  $insert_paid_amount = $master_category_mapping[0]['fees_category_amount'];
+                  $last_balance = $total_paid;
 
 
-                      $data_receipt_mapping['receipt_id'] = $receipt_id;
-                      $data_receipt_mapping['student_id'] = $data['student_id'];;
-                      $data_receipt_mapping['fees_master_category_mapping_id'] =  $items['fees_master_category_mapping_id'];
-                      $data_receipt_mapping['amount_to_be_payable'] = $master_category_mapping[0]['fees_category_amount'];
-                      $data_receipt_mapping['due_amount'] = $insert_due_amount;
-                      $data_receipt_mapping['paid_amount'] = $insert_paid_amount;
+                  $data_receipt_mapping['receipt_id'] = $receipt_id;
+                  $data_receipt_mapping['student_id'] = $data['student_id'];;
+                  $data_receipt_mapping['fees_master_category_mapping_id'] =  $items['fees_master_category_mapping_id'];
+                  $data_receipt_mapping['amount_to_be_payable'] = $master_category_mapping[0]['fees_category_amount'];
+                  $data_receipt_mapping['due_amount'] = $insert_due_amount;
+                  $data_receipt_mapping['paid_amount'] = $insert_paid_amount;
 
-                      $this->db->insert('receipt_category_mapping', $data_receipt_mapping);
+                  //echo "This is if condition on positive";
+                  //print_r($data_receipt_mapping);
+                  //exit;
 
-                      $is_negative = true;
-                    }
+                  $this->db->insert('receipt_category_mapping', $data_receipt_mapping);
+                }
+                else if($is_negative == false){
+
+                  //$last_balance = $total_paid;
+
+                  $insert_due_amount = $master_category_mapping[0]['fees_category_amount'] - $current_balance;
+                  $insert_paid_amount = $current_balance;
+
+
+                  $data_receipt_mapping['receipt_id'] = $receipt_id;
+                  $data_receipt_mapping['student_id'] = $data['student_id'];;
+                  $data_receipt_mapping['fees_master_category_mapping_id'] =  $items['fees_master_category_mapping_id'];
+                  $data_receipt_mapping['amount_to_be_payable'] = $master_category_mapping[0]['fees_category_amount'];
+                  $data_receipt_mapping['due_amount'] = $insert_due_amount;
+                  $data_receipt_mapping['paid_amount'] = $insert_paid_amount;
+
+                  //echo "This is if condition on negative ".$current_balance."--". $master_category_mapping[0]['fees_category_amount'] ."</br>";
+                  //print_r($data_receipt_mapping);
+                  //exit;
+
+                  $this->db->insert('receipt_category_mapping', $data_receipt_mapping);
+
+                  $is_negative = true;
+                }
+              }
             }
 
 
@@ -2574,5 +2594,17 @@ class Admin extends CI_Controller
         $page_data['page_title']    = get_phrase('all_accountants');
         $page_data['page_name']     = 'accountant';
         $this->load->view('backend/index', $page_data);
+    }
+
+    function get_invoice_details($student_id)
+    {
+      $this->db->order_by('receipt_id', 'asc');
+      //$this->db->order_by('fees_master_category_mapping_id', 'asc');
+      $category_mapping_receipt = $this->db->get_where('receipt_category_mapping' , array(
+          'student_id' =>  $student_id
+      ))->result_array();
+      //echo $this->db->last_query();
+      $category_mapping_receipt = json_encode($category_mapping_receipt);
+      echo $category_mapping_receipt;
     }
 }
