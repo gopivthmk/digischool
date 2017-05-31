@@ -43,6 +43,7 @@
                             <th><div><?php echo get_phrase('name');?></div></th>
                             <th class="span3"><div><?php echo get_phrase('address');?></div></th>
                             <th><div><?php echo get_phrase('email');?></div></th>
+                            <th>Fees Generator</th>
                             <th><div><?php echo get_phrase('options');?></div></th>
                         </tr>
                     </thead>
@@ -77,6 +78,19 @@
                                         'student_id' => $row['student_id']
                                     ))->row()->email;
                                 ?>
+                            </td>
+                            <td>
+                              <?php if($row['is_fees_generated'] == 0){ ?>
+                              <button type="button" style="background-color:dodgerblue; color:#fff; font-weight:bold"
+                              class="btn btn-default btn-sm generate_fees" id="generate_fees_<?php echo $row['student_id'];?>" student-id="<?php echo $row['student_id'];?>">
+                                  Generate fees
+                              </button>
+                              <?php } else {?>
+                                <button type="button" style="background-color:dimgrey; color:#fff; font-weight:bold"
+                                class="btn btn-default btn-sm generate_fees" disabled="disabled" id="generate_fees_<?php echo $row['student_id'];?>" student-id="<?php echo $row['student_id'];?>">
+                                    Generate fees
+                                </button>
+                                <?php }?>
                             </td>
                             <td>
 
@@ -277,6 +291,30 @@
 		$(".dataTables_wrapper select").select2({
 			minimumResultsForSearch: -1
 		});
+
+    $('.generate_fees').on('click', function(e){
+      var student_id = $(this).attr('student-id');
+      $.ajax({
+					url: '<?php echo base_url();?>index.php?admin/generate_student_fees/' + student_id,
+					success: function(response)
+					{
+							//alert(response);
+              if(response == "0"){
+                var current_id = $(this).attr('id');
+                alert("Successfully fees generated!!!");
+                $("#generate_fees_"+ student_id).css("background-color", "dimgrey");
+                //$(this).attr('style', 'background-color:dimgrey;');
+                $("#generate_fees_"+ student_id).attr('disabled', 'disabled');
+                //alert("response : " + response);
+                //alert($(this).attr('id'));
+              }
+              else{
+                alert("Something went wrong. Please try later...");
+              }
+					}
+			});
+    });
+
 	});
 
 </script>

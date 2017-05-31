@@ -1,5 +1,5 @@
 <?php
-$edit_data = $this->db->get_where('invoice', array('invoice_id' => $param2))->result_array();
+$edit_data = $this->db->get_where('receipt', array('receipt_id' => $param2))->result_array();
 foreach ($edit_data as $row):
 ?>
 
@@ -15,8 +15,7 @@ foreach ($edit_data as $row):
     {
         var mywindow = window.open('', 'invoice', 'height=400,width=600');
         mywindow.document.write('<html><head><title>Invoice</title>');
-        mywindow.document.write('<link rel="stylesheet" href="assets/css/neon-theme.css" type="text/css" />');
-        mywindow.document.write('<link rel="stylesheet" href="assets/js/datatables/responsive/css/datatables.responsive.css" type="text/css" />');
+        mywindow.document.write('<link rel="stylesheet" href="assets/css/receipt.css" type="text/css" />');
         mywindow.document.write('</head><body >');
         mywindow.document.write(data);
         mywindow.document.write('</body></html>');
@@ -81,6 +80,9 @@ thead {
 }
 th {
   font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff;
 }
 tbody tr:nth-child(even) {
   background: #f0f0f2;
@@ -88,6 +90,7 @@ tbody tr:nth-child(even) {
 td {
   border-bottom: 1px solid #cecfd5;
   border-right: 1px solid #cecfd5;
+  text-align: right;
 }
 td:first-child {
   border-left: 1px solid #cecfd5;
@@ -101,6 +104,7 @@ margin-top: 10px;
 padding: 10px;
 text-align: justify;
 }
+
 </style>
 <center>
     <a onClick="PrintElem('#invoice_print')" class="btn btn-default btn-icon icon-left hidden-print pull-right">
@@ -131,8 +135,8 @@ text-align: justify;
           </div>
           <div class="middle_inner_content">
             <div class="middle_row">
-              <span style="float:left">No&nbsp;:&nbsp;</span><span style="float:left"><?php echo $row['invoice_id'] ?></span>
-              <span style="float:right"><?php echo date('d/m/Y', strtotime($row['lmtime'])); ?></span><span style="float:right">Date&nbsp;:&nbsp;</span>
+              <span style="float:left">No&nbsp;:&nbsp;</span><span style="float:left"><?php echo $row['receipt_id'] ?></span>
+              <span style="float:right"><?php echo date('d/m/Y', strtotime($row['receipt_date'])); ?></span><span style="float:right">Date&nbsp;:&nbsp;</span>
             </div>
             <div class="middle_row">
               <span style="float:left">Name&nbsp;:&nbsp;</span><span style="float:left">
@@ -156,59 +160,59 @@ text-align: justify;
         </div>
         <div class="body_content">
 <?php
-$category_mapping = $this->db->get_where('fees_master_category_mapping' , array(
+$category_mapping = $this->db->get_where('receipt_category_mapping' , array(
     'student_id' => $row['student_id'],
-    'invoice_id' => $row['invoice_id']
+    'receipt_id' => $row['receipt_id']
 ))->result_array();
 //print_r($category_mapping);
  ?>
     <table>
       <thead>
         <tr>
-          <th scope="col">Particulars</th>
+          <th style="" scope="col">Particulars</th>
 
-          <th scope="col">Amount</th>
+          <th style="color:#fff" scope="col">Amount</th>
         </tr>
       </thead>
       <tbody>
         <?php
-        $total_paid = $row['amount_paid'];
+        //$total_paid = $row['amount_paid'];
         $isnegative = false;
         $current_total = 0;
         foreach ($category_mapping as $items):
-                $master_category_mapping = $this->db->get_where('fees_master_category' , array(
-                   'fees_master_category_id' => $items['fees_master_category_id']
+          if($items['paid_amount'] > 0){
+                $master_category_mapping = $this->db->get_where('fees_master_category_mapping' , array(
+                   'fees_master_category_mapping_id' => $items['fees_master_category_mapping_id']
                 ))->result_array();
+
+                $fees_details =  $this->db->get_where('student_fees_category' ,
+                array('student_fees_category_id' => $master_category_mapping[0]['student_fees_category_id']
+                ))->result_array();
+
                 //print_r($master_category_mapping);
-                $total_paid = $total_paid - $master_category_mapping[0]['fees_category_amount'];
+                //$total_paid = $total_paid - $fees_details[0]['fees_category_amount'];
                   //echo $total_paid."<br/>";
-                if(preg_match('/^\d+$/D',$total_paid) && ($total_paid>0)){
+                //if(preg_match('/^\d+$/D',$total_paid) && ($total_paid>0)){
           ?>
         <tr>
-          <td><?php echo $master_category_mapping[0]['fees_category_name']; ?></td>
+          <td><?php echo $this->db->get_where('fees_category_master' , array('fees_category_master_id' => $fees_details[0]['fees_category_master_id']))->row()->category_name; ?></td>
           <td><?php
           //$current_total += $master_category_mapping[0]['fees_category_amount'];
-          echo "&#8377;".$master_category_mapping[0]['fees_category_amount'];
+          echo "&#8377;".$items['paid_amount'];
           ?></td>
         </tr>
       <?php
-    }else if(($total_paid < 0) && ($isnegative == false)){
-    ?>
-    <tr>
-      <td><?php echo $master_category_mapping[0]['fees_category_name']." <span style='color:red;'>Partially Paid</span>"; ?></td>
-      <td><?php
-      //$current_total += ($master_category_mapping[0]['fees_category_amount'] + $total_paid);
-      //echo $total_paid;
-      echo "&#8377;".($master_category_mapping[0]['fees_category_amount'] + $total_paid); ?></td>
-    </tr>
-    <?php
-    $isnegative = true;
+    //}else if(($total_paid < 0) && ($isnegative == false)){
+
+
+    //$isnegative = true;
+    $current_total = $current_total + $items['paid_amount'];
   }
       endforeach ?>
       </tbody>
-      <tfoot>
+      <tfoot style="background-color:#ccc; font-weight:bold">
           <td >Total</td>
-          <td><?php echo "&#8377;".$row['amount_paid']; ?></td>
+          <td><?php echo "&#8377;".$current_total; ?></td>
         </tr>
       </tfoot>
     </table>

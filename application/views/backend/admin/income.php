@@ -8,16 +8,16 @@
 						<span class="hidden-xs"><?php echo get_phrase('invoices');?></span>
 					</a>
 				</li>
-				<li>
+				<!--<li>
 					<a href="#paid" data-toggle="tab">
-						<span class="hidden-xs"><?php echo get_phrase('payment_history');?></span>
+						<span class="hidden-xs"><?php //echo get_phrase('payment_history');?></span>
 					</a>
 				</li>
-				<li class="<?php if($active_tab == 'student_specific_payment_history') echo 'active'; ?>">
+				<li class="<?php //if($active_tab == 'student_specific_payment_history') echo 'active'; ?>">
 					<a href="#paid_student_specific" data-toggle="tab">
-						<span class="hidden-xs"><?php echo get_phrase('student_specific_payment_history');?></span>
+						<span class="hidden-xs"><?php //echo get_phrase('student_specific_payment_history');?></span>
 					</a>
-				</li>
+				</li>-->
 			</ul>
 
 			<div class="tab-content">
@@ -92,7 +92,7 @@
 
                                     <!-- VIEWING LINK -->
                                     <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_view_invoice/<?php echo $row['invoice_id'];?>');">
+                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_view_invoice/<?php echo $row['receipt_id'];?>');">
                                             <i class="entypo-credit-card"></i>
                                                 <?php echo get_phrase('view_invoice');?>
                                             </a>

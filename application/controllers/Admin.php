@@ -315,6 +315,74 @@ class Admin extends CI_Controller
         }
     }
 
+    function generate_student_fees($student_id)
+    {
+      $student_class_information = $this->db->get_where('enroll' , array(
+          'student_id' => $student_id
+      ))->result_array();
+
+      $students_fees_list =   $this->db->get_where('student_fees_category' , array(
+          'class_id' => $student_class_information[0]['class_id'],
+          'isdefault' => 1
+      ))->result_array();
+
+      $total_fees = 0;
+      $concession_amount = 0;
+
+      foreach ($students_fees_list as $value) {
+        $dataFeesList['student_id'] = $student_id;
+        $dataFeesList['student_fees_category_id'] = $value['student_fees_category_id'];
+        $dataFeesList['created_date'] = date('Y-m-d H:i:s');
+        $total_fees += $value['fees_category_amount'];
+        $this->db->insert('fees_master_category_mapping', $dataFeesList);
+      }
+
+      /*
+      *Concession calculations
+      */
+      $students_concession_details =   $this->db->get_where('concession_master' , array(
+          'concession_master_id' => $this->input->post('concession_master_id')
+      ))->result_array();
+
+      foreach($students_concession_details as $row)
+      {
+          if($row['amount'] != null)
+          {
+            $concession_amount = $row['amount'];
+          }
+          else if($row['percentage'] != null)
+          {
+            $concession_amount = $total_fees/100 * $row['percentage'];
+          }
+      }
+
+      /*
+      *Demat details insertions
+      */
+      $running_year = $this->db->get_where('settings', array('type' => 'running_year'))->row()->description;
+
+      $dataDematDetails['student_id'] = $student_id;
+      $dataDematDetails['total_fees'] = $total_fees;
+      $dataDematDetails['due_amount'] = $total_fees;
+      $dataDematDetails['concession_amount'] = $concession_amount;
+      $dataDematDetails['year'] = $running_year;
+      $dataDematDetails['lmtime'] = date('Y-m-d H:i:s');
+
+      $this->db->insert('demand_master', $dataDematDetails);
+      $demand_id = $this->db->insert_id();
+
+      $data_mapping['demand_master_id'] = $demand_id;
+
+      $this->db->where('student_id', $student_id);
+      $this->db->update('fees_master_category_mapping', $data_mapping);
+
+      $data_enroll['is_fees_generated'] = 1;
+      $this->db->where('student_id', $student_id);
+      $this->db->update('enroll', $data_enroll);
+
+      echo 0;
+    }
+
     function delete_student($student_id = '', $class_id = '') {
       $this->crud_model->delete_student($student_id);
       $this->session->set_flashdata('flash_message' , get_phrase('student_deleted'));
@@ -1292,7 +1360,7 @@ class Admin extends CI_Controller
             'class_id' => $class_id
         ))->row()->name;
         $page_data['class_id'] = $class_id;
-        $page_data['timestamp'] = $timestamp;
+        $page_data['attendance_date'] = date('Y-m-d', $timestamp);
         $page_data['page_name'] = 'manage_attendance_view';
         $section_name = $this->db->get_where('section' , array(
             'section_id' => $section_id
@@ -1309,13 +1377,15 @@ class Admin extends CI_Controller
     {
         $data['class_id']   = $this->input->post('class_id');
         $data['year']       = $this->input->post('year');
-        $data['timestamp']  = strtotime($this->input->post('timestamp'));
+        $data['attendance_date']  = date('Y-m-d', strtotime($this->input->post('timestamp')));
         $data['section_id'] = $this->input->post('section_id');
+        $data['status_session_id'] = $this->input->post('session_id');
         $query = $this->db->get_where('attendance' ,array(
             'class_id'=>$data['class_id'],
                 'section_id'=>$data['section_id'],
+                'session_id'=>$data['status_session_id'],
                     'year'=>$data['year'],
-                        'timestamp'=>$data['timestamp']
+                        'attendance_date'=>$data['attendance_date']
         ));
         if($query->num_rows() < 1) {
             $students = $this->db->get_where('enroll' , array(
@@ -1325,14 +1395,15 @@ class Admin extends CI_Controller
             foreach($students as $row) {
                 $attn_data['class_id']   = $data['class_id'];
                 $attn_data['year']       = $data['year'];
-                $attn_data['timestamp']  = $data['timestamp'];
+                $attn_data['attendance_date']  = $data['attendance_date'] ;
                 $attn_data['section_id'] = $data['section_id'];
                 $attn_data['student_id'] = $row['student_id'];
+                $attn_data['session_id'] = 1;
                 $this->db->insert('attendance' , $attn_data);
             }
 
         }
-        redirect(base_url().'index.php?admin/manage_attendance_view/'.$data['class_id'].'/'.$data['section_id'].'/'.$data['timestamp'],'refresh');
+        redirect(base_url().'index.php?admin/manage_attendance_view/'.$data['class_id'].'/'.$data['section_id'].'/'.$data['attendance_date'],'refresh');
     }
 
     function attendance_update($class_id = '' , $section_id = '' , $timestamp = '')
@@ -2604,7 +2675,22 @@ class Admin extends CI_Controller
           'student_id' =>  $student_id
       ))->result_array();
       //echo $this->db->last_query();
+
       $category_mapping_receipt = json_encode($category_mapping_receipt);
       echo $category_mapping_receipt;
+    }
+
+    function get_particulars_name($fees_master_category_mapping_id){
+
+      $master_category_mapping = $this->db->get_where('fees_master_category_mapping' , array(
+         'fees_master_category_mapping_id' => $fees_master_category_mapping_id
+      ))->result_array();
+
+      $fees_details =  $this->db->get_where('student_fees_category' ,
+      array('student_fees_category_id' => $master_category_mapping[0]['student_fees_category_id']
+      ))->result_array();
+
+      echo $this->db->get_where('fees_category_master' , array('fees_category_master_id' => $fees_details[0]['fees_category_master_id']))->row()->category_name;
+
     }
 }

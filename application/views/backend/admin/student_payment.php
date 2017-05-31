@@ -8,11 +8,7 @@
 						<span class="hidden-xs"><?php echo get_phrase('create_single_invoice');?></span>
 					</a>
 				</li>
-				<li>
-					<a href="#paid" data-toggle="tab">
-						<span class="hidden-xs"><?php echo get_phrase('create_mass_invoice');?></span>
-					</a>
-				</li>
+
 			</ul>
 
 			<div class="tab-content">
@@ -192,15 +188,19 @@
                                     <label class="col-sm-3 control-label"><?php echo get_phrase('payment');?></label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="amount_paid"
+																				data-validate="required"
                                             placeholder="<?php echo get_phrase('enter_payment_amount');?>"
-                                                data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"/>
+                                                data-message-required="<?php echo get_phrase('value_required');?>"/>
                                     </div>
                                 </div>
 
 																<div class="form-group">
 																		<label class="col-sm-3 control-label"><?php echo get_phrase('payment_mode');?></label>
 																		<div class="col-sm-9">
-																				<select name="payment_mode" class="form-control selectboxit">
+																				<select name="payment_mode" class="form-control selectboxit"
+																				data-validate="required"
+																				data-message-required="<?php echo get_phrase('value_required');?>"
+																				>
 																					<option value=""><?php echo get_phrase('select_payment_mode');?></option>
 																					<?php
 																						$classes = $this->db->get('payment_master')->result_array();
@@ -245,6 +245,7 @@
                         </div>
                     </div>
 
+										<input type="hidden" id="category_name" />
 
 	                </div>
 	              	<?php echo form_close();?>
@@ -418,19 +419,36 @@ jQuery(document).ready(function() {
 					url: '<?php echo base_url();?>index.php?admin/get_invoice_details/' + student_id,
 					success: function(response)
 					{
+						//alert(response);
 						response = $.parseJSON(response);
+
 						var response_count = response.length;
 
-						var invoice_details = new Array();
+if(response_count > 0)
+{						var invoice_details = new Array();
 						var sno = 1;
-						invoice_details.push(['id', 'particular', 'total amount', 'due amount'])
+						var total = 0;
+						invoice_details.push(['Id', 'Particular', 'Total Fees', 'Due Amount', 'Paid Amount'])
 						jQuery.each( response, function( i, val ) {
 
-							//alert(val['receipt_category_mapping_id']);
-							invoice_details.push([sno, val['fees_master_category_mapping_id'], val['amount_to_be_payable'], val['due_amount']])
-							sno = sno+1;
-						});
+						var category_name = "";
 
+						$.ajax({
+								url: '<?php echo base_url();?>index.php?admin/get_particulars_name/' + val['fees_master_category_mapping_id'],
+								async: false,
+								success: function(categoryresponse)
+								{
+									$('#category_name').val(categoryresponse);
+									//alert(category_name);
+								}
+							});
+							///alert($('#category_name').val());
+							invoice_details.push([sno, $('#category_name').val(), val['amount_to_be_payable'], val['due_amount'], val['paid_amount']])
+							sno = sno+1;
+							total = parseInt(total) + parseInt(val['paid_amount']);
+							//alert(total);
+						});
+						//alert(total);
 						var table = jQuery("<table />");
 						//Create a HTML Table element.
 						//var table = jQuery("<table />");
@@ -457,10 +475,48 @@ jQuery(document).ready(function() {
 						    }
 						}
 
+ 						//row = jQuery(table[0].insertRow(-1));
+						//var footercell = jQuery("<tfoot colspan='5' />");
+						//footercell.html(total);
+						//row.append(footercell);
+
 						var dvTable = jQuery("#show_previous_invoice");
 						dvTable.html("");
 						dvTable.append(table);
+						$("#show_previous_invoice").append("<div style='clear:both; float:left; width:100%; font-weight:bold;  padding:10px 75px 10px 10px; text-align:right; color:#fff; background-color:#5b5b5b;'>&#8377;" + total + "</div>");
 
+						$('#show_previous_invoice table').css({
+							'border-collapse': 'separate',
+						  'border-spacing': 0,
+						  'clear': 'both',
+						  'float': 'left',
+							'width' : '500px',
+						  'margin-top': '10px',
+						  'min-width': '100% !important',
+							'border': '1px soild #ccc'
+						});
+
+						$('#show_previous_invoice table td').css({
+							'padding': '10px 15px',
+							'border-bottom': '1px solid #cecfd5'
+						});
+
+						$('#show_previous_invoice table th').css({
+							'background': '#395870',
+							'color': '#fff',
+							'padding':'10px',
+							'font-weight': 'bold'
+						});
+
+						$('#show_previous_invoice table tr tfoot').css({
+							'background': '#575757',
+							'color': '#fff',
+							'padding':'10px',
+							'float':'left',
+							'font-weight': 'bold',
+							'text-align':'right'
+						});
+					}
 					}
 			});
 		}

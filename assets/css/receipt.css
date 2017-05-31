@@ -1,0 +1,77 @@
+
+.main
+{
+  width: 525px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  color: #333;
+}
+.header_title, .middle_title
+{
+  font-size: 24px;
+  font-weight: bold;
+}
+.header_address span
+{
+    /*float: left;*/
+    clear: both;
+    padding-top:5px;
+    text-align: center;
+}
+.middle_row
+{
+  clear: both;
+}
+.tbl_receipt
+{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.tbl_receipt td{
+  border:1px solid #333;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  clear: both;
+  float: left;
+  margin-top: 10px;
+  min-width: 100% !important;
+}
+th,
+td {
+  padding: 10px 15px;
+}
+thead {
+  background: #395870;
+  color: #fff;
+}
+th {
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  color: #fff;
+}
+tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+td {
+  border-bottom: 1px solid #cecfd5;
+  border-right: 1px solid #cecfd5;
+  text-align: right;
+}
+td:first-child {
+  border-left: 1px solid #cecfd5;
+}
+.tbl_receipt_content
+{
+clear: both;
+float: left;
+border: 1px solid #cecfd5;
+margin-top: 10px;
+padding: 10px;
+text-align: justify;
+}

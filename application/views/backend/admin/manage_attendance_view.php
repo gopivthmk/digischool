@@ -51,7 +51,18 @@
         </div>
     </div>
 
+    <div class="col-md-3">
+        <div class="form-group">
+        <select class="form-control" name="session_id" id="session_id">
+            <option value=""><?php echo get_phrase('select session'); ?></option>
+            <option value="1"><?php echo get_phrase('first half'); ?></option>
+            <option value="2"><?php echo get_phrase('second half'); ?></option>
+        </select>
+      </div>
+  </div>
+
     <input type="hidden" name="year" value="<?php echo $running_year; ?>">
+
 
     <div class="col-md-3" style="margin-top: 20px;">
         <button type="submit" class="btn btn-info"><?php echo get_phrase('manage_attendance'); ?></button>
@@ -108,6 +119,7 @@
                         <th>#</th>
                         <th><?php echo get_phrase('roll'); ?></th>
                         <th><?php echo get_phrase('name'); ?></th>
+                        <th><?php echo get_phrase('session'); ?></th>
                         <th><?php echo get_phrase('status'); ?></th>
                     </tr>
                 </thead>
@@ -119,7 +131,7 @@
                                 'class_id' => $class_id,
                                 'section_id' => $section_id,
                                 'year' => $running_year,
-                                'timestamp' => $timestamp
+                                'attendance_date' => $timestamp
                             ))->result_array();
 
 
@@ -132,6 +144,13 @@
                             </td>
                             <td>
                                 <?php echo $this->db->get_where('student', array('student_id' => $row['student_id']))->row()->name; ?>
+                            </td>
+                            <td>
+                              <select class="form-control" name="status_session_<?php echo $row['attendance_id']; ?>" id="status_session_<?php echo $select_id; ?>">
+                                  <option value=""><?php echo get_phrase('select session'); ?></option>
+                                  <option value="1"><?php echo get_phrase('first half'); ?></option>
+                                  <option value="2"><?php echo get_phrase('second half'); ?></option>
+                              </select>
                             </td>
                             <td>
                                 <select class="form-control" name="status_<?php echo $row['attendance_id']; ?>" id="status_<?php echo $select_id; ?>">

@@ -1,3 +1,34 @@
+<style>
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  clear: both;
+  float: left;
+  margin-top: 10px;
+  min-width: 100% !important;
+}
+th,
+td {
+  padding: 10px 15px;
+}
+thead {
+  background: #395870;
+  color: #fff;
+}
+th {
+  font-weight: bold;
+}
+tbody tr:nth-child(even) {
+  background: #f0f0f2;
+}
+td {
+  border-bottom: 1px solid #cecfd5;
+  border-right: 1px solid #cecfd5;
+}
+td:first-child {
+  border-left: 1px solid #cecfd5;
+}
+</style>
 <div class="row">
 	<div class="col-md-12">
 
@@ -60,7 +91,7 @@
 
                                     <!-- VIEWING LINK -->
                                     <li>
-                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_view_invoice/<?php echo $row['invoice_id'];?>');">
+                                        <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_view_invoice/<?php echo $row['receipt_id'];?>');">
                                             <i class="entypo-credit-card"></i>
                                                 <?php echo get_phrase('view_invoice');?>
                                             </a>
