@@ -2669,14 +2669,23 @@ class Admin extends CI_Controller
 
     function get_invoice_details($student_id)
     {
-      $this->db->order_by('receipt_id', 'asc');
       //$this->db->order_by('fees_master_category_mapping_id', 'asc');
-      $category_mapping_receipt = $this->db->get_where('receipt_category_mapping' , array(
-          'student_id' =>  $student_id
-      ))->result_array();
+      //$category_mapping_receipt = $this->db->get_where('fees_master_category_mapping' , array(
+      //    'student_id' =>  $student_id
+      //))->result_array();
+
+      $this->db->order_by('fees_category_master.fees_category_master_id', 'asc');
+      $this->db->select('fees_category_master.fees_category_master_id, fees_category_master.category_name, student_fees_category.fees_category_amount, receipt_category_mapping.due_amount, receipt_category_mapping.paid_amount');
+      $this->db->from('fees_master_category_mapping');
+      $this->db->join('student_fees_category', 'student_fees_category.student_fees_category_id = fees_master_category_mapping.student_fees_category_id', 'left');
+      $this->db->join('receipt_category_mapping', 'receipt_category_mapping.fees_master_category_mapping_id = fees_master_category_mapping.fees_master_category_mapping_id', 'left');
+      $this->db->join('fees_category_master', 'fees_category_master.fees_category_master_id = student_fees_category.fees_category_master_id', 'left');
+      $this->db->where('fees_master_category_mapping.student_id', $student_id);
+      $query = $this->db->get()->result_array();
+
       //echo $this->db->last_query();
 
-      $category_mapping_receipt = json_encode($category_mapping_receipt);
+      $category_mapping_receipt = json_encode($query);
       echo $category_mapping_receipt;
     }
 

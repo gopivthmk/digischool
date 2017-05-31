@@ -420,6 +420,7 @@ jQuery(document).ready(function() {
 					success: function(response)
 					{
 						//alert(response);
+						//return false;
 						response = $.parseJSON(response);
 
 						var response_count = response.length;
@@ -433,7 +434,7 @@ if(response_count > 0)
 
 						var category_name = "";
 
-						$.ajax({
+						/*$.ajax({
 								url: '<?php echo base_url();?>index.php?admin/get_particulars_name/' + val['fees_master_category_mapping_id'],
 								async: false,
 								success: function(categoryresponse)
@@ -441,11 +442,13 @@ if(response_count > 0)
 									$('#category_name').val(categoryresponse);
 									//alert(category_name);
 								}
-							});
+							});*/
 							///alert($('#category_name').val());
-							invoice_details.push([sno, $('#category_name').val(), val['amount_to_be_payable'], val['due_amount'], val['paid_amount']])
+							invoice_details.push([sno, val['category_name'], val['fees_category_amount'], val['due_amount'], val['paid_amount']])
 							sno = sno+1;
-							total = parseInt(total) + parseInt(val['paid_amount']);
+							if(val['paid_amount'] != null){
+								total = parseInt(total) + parseInt(val['paid_amount']);
+							}
 							//alert(total);
 						});
 						//alert(total);
