@@ -1352,20 +1352,23 @@ class Admin extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
-    function manage_attendance_view($class_id = '' , $section_id = '' , $timestamp = '')
+    function manage_attendance_view($class_id = '' , $section_id = '' , $timestamp = '', $session = '')
     {
+      $timestamp = date('Y-m-d', strtotime($timestamp));
+    //echo $timestamp;exit;
         if($this->session->userdata('admin_login')!=1)
             redirect(base_url() , 'refresh');
         $class_name = $this->db->get_where('class' , array(
             'class_id' => $class_id
         ))->row()->name;
         $page_data['class_id'] = $class_id;
-        $page_data['attendance_date'] = date('Y-m-d', $timestamp);
+        $page_data['attendance_date'] = date('Y-m-d', strtotime($timestamp));
         $page_data['page_name'] = 'manage_attendance_view';
         $section_name = $this->db->get_where('section' , array(
             'section_id' => $section_id
         ))->row()->name;
         $page_data['section_id'] = $section_id;
+        $page_data['timestamp'] = $timestamp;
         $page_data['page_title'] = get_phrase('manage_attendance_of_class') . ' ' . $class_name . ' : ' . get_phrase('section') . ' ' . $section_name;
         $this->load->view('backend/index', $page_data);
     }
@@ -1392,13 +1395,15 @@ class Admin extends CI_Controller
                 'class_id' => $data['class_id'] , 'section_id' => $data['section_id'] , 'year' => $data['year']
             ))->result_array();
 
+            //echo $this->db->last_query();
+
             foreach($students as $row) {
                 $attn_data['class_id']   = $data['class_id'];
                 $attn_data['year']       = $data['year'];
                 $attn_data['attendance_date']  = $data['attendance_date'] ;
                 $attn_data['section_id'] = $data['section_id'];
                 $attn_data['student_id'] = $row['student_id'];
-                $attn_data['session_id'] = 1;
+                $attn_data['session_id'] = $row['session_id'];
                 $this->db->insert('attendance' , $attn_data);
             }
 
@@ -1408,15 +1413,17 @@ class Admin extends CI_Controller
 
     function attendance_update($class_id = '' , $section_id = '' , $timestamp = '')
     {
+        $timestamp = date('Y-m-d', strtotime($timestamp));
         $running_year = $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description;
         $active_sms_service = $this->db->get_where('settings' , array('type' => 'active_sms_service'))->row()->description;
         $attendance_of_students = $this->db->get_where('attendance' , array(
-            'class_id'=>$class_id,'section_id'=>$section_id,'year'=>$running_year,'timestamp'=>$timestamp
+            'class_id'=>$class_id,'section_id'=>$section_id,'year'=>$running_year,'attendance_date'=>$timestamp
         ))->result_array();
         foreach($attendance_of_students as $row) {
-            $attendance_status = $this->input->post('status_'.$row['attendance_id']);
+            $attendance_status['status'] = $this->input->post('status_'.$row['attendance_id']);
+            $attendance_status['session_id'] = $this->input->post('status_session_'.$row['attendance_id']);
             $this->db->where('attendance_id' , $row['attendance_id']);
-            $this->db->update('attendance' , array('status' => $attendance_status));
+            $this->db->update('attendance' , $attendance_status);
 
             if ($attendance_status == 2) {
 

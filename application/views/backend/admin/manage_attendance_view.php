@@ -47,12 +47,13 @@
         <div class="form-group">
             <label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('date'); ?></label>
             <input type="text" class="form-control datepicker" name="timestamp" data-format="dd-mm-yyyy"
-                   value="<?php echo date("d-m-Y", $timestamp); ?>"/>
+                   value="<?php echo date("d/m/Y", strtotime($timestamp)); ?>"/>
         </div>
     </div>
 
     <div class="col-md-3">
         <div class="form-group">
+          		<label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('session');?></label>
         <select class="form-control" name="session_id" id="session_id">
             <option value=""><?php echo get_phrase('select session'); ?></option>
             <option value="1"><?php echo get_phrase('first half'); ?></option>
@@ -64,7 +65,7 @@
     <input type="hidden" name="year" value="<?php echo $running_year; ?>">
 
 
-    <div class="col-md-3" style="margin-top: 20px;">
+    <div class="col-md-3" style="clear:both; float:right; width:164px;">
         <button type="submit" class="btn btn-info"><?php echo get_phrase('manage_attendance'); ?></button>
     </div>
 
@@ -88,7 +89,7 @@
                 <?php echo get_phrase('section'); ?> <?php echo $this->db->get_where('section', array('section_id' => $section_id))->row()->name; ?>
             </h4>
             <h4 style="color: #696969;">
-                <?php echo date("d M Y", $timestamp); ?>
+                <?php echo date("d M Y", strtotime($timestamp)); ?>
             </h4>
         </div>
     </div>
@@ -127,13 +128,15 @@
                     <?php
                     $count = 1;
                     $select_id = 0;
+
                     $attendance_of_students = $this->db->get_where('attendance', array(
                                 'class_id' => $class_id,
                                 'section_id' => $section_id,
                                 'year' => $running_year,
-                                'attendance_date' => $timestamp
+                                'attendance_date' => date('Y-m-d', strtotime($timestamp))
                             ))->result_array();
 
+                            //echo $this->db->last_query();
 
                     foreach ($attendance_of_students as $row):
                         ?>

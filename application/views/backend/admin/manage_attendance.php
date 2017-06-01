@@ -11,40 +11,54 @@
 				<?php
 					$classes = $this->db->get('class')->result_array();
 					foreach($classes as $row):
-                                            
+
 				?>
-                                
+
 				<option value="<?php echo $row['class_id'];?>"
 					><?php echo $row['name'];?></option>
-                                
+
 				<?php endforeach;?>
 			</select>
 		</div>
 	</div>
 
-	
+
     <div id="section_holder">
 	<div class="col-md-3">
 		<div class="form-group">
 		<label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('section');?></label>
 			<select class="form-control selectboxit" name="section_id">
                             <option value=""><?php echo get_phrase('select_class_first') ?></option>
-				
+
 			</select>
 		</div>
 	</div>
     </div>
-	
+
         <div class="col-md-3">
 		<div class="form-group">
 		<label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('date');?></label>
 			<input type="text" class="form-control datepicker" name="timestamp" data-format="dd-mm-yyyy"
-				value="<?php echo date("d-m-Y");?>"/>
+				value="<?php
+				//$oToday = new DateTime("now");
+				echo date("d-m-Y"); ?>"/>
 		</div>
 	</div>
+
+	<div class="col-md-3">
+			<div class="form-group">
+			<label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('session');?></label>
+			<select class="form-control" name="session_id" id="session_id">
+					<option value=""><?php echo get_phrase('select session'); ?></option>
+					<option value="1"><?php echo get_phrase('first half'); ?></option>
+					<option value="2"><?php echo get_phrase('second half'); ?></option>
+			</select>
+		</div>
+</div>
+
 	<input type="hidden" name="year" value="<?php echo $running_year;?>">
 
-	<div class="col-md-3" style="margin-top: 20px;">
+	<div class="col-md-3" style="clear:both; float:right; width:164px;">
 		<button type="submit" class="btn btn-info"><?php echo get_phrase('manage_attendance');?></button>
 	</div>
 

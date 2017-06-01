@@ -1,9 +1,9 @@
 
-<a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/student_add/');" 
+<a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/student_add/');"
     class="btn btn-primary pull-right">
         <i class="entypo-plus-circled"></i>
         <?php echo get_phrase('add_new_student');?>
-    </a> 
+    </a>
 <br><br>
 <table class="table table-bordered datatable" id="table_export">
     <thead>
@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        <?php 
+        <?php
                 $students	=	$this->db->get_where('student' , array('class_id'=>$class_id))->result_array();
                 foreach($students as $row):?>
         <tr>
@@ -27,13 +27,13 @@
             <td><?php echo $row['address'];?></td>
             <td><?php echo $row['email'];?></td>
             <td>
-                
+
                 <div class="btn-group">
                     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
                         Action <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu dropdown-default pull-right" role="menu">
-                        
+
                         <!-- STUDENT PROFILE LINK -->
                         <li>
                             <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_student_profile/<?php echo $row['student_id'];?>');">
@@ -41,7 +41,7 @@
                                     <?php echo get_phrase('profile');?>
                                 </a>
                                         </li>
-                        
+
                         <!-- STUDENT EDITING LINK -->
                         <li>
                             <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_student_edit/<?php echo $row['student_id'];?>');">
@@ -50,7 +50,7 @@
                                 </a>
                                         </li>
                         <li class="divider"></li>
-                        
+
                         <!-- STUDENT DELETION LINK -->
                         <li>
                             <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?teacher/student/<?php echo $class_id;?>/delete/<?php echo $row['student_id'];?>');">
@@ -60,7 +60,7 @@
                                         </li>
                     </ul>
                 </div>
-                
+
             </td>
         </tr>
         <?php endforeach;?>
@@ -69,19 +69,19 @@
 
 
 
-<!-----  DATA TABLE EXPORT CONFIGURATIONS ----->                      
+<!-----  DATA TABLE EXPORT CONFIGURATIONS ----->
 <script type="text/javascript">
 
 	jQuery(document).ready(function($)
 	{
-		
+
 
 		var datatable = $("#table_export").dataTable({
 			"sPaginationType": "bootstrap",
 			"sDom": "<'row'<'col-xs-3 col-left'l><'col-xs-9 col-right'<'export-data'T>f>r>t<'row'<'col-xs-3 col-left'i><'col-xs-9 col-right'p>>",
 			"oTableTools": {
 				"aButtons": [
-					
+
 					{
 						"sExtends": "xls",
 						"mColumns": [0, 2, 3, 4]
@@ -96,11 +96,11 @@
 						"fnClick": function (nButton, oConfig) {
 							datatable.fnSetColumnVis(1, false);
 							datatable.fnSetColumnVis(5, false);
-							
+
 							this.fnPrint( true, oConfig );
-							
+
 							window.print();
-							
+
 							$(window).keyup(function(e) {
 								  if (e.which == 27) {
 									  datatable.fnSetColumnVis(1, true);
@@ -108,16 +108,39 @@
 								  }
 							});
 						},
-						
+
 					},
 				]
 			},
-			
+
 		});
-		
+
 		$(".dataTables_wrapper select").select2({
 			minimumResultsForSearch: -1
 		});
+    $('.generate_fees').on('click', function(e){
+      var student_id = $(this).attr('student-id');
+      $.ajax({
+          url: '<?php echo base_url();?>index.php?admin/generate_student_fees/' + student_id,
+          success: function(response)
+          {
+              //alert(response);
+              if(response == "0"){
+                var current_id = $(this).attr('id');
+                alert("Successfully fees generated!!!");
+                $("#generate_fees_"+ student_id).css("background-color", "dimgrey");
+                //$(this).attr('style', 'background-color:dimgrey;');
+                $("#generate_fees_"+ student_id).attr('disabled', 'disabled');
+                //alert("response : " + response);
+                //alert($(this).attr('id'));
+              }
+              else{
+                alert("Something went wrong. Please try later...");
+              }
+          }
+      });
+    });
+
 	});
-		
+
 </script>
