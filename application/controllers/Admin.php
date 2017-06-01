@@ -1368,6 +1368,7 @@ class Admin extends CI_Controller
             'section_id' => $section_id
         ))->row()->name;
         $page_data['section_id'] = $section_id;
+        $page_data['session'] = $session;
         $page_data['timestamp'] = $timestamp;
         $page_data['page_title'] = get_phrase('manage_attendance_of_class') . ' ' . $class_name . ' : ' . get_phrase('section') . ' ' . $section_name;
         $this->load->view('backend/index', $page_data);
@@ -1383,16 +1384,22 @@ class Admin extends CI_Controller
         $data['attendance_date']  = date('Y-m-d', strtotime($this->input->post('timestamp')));
         $data['section_id'] = $this->input->post('section_id');
         $data['status_session_id'] = $this->input->post('session_id');
+        //echo $data['status_session_id'];exit;
         $query = $this->db->get_where('attendance' ,array(
             'class_id'=>$data['class_id'],
                 'section_id'=>$data['section_id'],
                 'session_id'=>$data['status_session_id'],
                     'year'=>$data['year'],
-                        'attendance_date'=>$data['attendance_date']
+                        'attendance_date'=>$data['attendance_date'],
+                        'session_id' => $data['status_session_id']
         ));
+        //echo $this->db->last_query();
+        //exit;
         if($query->num_rows() < 1) {
             $students = $this->db->get_where('enroll' , array(
-                'class_id' => $data['class_id'] , 'section_id' => $data['section_id'] , 'year' => $data['year']
+                'class_id' => $data['class_id'] ,
+                'section_id' => $data['section_id'] ,
+                'year' => $data['year']
             ))->result_array();
 
             //echo $this->db->last_query();
@@ -1400,18 +1407,18 @@ class Admin extends CI_Controller
             foreach($students as $row) {
                 $attn_data['class_id']   = $data['class_id'];
                 $attn_data['year']       = $data['year'];
-                $attn_data['attendance_date']  = $data['attendance_date'] ;
+                $attn_data['attendance_date']  = date('Y-m-d', strtotime($data['attendance_date']));;
                 $attn_data['section_id'] = $data['section_id'];
                 $attn_data['student_id'] = $row['student_id'];
-                $attn_data['session_id'] = $row['session_id'];
+                $attn_data['session_id'] = $data['status_session_id'];
                 $this->db->insert('attendance' , $attn_data);
             }
 
         }
-        redirect(base_url().'index.php?admin/manage_attendance_view/'.$data['class_id'].'/'.$data['section_id'].'/'.$data['attendance_date'],'refresh');
+        redirect(base_url().'index.php?admin/manage_attendance_view/'.$data['class_id'].'/'.$data['section_id'].'/'.$data['attendance_date'].'/'.$data['status_session_id'],'refresh');
     }
 
-    function attendance_update($class_id = '' , $section_id = '' , $timestamp = '')
+    function attendance_update($class_id = '' , $section_id = '' , $timestamp = '', $session = '')
     {
         $timestamp = date('Y-m-d', strtotime($timestamp));
         $running_year = $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description;
@@ -1421,7 +1428,7 @@ class Admin extends CI_Controller
         ))->result_array();
         foreach($attendance_of_students as $row) {
             $attendance_status['status'] = $this->input->post('status_'.$row['attendance_id']);
-            $attendance_status['session_id'] = $this->input->post('status_session_'.$row['attendance_id']);
+            $attendance_status['session_id'] = $session;
             $this->db->where('attendance_id' , $row['attendance_id']);
             $this->db->update('attendance' , $attendance_status);
 
@@ -1437,7 +1444,7 @@ class Admin extends CI_Controller
             }
         }
         $this->session->set_flashdata('flash_message' , get_phrase('attendance_updated'));
-        redirect(base_url().'index.php?admin/manage_attendance_view/'.$class_id.'/'.$section_id.'/'.$timestamp , 'refresh');
+        redirect(base_url().'index.php?admin/manage_attendance_view/'.$class_id.'/'.$section_id.'/'.$timestamp.'/'. $session, 'refresh');
     }
 
 	/****** DAILY ATTENDANCE *****************/

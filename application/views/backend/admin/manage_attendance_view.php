@@ -55,9 +55,9 @@
         <div class="form-group">
           		<label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('session');?></label>
         <select class="form-control" name="session_id" id="session_id">
-            <option value=""><?php echo get_phrase('select session'); ?></option>
-            <option value="1"><?php echo get_phrase('first half'); ?></option>
-            <option value="2"><?php echo get_phrase('second half'); ?></option>
+            <option value="0" <?php if ($session == 0) echo 'selected'; ?>><?php echo get_phrase('select session'); ?></option>
+            <option value="1" <?php if ($session == 1) echo 'selected'; ?>><?php echo get_phrase('first half'); ?></option>
+            <option value="2" <?php if ($session == 2) echo 'selected'; ?>><?php echo get_phrase('second half'); ?></option>
         </select>
       </div>
   </div>
@@ -112,7 +112,7 @@
 
     <div class="col-md-8">
 
-        <?php echo form_open(base_url() . 'index.php?admin/attendance_update/' . $class_id . '/' . $section_id . '/' . $timestamp); ?>
+        <?php echo form_open(base_url() . 'index.php?admin/attendance_update/' . $class_id . '/' . $section_id . '/' . $timestamp . '/' . $session); ?>
         <div id="attendance_update">
             <table class="table table-bordered">
                 <thead>
@@ -120,7 +120,7 @@
                         <th>#</th>
                         <th><?php echo get_phrase('roll'); ?></th>
                         <th><?php echo get_phrase('name'); ?></th>
-                        <th><?php echo get_phrase('session'); ?></th>
+
                         <th><?php echo get_phrase('status'); ?></th>
                     </tr>
                 </thead>
@@ -132,6 +132,7 @@
                     $attendance_of_students = $this->db->get_where('attendance', array(
                                 'class_id' => $class_id,
                                 'section_id' => $section_id,
+                                'session_id' => $session,
                                 'year' => $running_year,
                                 'attendance_date' => date('Y-m-d', strtotime($timestamp))
                             ))->result_array();
@@ -148,13 +149,7 @@
                             <td>
                                 <?php echo $this->db->get_where('student', array('student_id' => $row['student_id']))->row()->name; ?>
                             </td>
-                            <td>
-                              <select class="form-control" name="status_session_<?php echo $row['attendance_id']; ?>" id="status_session_<?php echo $select_id; ?>">
-                                  <option value=""><?php echo get_phrase('select session'); ?></option>
-                                  <option value="1"><?php echo get_phrase('first half'); ?></option>
-                                  <option value="2"><?php echo get_phrase('second half'); ?></option>
-                              </select>
-                            </td>
+
                             <td>
                                 <select class="form-control" name="status_<?php echo $row['attendance_id']; ?>" id="status_<?php echo $select_id; ?>">
                                     <option value="0" <?php if ($row['status'] == 0) echo 'selected'; ?>><?php echo get_phrase('undefined'); ?></option>
