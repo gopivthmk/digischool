@@ -169,7 +169,7 @@
     <?php
     $year = explode('-', $running_year);
     $days = cal_days_in_month(CAL_GREGORIAN, $month, $sessional_year);
-   
+
     for ($i = 1; $i <= $days; $i++) {
         ?>
                             <td style="text-align: center;"><?php echo $i; ?></td>
@@ -194,17 +194,17 @@
                             $status = 0;
                             for ($i = 1; $i <= $days; $i++) {
                                 $timestamp = strtotime($i . '-' . $month . '-' . $sessional_year);
-                                $this->db->group_by('timestamp');
-                                $attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'timestamp' => $timestamp, 'student_id' => $row['student_id']))->result_array();
-                                
+                                $this->db->group_by('attendance_date');
+                                $attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'attendance_date' => $timestamp, 'student_id' => $row['student_id']))->result_array();
+
 
                                 foreach ($attendance as $row1):
-                                    $month_dummy = date('d', $row1['timestamp']);
-                                   
+                                    $month_dummy = date('d', $row1['attendance_date']);
+
                                     if ($i == $month_dummy)
                                     $status = $row1['status'];
-                                   
-                                   
+
+
                                 endforeach;
                                 ?>
                                 <td style="text-align: center;">
@@ -213,8 +213,8 @@
                             <?php  } if($status == 2)  { ?>
                                         <i class="entypo-record" style="color: #ee4749;"></i>
             <?php  } $status =0;?>
-                                       
-           
+
+
                                 </td>
 
         <?php } ?>
@@ -227,7 +227,7 @@
                 </tbody>
             </table>
             <center>
-                <a href="<?php echo base_url(); ?>index.php?admin/attendance_report_print_view/<?php echo $class_id; ?>/<?php echo $section_id; ?>/<?php echo $month; ?>/<?php echo $sessional_year; ?>" 
+                <a href="<?php echo base_url(); ?>index.php?admin/attendance_report_print_view/<?php echo $class_id; ?>/<?php echo $section_id; ?>/<?php echo $month; ?>/<?php echo $sessional_year; ?>"
                    class="btn btn-primary" target="_blank">
     <?php echo get_phrase('print_attendance_sheet'); ?>
                 </a>
@@ -257,7 +257,7 @@
                 $this.selectBoxIt(opts);
             });
         }
-    }); 
+    });
 
 </script>
 

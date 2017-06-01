@@ -6,7 +6,10 @@
 	<div class="col-md-3">
 		<div class="form-group">
 		<label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('class');?></label>
-			<select name="class_id" class="form-control selectboxit" onchange="select_section(this.value)">
+			<select name="class_id" class="form-control selectboxit"
+			data-validate="required"
+			data-message-required="<?php echo get_phrase('value_required');?>"
+			onchange="select_section(this.value)">
 				<option value=""><?php echo get_phrase('select_class');?></option>
 				<?php
 					$classes = $this->db->get('class')->result_array();
@@ -38,10 +41,8 @@
         <div class="col-md-3">
 		<div class="form-group">
 		<label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('date');?></label>
-			<input type="text" class="form-control datepicker" name="timestamp" data-format="dd-mm-yyyy"
-				value="<?php
-				//$oToday = new DateTime("now");
-				echo date("d-m-Y"); ?>"/>
+		<input type="text" class="form-control datepicker" name="timestamp" data-format="dd/mm/yyyy"
+					 value="<?php echo date("d/m/Y"); ?>"/>
 		</div>
 	</div>
 

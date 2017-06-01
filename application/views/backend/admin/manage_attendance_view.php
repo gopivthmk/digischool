@@ -46,8 +46,8 @@
     <div class="col-md-3">
         <div class="form-group">
             <label class="control-label" style="margin-bottom: 5px;"><?php echo get_phrase('date'); ?></label>
-            <input type="text" class="form-control datepicker" name="timestamp" data-format="dd-mm-yyyy"
-                   value="<?php echo date("d/m/Y", strtotime($timestamp)); ?>"/>
+            <input type="text" class="form-control datepicker" name="timestamp" data-format="dd/mm/yyyy"
+                   value="<?php echo date("m/d/Y", strtotime($timestamp)); ?>"/>
         </div>
     </div>
 
@@ -89,7 +89,7 @@
                 <?php echo get_phrase('section'); ?> <?php echo $this->db->get_where('section', array('section_id' => $section_id))->row()->name; ?>
             </h4>
             <h4 style="color: #696969;">
-                <?php echo date("d M Y", strtotime($timestamp)); ?>
+                <?php echo date("M D Y", strtotime($timestamp)); ?>
             </h4>
         </div>
     </div>
@@ -134,10 +134,10 @@
                                 'section_id' => $section_id,
                                 'session_id' => $session,
                                 'year' => $running_year,
-                                'attendance_date' => date('Y-m-d', strtotime($timestamp))
+                                'attendance_date' => date('Y-d-m', strtotime($timestamp))
                             ))->result_array();
 
-                            //echo $this->db->last_query();
+
 
                     foreach ($attendance_of_students as $row):
                         ?>
@@ -152,7 +152,7 @@
 
                             <td>
                                 <select class="form-control" name="status_<?php echo $row['attendance_id']; ?>" id="status_<?php echo $select_id; ?>">
-                                    <option value="0" <?php if ($row['status'] == 0) echo 'selected'; ?>><?php echo get_phrase('undefined'); ?></option>
+                                    <option value="0" <?php if ($row['status'] == 0) echo 'selected'; ?>><?php echo get_phrase('select'); ?></option>
                                     <option value="1" <?php if ($row['status'] == 1) echo 'selected'; ?>><?php echo get_phrase('present'); ?></option>
                                     <option value="2" <?php if ($row['status'] == 2) echo 'selected'; ?>><?php echo get_phrase('absent'); ?></option>
                                 </select>
@@ -182,7 +182,7 @@
 <script type="text/javascript">
 
     jQuery(document).ready(function() {
-      mark_all_present();
+      //mark_all_present();
     });
 
     function select_section(class_id) {

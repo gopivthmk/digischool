@@ -1,4 +1,4 @@
-<?php 
+<?php
 	$class_name		= $this->db->get_where('class' , array('class_id' => $class_id))->row()->name;
 	$section_name  		= $this->db->get_where('section' , array('section_id' => $section_id))->row()->name;
 	$system_name        =	$this->db->get_where('settings' , array('type'=>'system_name'))->row()->description;
@@ -31,9 +31,9 @@
 		<?php echo get_phrase('class') . ' ' . $class_name;?><br>
 		<?php echo get_phrase('section').' '.$section_name;?><br>
         <?php echo $m . ', ' . $sessional_year; ?>
-		
+
 	</center>
-        
+
           <table border="1" style="width:100%; border-collapse:collapse;border: 1px solid #ccc; margin-top: 10px;">
                 <thead>
                     <tr>
@@ -67,12 +67,12 @@
                             $status = 0;
                             for ($i = 1; $i <= $days; $i++) {
                                 $timestamp = strtotime($i . '-' . $month . '-' . $sessional_year);
-                                $this->db->group_by('timestamp');
-                                $attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'timestamp' => $timestamp, 'student_id' => $row['student_id']))->result_array();
+                                $this->db->group_by('attendance_date');
+                                $attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'attendance_date' => $timestamp, 'student_id' => $row['student_id']))->result_array();
 
 
                                 foreach ($attendance as $row1):
-                                    $month_dummy = date('m', $row1['timestamp']);
+                                    $month_dummy = date('m', $row1['attendance_date']);
                                     if ($i == $month_dummy)
                                         ;
                                     $status = $row1['status'];
@@ -114,7 +114,7 @@
         Popup($(elem).html());
     }
 
-    function Popup(data) 
+    function Popup(data)
     {
         var mywindow = window.open('', 'my div', 'height=400,width=600');
         mywindow.document.write('<html><head><title></title>');
