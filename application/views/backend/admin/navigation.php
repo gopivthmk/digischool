@@ -111,6 +111,21 @@
             </a>
         </li>
 
+        <!-- TRANSFER CERTIFICATES -->
+        <li class="<?php if ($page_name == 'transfer_certificate') echo 'active'; ?> ">
+            <a href="<?php echo base_url(); ?>index.php?admin/transfer_certificate">
+                <i class="entypo-user"></i>
+                <span><?php echo get_phrase('transfer_certificate'); ?></span>
+            </a>
+            <ul>
+                <li class="<?php if ($page_name == 'create_transfer_certificate') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>index.php?admin/create_transfer_certificate">
+                        <span><i class="entypo-dot"></i> <?php echo get_phrase('create_transfer_certificate'); ?></span>
+                    </a>
+                </li>
+              </ul>
+        </li>
+
         <!-- LIBRARIAN -->
         <li class="<?php if ($page_name == 'librarian') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?admin/librarian">
@@ -297,7 +312,7 @@
                 <span><?php echo get_phrase('accounting'); ?></span>
             </a>
             <ul>
-              <li class="<?php if ($page_name == 'create_fees_category') echo 'active'; ?> ">
+              <li class="<?php if ($page_name == 'fees_category') echo 'active'; ?> ">
                   <a href="<?php echo base_url(); ?>index.php?admin/fees_category">
                       <span><i class="entypo-dot"></i> <?php echo get_phrase('Fees Category'); ?></span>
                   </a>

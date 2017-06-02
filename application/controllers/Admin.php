@@ -2716,4 +2716,49 @@ class Admin extends CI_Controller
       echo $this->db->get_where('fees_category_master' , array('fees_category_master_id' => $fees_details[0]['fees_category_master_id']))->row()->category_name;
 
     }
+
+    function get_parent_name($student_id){
+
+      $get_student_informations = $this->db->get_where('student' , array(
+         'student_id' => $student_id
+      ))->result_array();
+
+      $student_information = array();
+      //$student_information['name'] = $get_student_informations[0]['name'];
+      $student_information['parent_name'] = $this->db->get_where('parent' , array(
+          'parent_id' => $get_student_informations[0]['parent_id']
+          ))->row()->name;
+      $student_information['sex'] = $get_student_informations[0]['sex'];
+      $student_information['nationality_religion'] = $get_student_informations[0]['nationality'] . "_" . $get_student_informations[0]['religion'];
+      $student_information['birthday'] = $get_student_informations[0]['birthday'];
+      $student_information['personal_identification_number'] = $get_student_informations[0]['personal_identification_number'];
+      $student_information['date_of_admission'] = $get_student_informations[0]['date_of_admission'];
+      $student_information['caste_community'] = $get_student_informations[0]['caste_community'];
+
+      echo json_encode($student_information);
+    }
+
+    function transfer_certificate(){
+      if ($this->session->userdata('admin_login') != 1)
+      {
+          $this->session->set_userdata('last_page', current_url());
+          redirect(base_url(), 'refresh');
+      }
+
+      $data['page_name']  = 'transfer_certificate';
+      $data['page_title'] = get_phrase('transfer_certificate');
+      $this->load->view('backend/index', $data);
+    }
+
+    function create_transfer_certificate(){
+      if ($this->session->userdata('admin_login') != 1)
+      {
+          $this->session->set_userdata('last_page', current_url());
+          redirect(base_url(), 'refresh');
+      }
+
+      $data['page_name']  = 'create_transfer_certificate';
+      $data['page_title'] = get_phrase('create_transfer_certificate');
+      $this->load->view('backend/index', $data);
+    }
 }
