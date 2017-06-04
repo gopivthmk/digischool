@@ -16,7 +16,7 @@
 						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Name of the School');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control" disabled="disabled" name="name" value="<?php
+							<input type="text" class="form-control"  name="school_name" value="<?php
 							echo $this->db->get_where('settings' , array(
 																							'type' => 'system_name'
 																					))->row()->description;
@@ -25,7 +25,10 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
+						<label for="field-2" class="col-sm-3 control-label">
+							<?php echo get_phrase('class');?>
+							<span class="mandetory">*</span>
+						</label>
 
 						<div class="col-sm-5">
 							<select name="class_id" class="form-control" data-validate="required" id="class_id"
@@ -47,7 +50,10 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('section');?></label>
+						<label for="field-2" class="col-sm-3 control-label">
+							<?php echo get_phrase('section');?>
+							<span class="mandetory">*</span>
+						</label>
 		                    <div class="col-sm-5">
 		                        <select name="section_id"
 														data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
@@ -59,7 +65,10 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('student');?></label>
+						<label for="field-2" class="col-sm-3 control-label">
+							<?php echo get_phrase('student');?>
+							<span class="mandetory">*</span>
+						</label>
 						<div class="col-sm-5">
 								<select name="student_id" class="form-control"
 								style="width:100%;"
@@ -73,7 +82,10 @@
 				</div>
 
 				<div class="form-group">
-					<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Father / Mother name');?></label>
+					<label for="field-1" class="col-sm-3 control-label">
+						<?php echo get_phrase('Father / Mother name');?>
+						<span class="mandetory">*</span>
+					</label>
 
 					<div class="col-sm-5">
 						<input type="text" class="form-control" name="name" id="parent_name" autofocus>
@@ -82,7 +94,10 @@
 
 
 				<div class="form-group">
-					<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Nationality, Religion');?></label>
+					<label for="field-2" class="col-sm-3 control-label">
+						<?php echo get_phrase('Nationality, Religion');?>
+						<span class="mandetory">*</span>
+					</label>
 
 					<div class="col-sm-5">
 						<input type="text" class="form-control" name="nationality" id="nationality"
@@ -92,7 +107,10 @@
 				</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('gender');?></label>
+						<label for="field-2" class="col-sm-3 control-label">
+							<?php echo get_phrase('gender');?>
+							<span class="mandetory">*</span>
+						</label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="sex" id="sex" autofocus>
@@ -100,17 +118,23 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('birthday');?></label>
+						<label for="field-2" class="col-sm-3 control-label">
+							<?php echo get_phrase('birthday');?>
+							<span class="mandetory">*</span>
+						</label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control datepicker"
 							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
-							name="birthday" id="birthday" value="" data-start-view="2">
+							name="birthday" id="birthday" value="" data-start-view="3">
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Personal Identification Mark');?></label>
+						<label for="field-2" class="col-sm-3 control-label">
+							<?php echo get_phrase('Personal Identification Mark');?>
+							<span class="mandetory">*</span>
+						</label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="PIM" id="PIM" value="" data-start-view="2">
@@ -118,7 +142,10 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('academic year');?></label>
+						<label for="field-2" class="col-sm-3 control-label">
+							<?php echo get_phrase('academic year');?>
+							<span class="mandetory">*</span>
+						</label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="academic_year" id="academic_year"  value="">
@@ -150,11 +177,14 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Date of Admission');?></label>
+						<label for="field-2" class="col-sm-3 control-label">
+							<?php echo get_phrase('Date of Admission');?>
+							<span class="mandetory">*</span>
+						</label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control datepicker" name="date_of_admission" id="date_of_admission"
-							value="<?php echo date('m/d/Y'); ?>" data-start-view="3">
+							data-start-view="3">
 						</div>
 					</div>
 
@@ -258,7 +288,7 @@
 </div>
 
 <div class="row tc_format" style="display:none">
-  <input type="button" onclick="printDiv('main-print')" value="print a div!" />
+  <a type="button" class="btn btn-default btn-icon icon-left hidden-print pull-right" onclick="printDiv('main-print')">Print TC<i class="entypo-print"></i></a>
 
 	<div class="main-print" id="main-print" style="clear: both; float: left;width: 75%; 	margin-left: 180px;">
 
@@ -302,15 +332,25 @@
 					</td>
 				</tr>
 				<tr>
-					<td style=" text-align:left; padding-left:20px;">
+					<td style=" text-align:left; padding-top:10px; padding-left:20px;">
 						<span style="font-size: 12px;">
-						Serial No. 232
+						Serial No&nbsp;:
 						</span>
 					</td>
-					<td style="text-align:right; padding-right:140px; ">
+					<td style="text-align:right; padding-top:10px; padding-right:140px; ">
 						<span style="font-size: 12px; ">
-						Admission No. 13208
+						Admission No&nbsp;:
 						</span>
+					</td>
+				</tr>
+				<tr>
+					<td style=" text-align:left; padding-top:10px; padding-left:20px;">
+						<span style="font-size: 12px;">
+						EMINS No&nbsp;:
+						</span>
+					</td>
+					<td style="text-align:right; padding-top:10px; padding-right:140px; ">
+
 					</td>
 				</tr>
 			</table>
@@ -637,6 +677,20 @@
       text-align: center;
       color: #333;
     }
+		@media print {
+    a {
+        display:none;
+    }
+ }
+
+ @media screen and projection {
+    a {
+        display:inline;
+    }
+  }
+		.mandetory{
+			font-weight: bold; color: red; font-size: 20px; float: right; padding: 0px 10px;
+		}
     .header_title, .middle_title
     {
       font-family: Trebuchet MS;
@@ -707,6 +761,13 @@
     {
       padding: 20px;
     }
+		#name_of_school, #name_of_parent, #name_of_student, #nationality_and_religions,
+		#sex_db_value, #date_of_birth_value, #pim_value, #std_studied_at_time_of_leave_value,
+		#pupil_paid_all_fees, #whether_qualified_higher, #whether_pupil_scholarship,
+		#repeat_medical, #conduct_value
+		{
+			text-transform: capitalize;
+		}
     </style>
 </div>
 </div>
@@ -761,13 +822,16 @@ function printDiv(divName) {
 					url: '<?php echo base_url();?>index.php?admin/get_parent_name/' + student_id ,
 					success: function(response)
 					{
-							alert(response);
+							//alert(response);
 							response = $.parseJSON(response);
 							jQuery('#parent_name').val(response["parent_name"]);
 							jQuery('#sex').val(response["sex"]);
 							jQuery('#nationality').val(response["nationality_religion"]);
 							jQuery('#birthday').val(response["birthday"]);
 							jQuery('#PIM').val(response["personal_identification_number"]);
+							if(response["date_of_admission"] == "0000-00-00"){
+								response["date_of_admission"] = "";
+							}
 							jQuery('#date_of_admission').val(response["date_of_admission"]);
 							jQuery('#academic_year').val(response["academic_year"]);
 					}
@@ -775,7 +839,25 @@ function printDiv(divName) {
 		}
 
 		$(document).ready(function() {
+			//if($('#class_id').val())
 			$('#tc_submit').click(function (e){
+
+				//alert($('#class_id').val());
+				if($('#class_id').val() == "" ||
+					 $('#section_selector_holder').val() == "" ||
+					 $('#student_selection_holder').val() == "" ||
+					 $('#parent_name').val() == "" ||
+					 $('#nationality').val() == "" ||
+					 $('#sex').val() == "" ||
+					 $('#birthday').val() == "" ||
+					 $('#academic_year').val() == "" ||
+					 $('#date_of_admission').val() == ""
+					)
+				{
+					alert("Please enter value for mandetory fields!!!");
+					return false;
+				}
+
 				$.ajax({
            type: "POST",
            url: '<?php echo base_url();?>index.php?admin/get_tc_form_submission',
@@ -787,7 +869,23 @@ function printDiv(divName) {
 						 $('.main-content h3').hide();
             //   alert(data); // show response from the php script.
 						data = $.parseJSON(data);
-						$('#name_of_school').html(data['student_name']);
+						$('#name_of_school').html(data['school_name']);
+						$('#name_of_parent').html(data['parent_name']);
+						$('#name_of_student').html(data['student_name']);
+						$('#nationality_and_religions').html(data['nationlity_religion']);
+						$('#sex_db_value').html(data['sex']);
+						$('#date_of_birth_value').html(data['dob']);
+						$('#pim_value').html(data['pim']);
+						$('#date_of_admission_value').html(data['date_of_admission']);
+						$('#std_studied_at_time_of_leave_value').html(data['standard_studied_while_leaving']);
+						$('#pupil_paid_all_fees').html(data['is_paid_all_fees']);
+						$('#whether_qualified_higher').html(data['is_qualified_for_higher_standard']);
+						$('#whether_pupil_scholarship').html(data['scholarship']);
+						$('#repeat_medical').html(data['under_medical_inspection']);
+						$('#conduct_value').html(data['conduct_remarks']);
+						$('#date_of_tc_application').html(data['date_of_application_for_transfer_certificate']);
+						//$('#name_of_parent').html(data['parent_name']);
+						//$('#name_of_parent').html(data['parent_name']);
            }
          });
 

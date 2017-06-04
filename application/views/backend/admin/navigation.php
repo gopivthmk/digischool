@@ -123,6 +123,11 @@
                         <span><i class="entypo-dot"></i> <?php echo get_phrase('create_transfer_certificate'); ?></span>
                     </a>
                 </li>
+                <li class="<?php if ($page_name == 'transfer_certificate') echo 'active'; ?> ">
+                    <a href="<?php echo base_url(); ?>index.php?admin/transfer_certificate">
+                        <span><i class="entypo-dot"></i> <?php echo get_phrase('transfer_certificate'); ?></span>
+                    </a>
+                </li>
               </ul>
         </li>
 
