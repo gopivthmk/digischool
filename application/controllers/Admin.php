@@ -2729,11 +2729,14 @@ class Admin extends CI_Controller
           'parent_id' => $get_student_informations[0]['parent_id']
           ))->row()->name;
       $student_information['sex'] = $get_student_informations[0]['sex'];
-      $student_information['nationality_religion'] = $get_student_informations[0]['nationality'] . "_" . $get_student_informations[0]['religion'];
+      $student_information['nationality_religion'] = $get_student_informations[0]['nationality'] . ", " . $get_student_informations[0]['religion'];
       $student_information['birthday'] = $get_student_informations[0]['birthday'];
       $student_information['personal_identification_number'] = $get_student_informations[0]['personal_identification_number'];
       $student_information['date_of_admission'] = $get_student_informations[0]['date_of_admission'];
       $student_information['caste_community'] = $get_student_informations[0]['caste_community'];
+      $student_information['academic_year'] = $this->db->get_where('enroll' , array(
+          'student_id' => $student_id
+        ))->row()->year;
 
       echo json_encode($student_information);
     }
@@ -2761,4 +2764,39 @@ class Admin extends CI_Controller
       $data['page_title'] = get_phrase('create_transfer_certificate');
       $this->load->view('backend/index', $data);
     }
+
+    function get_tc_form_submission()
+    {
+        $data['student_id'] = $this->input->post('student_id');
+        $data['class_id'] = $this->input->post('class_id');
+        $data['section_id'] = $this->input->post('section_id');
+        $data['parent_name'] = $this->input->post('name');
+        $data['nationlity_religion'] = $this->input->post('nationality');
+        $data['sex'] = $this->input->post('sex');
+        $data['dob'] = date('Y-m-d', strtotime($this->input->post('birthday')));
+        $data['pim'] = $this->input->post('PIM');
+        $data['academic_year'] = $this->input->post('academic_year');
+        $data['standard_studied_while_leaving'] = $this->input->post('standard_studied');
+        $data['first_langugage'] = $this->input->post('first_lang');
+        $data['second_language'] = $this->input->post('second_lang');
+        $data['date_of_admission'] = date('Y-m-d', strtotime($this->input->post('date_of_admission')));
+        $data['is_paid_all_fees'] = $this->input->post('fees_paid');
+        $data['is_qualified_for_higher_standard'] = $this->input->post('qualified_to_higher_standard');
+        $data['scholarship'] = $this->input->post('has_scholarship');
+        $data['under_medical_inspection'] = $this->input->post('has_medical_inspection');
+        $data['date_of_left_school'] = date('Y-m-d', strtotime($this->input->post('date_of_leave_from_school')));
+        $data['conduct_remarks'] = $this->input->post('conduct_of_student');
+        $data['date_of_application_for_transfer_certificate'] = date('Y-m-d', strtotime($this->input->post('date_of_application_of_tc')));
+        $data['date_of_tc'] = date('Y-m-d', strtotime($this->input->post('date_of_tc')));
+
+        if($this->db->insert('tc_details', $data))
+        {
+          $data['student_name'] = $this->db->get_where('student' , array(
+              'student_id' => $data['section_id']
+              ))->row()->name;
+
+          echo json_encode($data);
+        }
+    }
+
 }
