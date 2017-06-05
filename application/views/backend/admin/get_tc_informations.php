@@ -1,293 +1,5 @@
 
-<div class="row form_tc_content" style="">
-	<div class="col-md-8" style="width:100%">
-		<div class="panel panel-primary" data-collapsed="0">
-        	<div class="panel-heading">
-            	<div class="panel-title" >
-            		<i class="entypo-plus-circled"></i>
-					<?php echo get_phrase('Transfer Certificate');?>
-            	</div>
-            </div>
-			<div class="panel-body">
-
-                <?php echo form_open(base_url() . 'index.php?admin/transfer_certificate/create/' , array('class' => 'form-horizontal form-groups-bordered validate', 'id' => 'tc_form', 'enctype' => 'multipart/form-data'));?>
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Name of the School');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control"  name="school_name" value="<?php
-							echo $this->db->get_where('settings' , array(
-																							'type' => 'system_name'
-																					))->row()->description;
-							?>" autofocus>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label">
-							<?php echo get_phrase('class');?>
-							<span class="mandetory">*</span>
-						</label>
-
-						<div class="col-sm-5">
-							<select name="class_id" class="form-control" data-validate="required" id="class_id"
-								data-message-required="<?php echo get_phrase('value_required');?>"
-									onchange="return get_class_sections(this.value)">
-                              <option value=""><?php echo get_phrase('select');?></option>
-                              <?php
-								$classes = $this->db->get('class')->result_array();
-								foreach($classes as $row):
-									?>
-                            		<option value="<?php echo $row['class_id'];?>">
-											<?php echo $row['name'];?>
-                                            </option>
-                                <?php
-								endforeach;
-							  ?>
-                          </select>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label">
-							<?php echo get_phrase('section');?>
-							<span class="mandetory">*</span>
-						</label>
-		                    <div class="col-sm-5">
-		                        <select name="section_id"
-														data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
-														class="form-control" id="section_selector_holder">
-		                            <option value=""><?php echo get_phrase('select_class_first');?></option>
-
-			                    </select>
-			                </div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label">
-							<?php echo get_phrase('student');?>
-							<span class="mandetory">*</span>
-						</label>
-						<div class="col-sm-5">
-								<select name="student_id" class="form-control"
-								style="width:100%;"
-								data-validate="required"
-								id="student_selection_holder"
-								onchange="return get_parent_name(this.value)">
-								>
-										<option value=""><?php echo get_phrase('select_class_first');?></option>
-								</select>
-						</div>
-				</div>
-
-				<div class="form-group">
-					<label for="field-1" class="col-sm-3 control-label">
-						<?php echo get_phrase('Father / Mother name');?>
-						<span class="mandetory">*</span>
-					</label>
-
-					<div class="col-sm-5">
-						<input type="text" class="form-control" name="name" id="parent_name" autofocus>
-					</div>
-				</div>
-
-
-				<div class="form-group">
-					<label for="field-2" class="col-sm-3 control-label">
-						<?php echo get_phrase('Nationality, Religion');?>
-						<span class="mandetory">*</span>
-					</label>
-
-					<div class="col-sm-5">
-						<input type="text" class="form-control" name="nationality" id="nationality"
-						data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
-						value="" >
-					</div>
-				</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label">
-							<?php echo get_phrase('gender');?>
-							<span class="mandetory">*</span>
-						</label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="sex" id="sex" autofocus>
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label">
-							<?php echo get_phrase('birthday');?>
-							<span class="mandetory">*</span>
-						</label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker"
-							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
-							name="birthday" id="birthday" value="" data-start-view="3">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label">
-							<?php echo get_phrase('Personal Identification Mark');?>
-							<span class="mandetory">*</span>
-						</label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="PIM" id="PIM" value="" data-start-view="2">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label">
-							<?php echo get_phrase('academic year');?>
-							<span class="mandetory">*</span>
-						</label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="academic_year" id="academic_year"  value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('standard studied');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="standard_studied" id="standard_studied"  value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('first language');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="first_lang" id="first_lang"  value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('second language');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="second_lang" id="second_lang"  value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label">
-							<?php echo get_phrase('Date of Admission');?>
-							<span class="mandetory">*</span>
-						</label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker" name="date_of_admission" id="date_of_admission"
-							data-start-view="3">
-						</div>
-					</div>
-
-					<!--<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('phone');?></label>
-
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="phone" value="" >
-						</div>
-					</div>-->
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Whether the pupil has paid all the fees due to the school');?></label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="fees_paid" id="fees_paid"
-							 value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Whether qualified for promotion to higher standard');?></label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="qualified_to_higher_standard" id="qualified_to_higher_standard"
-							 value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Whether the pupil was in receipt of any scholarship (Specify name of the scholarship)');?></label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="has_scholarship" id="has_scholarship"
-							 value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Whether the pupil
-						has undergone medical inspection, during the academic year (first or repeat to be specified)');?></label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="has_medical_inspection" id="has_medical_inspection"
-							 value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Date of pupil left from school');?></label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker" data-start-view="2" name="date_of_leave_from_school" id="date_of_leave_from_school"
-							 value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('The Pupil conduct and character');?></label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control" name="conduct_of_student" id="conduct_of_student"
-							 value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Date of application for transfer certificate');?></label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker" name="date_of_application_of_tc" data-start-view="3" id="date_of_application_of_tc"
-							 value="">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Date of transfer certificate');?></label>
-						<div class="col-sm-5">
-							<input type="text" class="form-control datepicker" name="date_of_tc" data-start-view="3" id="date_of_tc"
-							 value="">
-						</div>
-					</div>
-
-
-
-                    <div class="form-group">
-						<div class="col-sm-offset-3 col-sm-5">
-							<button type="submit" class="btn btn-info" id="tc_submit"><?php echo get_phrase('Generate TC');?></button>
-						</div>
-					</div>
-                <?php echo form_close();?>
-            </div>
-        </div>
-    </div>
-    <!--<div class="col-md-4">
-		<blockquote class="blockquote-blue">
-			<p>
-				<strong>Student Admission Notes</strong>
-			</p>
-			<p>
-				Admitting new students will automatically create an enrollment to the selected class in the running session.
-				Please check and recheck the informations you have inserted because once you admit new student, you won't be able
-				to edit his/her class,roll,section without promoting to the next session.
-			</p>
-		</blockquote>
-	</div>-->
-
-</div>
-
-<div class="row tc_format" style="display:none">
+<div class="row tc_format" >
   <a type="button" class="btn btn-default btn-icon icon-left hidden-print pull-right" onclick="printDiv('main-print')">Print TC<i class="entypo-print"></i></a>
 
 	<div class="main-print" id="main-print" style="clear: both; float: left;width: 75%; 	margin-left: 180px;">
@@ -312,6 +24,7 @@
 			</div>
 		</div>
 		<div class="main_content" style="clear: both; float: left; margin-left: 20px;">
+
 			<table class="main_content_header" style="margin-top: 15px; float: left; clear: both; width: 100%;">
 				<tr>
 					<td colspan="2" style="text-align:center">
@@ -612,19 +325,19 @@
             </tr>
             <tr>
               <td>
-                <span id="school_footer"></span>, Chennai - 62
+                Venkateshwaraa Matriculation School, Chennai - 62
               </td>
               <td>
-
+                2013 to 2016
               </td>
               <td>
-
+                Std VII to Std X
               </td>
               <td>
-								<div id="first_lang"></div>
+                Tamil
               </td>
               <td>
-                <div id="meduim"></div>
+                English
               </td>
             </tr>
           </table>
@@ -764,7 +477,7 @@
 		#name_of_school, #name_of_parent, #name_of_student, #nationality_and_religions,
 		#sex_db_value, #date_of_birth_value, #pim_value, #std_studied_at_time_of_leave_value,
 		#pupil_paid_all_fees, #whether_qualified_higher, #whether_pupil_scholarship,
-		#repeat_medical, #conduct_value, #first_lang, #meduim
+		#repeat_medical, #conduct_value
 		{
 			text-transform: capitalize;
 		}
@@ -797,47 +510,6 @@ function printDiv(divName) {
 	    });
 	});*/
 
-	function get_class_sections(class_id) {
-
-    	$.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id ,
-            success: function(response)
-            {
-                jQuery('#section_selector_holder').html(response);
-            }
-        });
-
-				$.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_class_students/' + class_id ,
-            success: function(response)
-            {
-                jQuery('#student_selection_holder').html(response);
-            }
-        });
-
-    }
-
-		function get_parent_name(student_id){
-			$.ajax({
-					url: '<?php echo base_url();?>index.php?admin/get_parent_name/' + student_id ,
-					success: function(response)
-					{
-							//alert(response);
-							response = $.parseJSON(response);
-							jQuery('#parent_name').val(response["parent_name"]);
-							jQuery('#sex').val(response["sex"]);
-							jQuery('#nationality').val(response["nationality_religion"]);
-							jQuery('#birthday').val(response["birthday"]);
-							jQuery('#PIM').val(response["personal_identification_number"]);
-							if(response["date_of_admission"] == "0000-00-00"){
-								response["date_of_admission"] = "";
-							}
-							jQuery('#date_of_admission').val(response["date_of_admission"]);
-							jQuery('#academic_year').val(response["academic_year"]);
-					}
-			});
-		}
-
 		$(document).ready(function() {
 			//if($('#class_id').val())
 			$('#tc_submit').click(function (e){
@@ -860,36 +532,32 @@ function printDiv(divName) {
 
 				$.ajax({
            type: "POST",
-           url: '<?php echo base_url();?>index.php?admin/get_tc_form_submission',
+           url: '<?php echo base_url();?>index.php?admin/get_tc_information_ajax',
            data: $("#tc_form").serialize(), // serializes the form's elements.
            success: function(data)
            {
-						 $('.form_tc_content').hide();
-						 $('.tc_format').show();
-						 $('.main-content h3').hide();
-               //alert(data); // show response from the php script.
-						data = $.parseJSON(data);
-						$('#name_of_school').html(data['school_name']);
-						$('#school_footer').html(data['school_name']);
-
-						$('#name_of_parent').html(data['parent_name']);
-						$('#name_of_student').html(data['student_name']);
-						$('#nationality_and_religions').html(data['nationlity_religion']);
-						$('#sex_db_value').html(data['sex']);
-						$('#date_of_birth_value').html(data['dob']);
-						$('#pim_value').html(data['pim']);
-						$('#date_of_admission_value').html(data['date_of_admission']);
-						$('#std_studied_at_time_of_leave_value').html(data['standard_studied_while_leaving']);
-						$('#pupil_paid_all_fees').html(data['is_paid_all_fees']);
-						$('#whether_qualified_higher').html(data['is_qualified_for_higher_standard']);
-						$('#whether_pupil_scholarship').html(data['scholarship']);
-						$('#repeat_medical').html(data['under_medical_inspection']);
-						$('#conduct_value').html(data['conduct_remarks']);
-						$('#date_of_tc_application').html(data['date_of_application_for_transfer_certificate']);
-						//$('#name_of_parent').html(data['parent_name']);
-						//$('#name_of_parent').html(data['parent_name']);
-						$('#first_lang').html(data['first_langugage']);
-						$('#meduim').html(data['second_language']);
+							$('.form_tc_content').hide();
+							$('.tc_format').show();
+							$('.main-content h3').hide();
+							//   alert(data); // show response from the php script.
+							data = $.parseJSON(data);
+							$('#name_of_school').html(data['school_name']);
+							$('#name_of_parent').html(data['parent_name']);
+							$('#name_of_student').html(data['student_name']);
+							$('#nationality_and_religions').html(data['nationlity_religion']);
+							$('#sex_db_value').html(data['sex']);
+							$('#date_of_birth_value').html(data['dob']);
+							$('#pim_value').html(data['pim']);
+							$('#date_of_admission_value').html(data['date_of_admission']);
+							$('#std_studied_at_time_of_leave_value').html(data['standard_studied_while_leaving']);
+							$('#pupil_paid_all_fees').html(data['is_paid_all_fees']);
+							$('#whether_qualified_higher').html(data['is_qualified_for_higher_standard']);
+							$('#whether_pupil_scholarship').html(data['scholarship']);
+							$('#repeat_medical').html(data['under_medical_inspection']);
+							$('#conduct_value').html(data['conduct_remarks']);
+							$('#date_of_tc_application').html(data['date_of_application_for_transfer_certificate']);
+							//$('#name_of_parent').html(data['parent_name']);
+							//$('#name_of_parent').html(data['parent_name']);
            }
          });
 

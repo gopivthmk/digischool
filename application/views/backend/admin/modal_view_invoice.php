@@ -3,119 +3,93 @@ $edit_data = $this->db->get_where('receipt', array('receipt_id' => $param2))->re
 foreach ($edit_data as $row):
 ?>
 
-<script type="text/javascript">
 
-    // print invoice function
-    function PrintElem(elem)
-    {
-        Popup($(elem).html());
-    }
-
-    function Popup(data)
-    {
-        var mywindow = window.open('', 'invoice', 'height=400,width=600');
-        mywindow.document.write('<html><head><title>Invoice</title>');
-        mywindow.document.write('<link rel="stylesheet" href="assets/css/receipt.css" type="text/css" />');
-        mywindow.document.write('</head><body >');
-        mywindow.document.write(data);
-        mywindow.document.write('</body></html>');
-
-        mywindow.print();
-        mywindow.close();
-
-        return true;
-    }
-
-</script>
-<style>
-.main
-{
-  width: 525px;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  color: #333;
-}
-.header_title, .middle_title
-{
-  font-size: 24px;
-  font-weight: bold;
-}
-.header_address span
-{
-    /*float: left;*/
-    clear: both;
-    padding-top:5px;
-    text-align: center;
-}
-.middle_row
-{
-  clear: both;
-}
-.tbl_receipt
-{
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-.tbl_receipt td{
-  border:1px solid #333;
-}
-
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  clear: both;
-  float: left;
-  margin-top: 10px;
-  min-width: 100% !important;
-}
-th,
-td {
-  padding: 10px 15px;
-}
-thead {
-  background: #395870;
-  color: #fff;
-}
-th {
-  font-weight: bold;
-  text-transform: uppercase;
-  text-align: center;
-  color: #fff;
-}
-tbody tr:nth-child(even) {
-  background: #f0f0f2;
-}
-td {
-  border-bottom: 1px solid #cecfd5;
-  border-right: 1px solid #cecfd5;
-  text-align: right;
-}
-td:first-child {
-  border-left: 1px solid #cecfd5;
-}
-.tbl_receipt_content
-{
-clear: both;
-float: left;
-border: 1px solid #cecfd5;
-margin-top: 10px;
-padding: 10px;
-text-align: justify;
-}
-
-</style>
 <center>
-    <a onClick="PrintElem('#invoice_print')" class="btn btn-default btn-icon icon-left hidden-print pull-right">
-        Print Invoice
-        <i class="entypo-print"></i>
-    </a>
+    <a type="button" class="btn btn-default btn-icon icon-left hidden-print pull-right" onclick="printDiv('main-print')">Print Invoice<i class="entypo-print"></i></a>
 </center>
 
     <br><br>
 
     <div id="invoice_print">
+    <style>
+    .main
+    {
+      width: 525px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+      color: #333;
+    }
+    .header_title, .middle_title
+    {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .header_address span
+    {
+        /*float: left;*/
+        clear: both;
+        padding-top:5px;
+        text-align: center;
+    }
+    .middle_row
+    {
+      clear: both;
+    }
+    .tbl_receipt
+    {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .tbl_receipt td{
+      border:1px solid #333;
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      clear: both;
+      float: left;
+      margin-top: 10px;
+      min-width: 100% !important;
+    }
+    th,
+    td {
+      padding: 10px 15px;
+    }
+    thead {
+      background: #395870;
+      color: #fff;
+    }
+    th {
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      color: #fff;
+    }
+    tbody tr:nth-child(even) {
+      background: #f0f0f2;
+    }
+    td {
+      border-bottom: 1px solid #cecfd5;
+      border-right: 1px solid #cecfd5;
+      text-align: right;
+    }
+    td:first-child {
+      border-left: 1px solid #cecfd5;
+    }
+    .tbl_receipt_content
+    {
+    clear: both;
+    float: left;
+    border: 1px solid #cecfd5;
+    margin-top: 10px;
+    padding: 10px;
+    text-align: justify;
+    }
+
+    </style>
       <div class="main">
         <div class="header_content">
             <div class="header_title">
@@ -224,29 +198,23 @@ $category_mapping = $this->db->get_where('receipt_category_mapping' , array(
           </div>
         </div>
       </div>
+      <script type="text/javascript">
+
+          // print invoice function
+
+          function printDiv(divName)
+          {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+          }
+
+      </script>
+
     </div>
 <?php endforeach; ?>
-<script type="text/javascript">
-
-    // print invoice function
-    function PrintElem(elem)
-    {
-        Popup($(elem).html());
-    }
-
-    function Popup(data)
-    {
-        var mywindow = window.open('', 'invoice', 'height=400,width=600');
-        mywindow.document.write('<html><head><title>Invoice</title>');
-        mywindow.document.write('<link rel="stylesheet" href="assets/css/receipt.css" type="text/css" />');
-        mywindow.document.write('</head><body >');
-        mywindow.document.write(data);
-        mywindow.document.write('</body></html>');
-
-        mywindow.print();
-        mywindow.close();
-
-        return true;
-    }
-
-</script>

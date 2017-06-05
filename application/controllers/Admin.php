@@ -2748,6 +2748,8 @@ class Admin extends CI_Controller
           redirect(base_url(), 'refresh');
       }
 
+
+
       $data['page_name']  = 'transfer_certificate';
       $data['page_title'] = get_phrase('transfer_certificate');
       $this->load->view('backend/index', $data);
@@ -2763,6 +2765,38 @@ class Admin extends CI_Controller
       $data['page_name']  = 'create_transfer_certificate';
       $data['page_title'] = get_phrase('create_transfer_certificate');
       $this->load->view('backend/index', $data);
+    }
+
+    function get_tc_informations($tc_view = '')
+    {
+      //echo $tc_view; exit;
+      if ($this->session->userdata('admin_login') != 1)
+      {
+          $this->session->set_userdata('last_page', current_url());
+          redirect(base_url(), 'refresh');
+      }
+
+      $page_data['edit_data']  = $this->db->get_where('tc_details' , array(
+      'student_id' => $tc_view
+      ))->result_array();
+
+      $page_data['page_name']  = 'view_transfer_certificate';
+      $page_data['page_title'] = get_phrase('view_transfer_certificate');
+      $this->load->view('backend/index', $page_data);
+    }
+
+    function get_tc_information_ajax($tc_id)
+    {
+
+      $tc_details = $this->db->get_where('tc_details' , array(
+      'student_id' => $tc_view
+      ))->result_array();
+
+      $tc_details['student_name'] = $this->db->get_where('student' , array(
+      'student_id' => $tc_details[0]['tc_details']['student_id']
+      ))->row()->name;
+
+      echo json_encode($tc_details);
     }
 
     function get_tc_form_submission()
@@ -2792,6 +2826,12 @@ class Admin extends CI_Controller
 
         if($this->db->insert('tc_details', $data))
         {
+
+          $student_data['date_of_tc'] = $data['date_of_tc'];
+
+          $this->db->where('student_id' , $data['student_id']);
+          $this->db->update('student' , $student_data);
+
           $data['school_name'] = $this->input->post('school_name');
           $data['student_name'] = $this->db->get_where('student' , array(
               'student_id' => $data['section_id']

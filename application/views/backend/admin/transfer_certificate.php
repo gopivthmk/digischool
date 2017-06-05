@@ -2,43 +2,40 @@
     <thead>
         <tr>
             <th style="width: 60px;">#</th>
-            <th><div><?php echo get_phrase('name');?></div></th>
-            <th><div><?php echo get_phrase('email');?></div></th>
-            <th><div><?php echo get_phrase('options');?></div></th>
+            <th><div><?php echo get_phrase('student name');?></div></th>
+            <th><div><?php echo get_phrase('class');?></div></th>
+            <th><div><?php echo get_phrase('parent name');?></div></th>
+            <th><div><?php echo get_phrase('action');?></div></th>
         </tr>
     </thead>
     <tbody>
         <?php
         $count = 1;
-        $librarians   =   $this->db->get('librarian')->result_array();
-        foreach($librarians as $row): ?>
+        $tc_details   =   $this->db->get('tc_details')->result_array();
+        foreach($tc_details as $row): ?>
             <tr>
                 <td><?php echo $count++;?></td>
-                <td><?php echo $row['name'];?></td>
-                <td><?php echo $row['email'];?></td>
+                <td><?php
+                  echo $this->db->get_where('student' , array('student_id' =>$row['student_id']))->row()->name;
+                  ?></td>
+                <td><?php
+                  $enroll = $this->db->get_where('enroll' , array('student_id' =>$row['student_id']))->result_array();
+                  echo $this->db->get_where('class' , array('class_id' =>$enroll[0]['class_id']))->row()->name;
+                  ?></td>
+                  <td><?php
+
+                    echo $row['parent_name'];
+                    ?></td>
                 <td>
 
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                            Action <span class="caret"></span>
+                      <button type="button" style="background-color:dodgerblue; color:#fff; font-weight:bold"
+                      class="btn btn-default btn-sm generate_tc"
+                      id="generate_tc_<?php echo $row['student_id'];?>"
+                      student-id="<?php echo $row['student_id'];?>">
+                            View TC
                         </button>
-                        <ul class="dropdown-menu dropdown-default pull-right" role="menu">
 
-                            <li>
-                                <a href="#" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/librarian_edit/<?php echo $row['librarian_id']; ?>');">
-                                    <i class="entypo-pencil"></i>
-                                    <?php echo get_phrase('edit');?>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-
-                            <li>
-                                <a href="#" onclick="confirm_modal('<?php echo base_url();?>index.php?admin/librarian/delete/<?php echo $row['librarian_id']; ?>');">
-                                    <i class="entypo-trash"></i>
-                                    <?php echo get_phrase('delete');?>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
 
                 </td>
