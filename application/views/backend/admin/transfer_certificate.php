@@ -11,6 +11,7 @@
     <tbody>
         <?php
         $count = 1;
+        $this->db->order_by('tc_details_id', 'desc');
         $tc_details   =   $this->db->get('tc_details')->result_array();
         foreach($tc_details as $row): ?>
             <tr>

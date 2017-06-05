@@ -16,7 +16,7 @@
 						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Name of the School');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control"  name="school_name" value="<?php
+							<input type="text" class="form-control" id="school_name"  name="school_name" value="<?php
 							echo $this->db->get_where('settings' , array(
 																							'type' => 'system_name'
 																					))->row()->description;
@@ -95,7 +95,7 @@
 
 				<div class="form-group">
 					<label for="field-2" class="col-sm-3 control-label">
-						<?php echo get_phrase('Nationality, Religion');?>
+						<?php echo get_phrase('Nationality, Religion and Caste');?>
 						<span class="mandetory">*</span>
 					</label>
 
@@ -169,7 +169,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('second language');?></label>
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Medium of Instruction');?></label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="second_lang" id="second_lang"  value="">
@@ -197,7 +197,7 @@
 					</div>-->
 
 					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('Whether the pupil has paid all the fees due to the school');?></label>
+						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase("Whether the Pupil has paid all the fees due to the school");?></label>
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="fees_paid" id="fees_paid"
 							 value="">
@@ -295,12 +295,12 @@
 		<div class="header_content" style="float: left; clear: both; width: 75%; margin-left: 85px;">
 			<div class="left">
 				<div class="school_logo">
-					<img src="<?php echo base_url(); ?>assets/images/logo.png" alt="logo" />
+					<img src="<?php echo base_url(); ?>assets/images/logo.PNG" alt="logo" />
 				</div>
 			</div>
 			<div class="right">
 				<div class="header_title">
-					Venkateshwaraa Matriculation School
+					Venkateshwara Matriculation School
 				</div>
 				<div class="header_sub_title">
 					(Recognised by the Govt. of Tamil Nadu) R.C. No.530866/E1/98 dt. 04.08.98
@@ -361,9 +361,8 @@
           1.
           </div>
           <div class="content_heading" style="float:left">
-            School Informations
           <ol>
-            <li>Name of the Student</li>
+            <li>Name of the School</li>
             <li>Name of the Educational District</li>
             <li>Name of the Revenue District</li>
           </ol>
@@ -409,10 +408,10 @@
           4.
           </div>
           <div class="content_heading" style="float:left">
-            Nationality and Religion
+            Nationality, Religion and Caste
           </div>
           <div class="content_data" style="float:left">
-            <div id="nationality_and_religions" class="header_values" style="margin-left:172px" ></div>
+            <div id="nationality_and_religions" class="header_values" style="margin-left:134px" ></div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -448,7 +447,7 @@
             Sex
           </div>
           <div class="content_data" style="float:left">
-            <div id="sex_db_value" class="header_values" style="margin-left:287px" ></div>
+            <div id="sex_db_value" class="header_values" style="margin-left:292px" ></div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -459,7 +458,7 @@
             Date of Birth, </br><span style="font-size:10px">(as entered in the admission register in figures and words)</span>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_birth_value" class="header_values" style="margin-left:55px" ></div>
+            <div id="date_of_birth_value" class="header_values" style="margin-left:49px" ></div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -516,7 +515,7 @@
           12.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
-            Whether qualified for promotion to hihger standard
+            Whether qualified for promotion to Higher standard
           </div>
           <div class="content_data" style="float:left">
             <div id="whether_qualified_higher" class="header_values" style="margin-left:23px" ></div>
@@ -562,7 +561,7 @@
           16.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
-            The pupil conduct and character
+            The Pupil's conduct and character
           </div>
           <div class="content_data" style="float:left">
             <div id="conduct_value" class="header_values" style="margin-left:128px" ></div>
@@ -574,7 +573,7 @@
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Date on which application for tranfer certificate <br/>was made
-            on behalf of the pupil by his <br/>parent or gaurdien
+            on behalf of the pupil by his <br/>parent or Guardian
           </div>
           <div class="content_data" style="float:left">
             <div id="date_of_tc_application" class="header_values" style="margin-left:49px" ></div>
@@ -595,10 +594,10 @@
           <table border="1" class="summay_tc">
             <tr>
               <th>
-                Name of the student
+                Name of the School
               </th>
               <th>
-                Academic Year
+                Academic Year (s)
               </th>
               <th>
                 Standard(s) studied
@@ -607,7 +606,7 @@
                 First Langugage
               </th>
               <th>
-                Meduim of Instruction
+                Medium of Instruction
               </th>
             </tr>
             <tr>
@@ -735,7 +734,7 @@
       border-bottom: 1px solid #333;
       list-style: none;
       height: 22px;
-      margin-bottom:33px  ;
+      margin-bottom:30px  ;
         width: 300px;
         margin-left: 44px;
     }
@@ -808,9 +807,10 @@ function printDiv(divName) {
         });
 
 				$.ajax({
-            url: '<?php echo base_url();?>index.php?admin/get_class_students/' + class_id ,
+            url: '<?php echo base_url();?>index.php?admin/get_class_students/' + class_id + '/true' ,
             success: function(response)
             {
+							//alert(response);
                 jQuery('#student_selection_holder').html(response);
             }
         });
@@ -840,6 +840,18 @@ function printDiv(divName) {
 
 		$(document).ready(function() {
 			//if($('#class_id').val())
+
+			$('#first_lang').val('Tamil');
+			$('#meduim').val('English')
+			$('#second_lang').val('English');
+			$('#name_of_educational_district').html('Ponneri');
+			$('#name_of_revenue_district').html('Thiruvallur');
+			disable_input_elements('first_lang', 'Tamil','val');
+			disable_input_elements('second_lang', 'English','val');
+			disable_input_elements('school_name', 'Venkateshwara Matriculation School (JVMS)','val');
+			//disable_input_elements('name_of_educational_district', 'Ponneri','html');
+			//disable_input_elements('name_of_revenue_district', 'Thiruvallur','html');
+
 			$('#tc_submit').click(function (e){
 
 				//alert($('#class_id').val());
@@ -888,8 +900,8 @@ function printDiv(divName) {
 						$('#date_of_tc_application').html(data['date_of_application_for_transfer_certificate']);
 						//$('#name_of_parent').html(data['parent_name']);
 						//$('#name_of_parent').html(data['parent_name']);
-						$('#first_lang').html(data['first_langugage']);
-						$('#meduim').html(data['second_language']);
+						//$('#first_lang').html(data['first_langugage']);
+						//$('#meduim').html(data['second_language']);
            }
          });
 
@@ -897,5 +909,15 @@ function printDiv(divName) {
 				return false;
 			});
 		});
-
+		function disable_input_elements(id, content, element_type){
+			$('#'+id).bind('keyup', function(e) {
+			    e.stopPropagation();
+					if(element_type == 'val'){
+						$(this).val(content);
+					}
+					if(element_type == 'html'){
+						$(this).html(content);
+					}
+			});
+		}
 </script>

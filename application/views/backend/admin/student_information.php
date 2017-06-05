@@ -50,6 +50,7 @@
                     <tbody>
                         <?php
                         //echo "This is year " .$running_year;
+                        $this->db->order_by('enroll_id', 'desc');
                                 $students   =   $this->db->get_where('enroll' , array(
                                     'class_id' => $class_id , 'year' => $running_year
                                 ))->result_array();

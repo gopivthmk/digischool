@@ -859,18 +859,37 @@ class Admin extends CI_Controller
         }
     }
 
-    function get_class_students($class_id)
+    function get_class_students($class_id, $tc = '')
     {
+        $existing_tc_students = array();
+        if($tc == 'true'){
+          $this->db->select('student_id');
+          $tc_students = $this->db->get_where('tc_details')->result_array();
+          foreach ($tc_students as $value) {
+            array_push($existing_tc_students, $value['student_id']);
+          }
+        }
+        //print_r($existing_tc_students);
         $students = $this->db->get_where('enroll' , array(
             'class_id' => $class_id , 'year' => $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description
         ))->result_array();
-        echo '<option value="0">Select Student</option>';
+        //echo '<option value="0">Select Student</option>';
         foreach ($students as $row) {
+          if(($tc == 'true') && (in_array($row['student_id'], $existing_tc_students) == false)){
+            $name = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->name;
+            $admission_no = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->admission_no;
+            $parent_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->parent_id;
+            $parent_name = $this->db->get_where('parent' , array('parent_id' => $parent_id))->row()->name;
+            //int_r($existing_tc_students);
+            echo '<option value="' . $row['student_id'] . '">' . $admission_no."-".$name."-".$parent_name.'</option>';
+          }
+          if($tc == ''){
             $name = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->name;
             $admission_no = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->admission_no;
             $parent_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->parent_id;
             $parent_name = $this->db->get_where('parent' , array('parent_id' => $parent_id))->row()->name;
             echo '<option value="' . $row['student_id'] . '">' . $admission_no."-".$name."-".$parent_name.'</option>';
+          }
         }
     }
 
