@@ -2820,37 +2820,40 @@ class Admin extends CI_Controller
 
     function get_tc_form_submission()
     {
-
         $data['student_id'] = $this->input->post('student_id');
         $data['class_id'] = $this->input->post('class_id');
         $data['section_id'] = $this->input->post('section_id');
         $data['parent_name'] = $this->input->post('name');
         $data['nationlity_religion'] = $this->input->post('nationality');
         $data['sex'] = $this->input->post('sex');
-        $data['dob'] = date('d/m/Y', strtotime($this->input->post('birthday')));
+        $data['dob'] = date('Y-m-d', strtotime($this->input->post('birthday')));
         $data['pim'] = $this->input->post('PIM');
         $data['academic_year'] = $this->input->post('academic_year');
         $data['standard_studied_while_leaving'] = $this->input->post('standard_studied');
         $data['first_langugage'] = $this->input->post('first_lang');
         $data['second_language'] = $this->input->post('second_lang');
-        $data['date_of_admission'] = date('d/m/Y', strtotime($this->input->post('date_of_admission')));
+        $data['date_of_admission'] = date('Y-m-d', strtotime($this->input->post('date_of_admission')));
         $data['is_paid_all_fees'] = $this->input->post('fees_paid');
         $data['is_qualified_for_higher_standard'] = $this->input->post('qualified_to_higher_standard');
         $data['scholarship'] = $this->input->post('has_scholarship');
         $data['under_medical_inspection'] = $this->input->post('has_medical_inspection');
-        $data['date_of_left_school'] = date('d/m/Y', strtotime($this->input->post('date_of_leave_from_school')));
+        $data['date_of_left_school'] = date('Y-m-d', strtotime($this->input->post('date_of_leave_from_school')));
         $data['conduct_remarks'] = $this->input->post('conduct_of_student');
-        $data['date_of_application_for_transfer_certificate'] = date('d/m/Y', strtotime($this->input->post('date_of_application_of_tc')));
-        $data['date_of_tc'] = date('d/m/Y', strtotime($this->input->post('date_of_tc')));
+        $data['date_of_application_for_transfer_certificate'] = date('Y-m-d', strtotime($this->input->post('date_of_application_of_tc')));
+        $data['date_of_tc'] = date('Y-m-d', strtotime($this->input->post('date_of_tc')));
 
         if($this->db->insert('tc_details', $data))
         {
-
-          $student_data['date_of_tc'] = $data['date_of_tc'];
+          $student_data['date_of_tc'] = date('Y-m-d', strtotime($data['date_of_tc']));
 
           $this->db->where('student_id' , $data['student_id']);
           $this->db->update('student' , $student_data);
 
+          $data['date_of_left_school'] = date('d/m/Y', strtotime($this->input->post('date_of_leave_from_school')));
+          $data['date_of_tc'] = date('d/m/Y', strtotime($this->input->post('date_of_tc')));
+          $data['date_of_left_school'] = date('d/m/Y', strtotime($this->input->post('date_of_leave_from_school')));
+          $data['date_of_application_for_transfer_certificate'] = date('d/m/Y', strtotime($this->input->post('date_of_application_of_tc')));
+          $data['dob'] = date('d/m/Y', strtotime($this->input->post('birthday')));
           $data['school_name'] = $this->input->post('school_name');
           $data['student_name'] = $this->db->get_where('student' , array(
               'student_id' => $data['section_id']

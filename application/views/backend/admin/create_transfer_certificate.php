@@ -164,7 +164,7 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('first language');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="first_lang" id="first_lang"  value="">
+							<input type="text" class="form-control" name="first_lang" id="first_lang_text"  value="">
 						</div>
 					</div>
 
@@ -369,7 +369,7 @@
           </div>
           <div class="content_data" style="float:left">
             <ul class="schoool_info">
-              <li>
+              <li style="border:none; font-weight:bold">
                 <div id="name_of_school" ></div>
               </li>
               <li>
@@ -763,7 +763,7 @@
 		#name_of_school, #name_of_parent, #name_of_student, #nationality_and_religions,
 		#sex_db_value, #date_of_birth_value, #pim_value, #std_studied_at_time_of_leave_value,
 		#pupil_paid_all_fees, #whether_qualified_higher, #whether_pupil_scholarship,
-		#repeat_medical, #conduct_value, #first_lang, #meduim
+		#repeat_medical, #conduct_value, #first_lang, #meduim, #first_lang_text
 		{
 			text-transform: capitalize;
 		}
@@ -841,12 +841,13 @@ function printDiv(divName) {
 		$(document).ready(function() {
 			//if($('#class_id').val())
 
-			$('#first_lang').val('Tamil');
-			$('#meduim').val('English')
+			$('#first_lang').html('Tamil');
+			$('#first_lang_text').val('Tamil');
+			$('#meduim').html('English')
 			$('#second_lang').val('English');
 			$('#name_of_educational_district').html('Ponneri');
 			$('#name_of_revenue_district').html('Thiruvallur');
-			disable_input_elements('first_lang', 'Tamil','val');
+			disable_input_elements('first_lang_text', 'Tamil','val');
 			disable_input_elements('second_lang', 'English','val');
 			disable_input_elements('school_name', 'Venkateshwara Matriculation School (JVMS)','val');
 			//disable_input_elements('name_of_educational_district', 'Ponneri','html');
