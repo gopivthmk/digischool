@@ -2786,8 +2786,12 @@ class Admin extends CI_Controller
       $this->load->view('backend/index', $data);
     }
 
-    function get_tc_informations($tc_view = '')
+    function view_transfer_certificate($tc_details_id = '')
     {
+      if($tc_details_id != '')
+      {
+        $tc_details_id = base64_decode(base64_decode($tc_details_id));
+      }
       //echo $tc_view; exit;
       if ($this->session->userdata('admin_login') != 1)
       {
@@ -2796,26 +2800,12 @@ class Admin extends CI_Controller
       }
 
       $page_data['edit_data']  = $this->db->get_where('tc_details' , array(
-      'student_id' => $tc_view
+      'tc_details_id' => $tc_details_id
       ))->result_array();
 
       $page_data['page_name']  = 'view_transfer_certificate';
       $page_data['page_title'] = get_phrase('view_transfer_certificate');
       $this->load->view('backend/index', $page_data);
-    }
-
-    function get_tc_information_ajax($tc_id)
-    {
-
-      $tc_details = $this->db->get_where('tc_details' , array(
-      'student_id' => $tc_view
-      ))->result_array();
-
-      $tc_details['student_name'] = $this->db->get_where('student' , array(
-      'student_id' => $tc_details[0]['tc_details']['student_id']
-      ))->row()->name;
-
-      echo json_encode($tc_details);
     }
 
     function get_tc_form_submission()

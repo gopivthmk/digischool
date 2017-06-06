@@ -172,9 +172,19 @@
 
     for ($i = 1; $i <= $days; $i++) {
         ?>
-                            <td style="text-align: center;"><?php echo $i; ?></td>
+                            <td style="text-align: center;" colspan="2"><?php echo $i; ?></td>
                     <?php } ?>
 
+                    </tr>
+                    <tr>
+                      <td>
+                      </td>
+                      <?php
+for ($i = 1; $i <= $days; $i++) {
+                       ?>
+                       <td>Morning</td>
+                       <td>Evening</td>
+                         <?php }?>
                     </tr>
                 </thead>
 
@@ -192,32 +202,60 @@
                             </td>
                             <?php
                             $status = 0;
+                                                          //echo $sessional_year."-".$month;exit;
                             for ($i = 1; $i <= $days; $i++) {
-                                $timestamp = strtotime($i . '-' . $month . '-' . $sessional_year);
-                                $this->db->group_by('attendance_date');
-                                $attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'attendance_date' => $timestamp, 'student_id' => $row['student_id']))->result_array();
 
+                                $timestamp = date('Y-m-d', strtotime($sessional_year."-".$month."-".$i));
+                                //$this->db->group_by('attendance_date');
+                                $attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'attendance_date' => $timestamp, 'student_id' => $row['student_id']))->result_array();
+                                //echo $this->db->last_query()."<br/>";//exit;
+//print_r($attendance);
 
                                 foreach ($attendance as $row1):
-                                    $month_dummy = date('d', $row1['attendance_date']);
+                                  $month_dummy   = date('d', strtotime($row1['attendance_date']));
+//echo $i."--------".$month_dummy;
+                                    if ($i == $month_dummy){
 
-                                    if ($i == $month_dummy)
-                                    $status = $row1['status'];
 
 
-                                endforeach;
                                 ?>
-                                <td style="text-align: center;">
-            <?php if ($status == 1) { ?>
-                                        <i class="entypo-record" style="color: #00a651;"></i>
-                            <?php  } if($status == 2)  { ?>
-                                        <i class="entypo-record" style="color: #ee4749;"></i>
+
+            <?php if ($row1['session_id'] == 1 && $row1['status'] == 1) { ?>
+              <td style="text-align: center;">
+                                        <i  style="color: #00a651;">&#10003;</i>
+                                        </td>
+                            <?php  } if($row1['session_id'] == 1 && $row1['status'] == 2)  { ?>
+                              <td style="text-align: center;">
+                                        <i  style="color: #ee4749;">&#10007;</i>
+                                          </td>
             <?php  } $status =0;?>
 
 
-                                </td>
 
-        <?php } ?>
+
+
+            <?php if ($row1['session_id'] == 2 && $row1['status'] == 1) { ?>
+              <td style="text-align: center;">
+                                        <i style="color: #00a651;">&#10003;</i>
+                                        </td>
+                            <?php  } if($row1['session_id'] == 2 && $row1['status'] == 2)  { ?>
+                              <td style="text-align: center;">
+                                        <i  style="color: #ee4749;">&#10007;</i>
+                                        </td>
+            <?php  } $status =0;?>
+
+
+
+
+        <?php
+}
+
+      endforeach;
+      ?>
+      <td></td>
+      <td></td>
+      <?php
+      } ?>
     <?php endforeach; ?>
 
                     </tr>

@@ -1,5 +1,8 @@
+<?php
+//print_r($edit_data);exit;
 
-<div class="row tc_format" >
+?>
+<div class="row tc_format">
   <a type="button" class="btn btn-default btn-icon icon-left hidden-print pull-right" onclick="printDiv('main-print')">Print TC<i class="entypo-print"></i></a>
 
 	<div class="main-print" id="main-print" style="clear: both; float: left;width: 75%; 	margin-left: 180px;">
@@ -7,12 +10,12 @@
 		<div class="header_content" style="float: left; clear: both; width: 75%; margin-left: 85px;">
 			<div class="left">
 				<div class="school_logo">
-					<img src="<?php echo base_url(); ?>assets/images/logo.png" alt="logo" />
+					<img src="<?php echo base_url(); ?>assets/images/logo.PNG" alt="logo" />
 				</div>
 			</div>
 			<div class="right">
 				<div class="header_title">
-					Venkateshwaraa Matriculation School
+					Venkateshwara Matriculation School
 				</div>
 				<div class="header_sub_title">
 					(Recognised by the Govt. of Tamil Nadu) R.C. No.530866/E1/98 dt. 04.08.98
@@ -24,7 +27,6 @@
 			</div>
 		</div>
 		<div class="main_content" style="clear: both; float: left; margin-left: 20px;">
-
 			<table class="main_content_header" style="margin-top: 15px; float: left; clear: both; width: 100%;">
 				<tr>
 					<td colspan="2" style="text-align:center">
@@ -74,17 +76,16 @@
           1.
           </div>
           <div class="content_heading" style="float:left">
-            School Informations
           <ol>
-            <li>Name of the Student</li>
+            <li>Name of the School</li>
             <li>Name of the Educational District</li>
             <li>Name of the Revenue District</li>
           </ol>
           </div>
           <div class="content_data" style="float:left">
             <ul class="schoool_info">
-              <li>
-                <div id="name_of_school" ></div>
+              <li style="border:none; font-weight:bold">
+                <div id="name_of_school" >Venkateshwara Matriculation School</div>
               </li>
               <li>
                 <div id="name_of_educational_district" ></div>
@@ -103,7 +104,12 @@
             Name of the pupil (in Block Letters)
           </div>
           <div class="content_data" style="float:left">
-            <div id="name_of_student" class="header_values" style="margin-left:107px;"></div>
+            <div id="name_of_student" class="header_values" style="margin-left:107px;">
+              <?php
+              echo $this->db->get_where('student' , array('student_id' =>
+              $edit_data[0]['student_id']))->row()->name;
+               ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -114,7 +120,11 @@
           Name of the Father or Mother
           </div>
           <div class="content_data" style="float:left">
-            <div id="name_of_parent" class="header_values" style="margin-left:138px"></div>
+            <div id="name_of_parent" class="header_values" style="margin-left:138px">
+              <?php
+              echo $edit_data[0]['parent_name'];
+               ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -122,10 +132,14 @@
           4.
           </div>
           <div class="content_heading" style="float:left">
-            Nationality and Religion
+            Nationality, Religion and Caste
           </div>
           <div class="content_data" style="float:left">
-            <div id="nationality_and_religions" class="header_values" style="margin-left:172px" ></div>
+            <div id="nationality_and_religions" class="header_values" style="margin-left:134px" >
+              <?php
+              echo $edit_data[0]['nationlity_religion'];
+               ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -161,7 +175,9 @@
             Sex
           </div>
           <div class="content_data" style="float:left">
-            <div id="sex_db_value" class="header_values" style="margin-left:287px" ></div>
+            <div id="sex_db_value" class="header_values" style="margin-left:292px" >
+              <?php echo $edit_data[0]['sex']; ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -172,7 +188,9 @@
             Date of Birth, </br><span style="font-size:10px">(as entered in the admission register in figures and words)</span>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_birth_value" class="header_values" style="margin-left:55px" ></div>
+            <div id="date_of_birth_value" class="header_values" style="margin-left:49px" >
+              <?php echo ($edit_data[0]['dob'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['dob'])); ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -183,7 +201,9 @@
             Personal Mark of Identification
           </div>
           <div class="content_data" style="float:left">
-            <div id="pim_value" class="header_values" style="margin-left:140px" ></div>
+            <div id="pim_value" class="header_values" style="margin-left:140px" >
+              <?php echo $edit_data[0]['pim']; ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -195,7 +215,9 @@
             <span style="font-size:10px">(the year to be entered in words)</span>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_admission_value" class="header_values" style="margin-left:26px" ></div>
+            <div id="date_of_admission_value" class="header_values" style="margin-left:26px" >
+              <?php echo ($edit_data[0]['date_of_admission'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -208,7 +230,9 @@
             <span style="font-size:10px">(in words)</span>
           </div>
           <div class="content_data" style="float:left">
-            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:71px" ></div>
+            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:71px" >
+<?php echo $edit_data[0]['standard_studied_while_leaving']; ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -221,7 +245,9 @@
             <span style="font-size:10px">(in words)</span>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pupil_paid_all_fees" class="header_values" style="margin-left:62px" ></div>
+            <div id="pupil_paid_all_fees" class="header_values" style="margin-left:62px" >
+              <?php echo $edit_data[0]['is_paid_all_fees']; ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -229,10 +255,12 @@
           12.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
-            Whether qualified for promotion to hihger standard
+            Whether qualified for promotion to Higher standard
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_qualified_higher" class="header_values" style="margin-left:23px" ></div>
+            <div id="whether_qualified_higher" class="header_values" style="margin-left:23px" >
+              <?php echo $edit_data[0]['is_qualified_for_higher_standard']; ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -244,7 +272,9 @@
             </br>(Nature of the scholarship to be specified)
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:18px" ></div>
+            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:18px" >
+              <?php echo $edit_data[0]['scholarship']; ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -256,7 +286,9 @@
           </br>inspection during the academic year, </br>(First or repeat to be specified)
           </div>
           <div class="content_data" style="float:left">
-            <div id="repeat_medical" class="header_values" style="margin-left:70px" ></div>
+            <div id="repeat_medical" class="header_values" style="margin-left:70px" >
+              <?php echo $edit_data[0]['under_medical_inspection']; ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -267,7 +299,10 @@
             Date on which the pupil actually left the school
           </div>
           <div class="content_data" style="float:left">
-            <div id="repeat_medical" class="header_values" style="margin-left:45px" ></div>
+            <div id="date_of_left_school" class="header_values" style="margin-left:45px" >
+
+              <?php echo ($edit_data[0]['date_of_left_school'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -275,10 +310,12 @@
           16.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
-            The pupil conduct and character
+            The Pupil's conduct and character
           </div>
           <div class="content_data" style="float:left">
-            <div id="conduct_value" class="header_values" style="margin-left:128px" ></div>
+            <div id="conduct_value" class="header_values" style="margin-left:128px" >
+              <?php echo $edit_data[0]['conduct_remarks']; ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -287,10 +324,12 @@
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Date on which application for tranfer certificate <br/>was made
-            on behalf of the pupil by his <br/>parent or gaurdien
+            on behalf of the pupil by his <br/>parent or Guardian
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:49px" ></div>
+            <div id="date_of_tc_application" class="header_values" style="margin-left:49px" >
+              <?php echo ($edit_data[0]['date_of_application_for_transfer_certificate'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_application_for_transfer_certificate'])); ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -301,17 +340,19 @@
             Date of the Transfer Certificate
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:141px" ></div>
+            <div id="date_of_tc_application" class="header_values" style="margin-left:141px" >
+              <?php echo ($edit_data[0]['date_of_tc'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_tc'])); ?>
+            </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
           <table border="1" class="summay_tc">
             <tr>
               <th>
-                Name of the student
+                Name of the School
               </th>
               <th>
-                Academic Year
+                Academic Year (s)
               </th>
               <th>
                 Standard(s) studied
@@ -320,24 +361,24 @@
                 First Langugage
               </th>
               <th>
-                Meduim of Instruction
+                Medium of Instruction
               </th>
             </tr>
             <tr>
               <td>
-                Venkateshwaraa Matriculation School, Chennai - 62
+                <span id="school_footer"></span>, Chennai - 62
               </td>
               <td>
-                2013 to 2016
+
               </td>
               <td>
-                Std VII to Std X
+
               </td>
               <td>
-                Tamil
+								<div id="first_lang"></div>
               </td>
               <td>
-                English
+                <div id="meduim"></div>
               </td>
             </tr>
           </table>
@@ -448,7 +489,7 @@
       border-bottom: 1px solid #333;
       list-style: none;
       height: 22px;
-      margin-bottom:33px  ;
+      margin-bottom:30px  ;
         width: 300px;
         margin-left: 44px;
     }
@@ -477,7 +518,7 @@
 		#name_of_school, #name_of_parent, #name_of_student, #nationality_and_religions,
 		#sex_db_value, #date_of_birth_value, #pim_value, #std_studied_at_time_of_leave_value,
 		#pupil_paid_all_fees, #whether_qualified_higher, #whether_pupil_scholarship,
-		#repeat_medical, #conduct_value
+		#repeat_medical, #conduct_value, #first_lang, #meduim, #first_lang_text
 		{
 			text-transform: capitalize;
 		}
@@ -510,7 +551,18 @@ function printDiv(divName) {
 	    });
 	});*/
 
-		$(document).ready(function() {
+  $(document).ready(function() {
+    //if($('#class_id').val())
+
+    $('#first_lang').html('Tamil');
+    $('#first_lang_text').val('Tamil');
+    $('#meduim').html('English')
+    $('#second_lang').val('English');
+    $('#name_of_educational_district').html('Ponneri');
+    $('#name_of_revenue_district').html('Thiruvallur');
+    disable_input_elements('first_lang_text', 'Tamil','val');
+    disable_input_elements('second_lang', 'English','val');
+    disable_input_elements('school_name', 'Venkateshwara Matriculation School (JVMS)','val');
 			//if($('#class_id').val())
 			$('#tc_submit').click(function (e){
 

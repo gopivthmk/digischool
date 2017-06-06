@@ -30,12 +30,14 @@
                 <td>
 
                     <div class="btn-group">
-                      <button type="button" style="background-color:dodgerblue; color:#fff; font-weight:bold"
+                      <a type="button" style="background-color:dodgerblue; color:#fff; font-weight:bold"
                       class="btn btn-default btn-sm generate_tc"
                       id="generate_tc_<?php echo $row['student_id'];?>"
-                      student-id="<?php echo $row['student_id'];?>">
+                      student-id="<?php echo $row['student_id'];?>"
+                      href="<?php echo base_url(); ?>index.php?admin/view_transfer_certificate/<?php echo base64_encode(base64_encode($row['tc_details_id'])); ?>"
+                      >
                             View TC
-                        </button>
+                        </a>
 
                     </div>
 
