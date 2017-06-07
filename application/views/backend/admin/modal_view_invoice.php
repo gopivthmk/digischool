@@ -5,7 +5,8 @@ foreach ($edit_data as $row):
 
 
 <center>
-    <a type="button" class="btn btn-default btn-icon icon-left hidden-print pull-right" onclick="printDiv('main-print')">Print Invoice<i class="entypo-print"></i></a>
+    <a type="button" class="btn btn-default btn-icon icon-left hidden-print pull-right"
+    onclick="printDiv('invoice_print')">Print Invoice<i class="entypo-print"></i></a>
 </center>
 
     <br><br>
@@ -191,30 +192,29 @@ $category_mapping = $this->db->get_where('receipt_category_mapping' , array(
       </tfoot>
     </table>
 
+    <script type="text/javascript">
 
+        // print invoice function
+
+        function printDiv(divName) {
+             var printContents = document.getElementById(divName).innerHTML;
+             var originalContents = document.body.innerHTML;
+
+             document.body.innerHTML = printContents;
+
+             window.print();
+
+             document.body.innerHTML = originalContents;
+        }
+
+    </script>
           <div class="tbl_receipt_content">
             Special fees includes SMS, Web Access, Stationary, Notes, Accessories, ECA, Clud fees,  Health & Amentities, Karate, Counselling,
             External Assessment, Handwork and Skill Development, Training, Workshops, Books & Note Books & Other Activities
           </div>
         </div>
       </div>
-      <script type="text/javascript">
 
-          // print invoice function
-
-          function printDiv(divName)
-          {
-            var printContents = document.getElementById(divName).innerHTML;
-            var originalContents = document.body.innerHTML;
-
-            document.body.innerHTML = printContents;
-
-            window.print();
-
-            document.body.innerHTML = originalContents;
-          }
-
-      </script>
 
     </div>
 <?php endforeach; ?>

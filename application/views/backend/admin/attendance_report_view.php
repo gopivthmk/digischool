@@ -210,25 +210,27 @@ for ($i = 1; $i <= $days; $i++) {
                                 $attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'attendance_date' => $timestamp, 'student_id' => $row['student_id']))->result_array();
                                 //echo $this->db->last_query()."<br/>";//exit;
 //print_r($attendance);
-
+if(count($attendance) > 0){
                                 foreach ($attendance as $row1):
                                   $month_dummy   = date('d', strtotime($row1['attendance_date']));
+
+                                    if ($i == $month_dummy) {
+
 //echo $i."--------".$month_dummy;
-                                    if ($i == $month_dummy){
-
-
 
                                 ?>
 
             <?php if ($row1['session_id'] == 1 && $row1['status'] == 1) { ?>
               <td style="text-align: center;">
                                         <i  style="color: #00a651;">&#10003;</i>
+
                                         </td>
-                            <?php  } if($row1['session_id'] == 1 && $row1['status'] == 2)  { ?>
+                            <?php  } else if($row1['session_id'] == 1 && $row1['status'] == 2)  { ?>
                               <td style="text-align: center;">
                                         <i  style="color: #ee4749;">&#10007;</i>
+
                                           </td>
-            <?php  } $status =0;?>
+            <?php  } ?>
 
 
 
@@ -237,24 +239,28 @@ for ($i = 1; $i <= $days; $i++) {
             <?php if ($row1['session_id'] == 2 && $row1['status'] == 1) { ?>
               <td style="text-align: center;">
                                         <i style="color: #00a651;">&#10003;</i>
+
                                         </td>
-                            <?php  } if($row1['session_id'] == 2 && $row1['status'] == 2)  { ?>
+                            <?php  } else if($row1['session_id'] == 2 && $row1['status'] == 2)  { ?>
                               <td style="text-align: center;">
                                         <i  style="color: #ee4749;">&#10007;</i>
+
                                         </td>
-            <?php  } $status =0;?>
+            <?php  } ?>
 
 
 
 
         <?php
 }
-
       endforeach;
+}
+else{
       ?>
       <td></td>
       <td></td>
       <?php
+}
       } ?>
     <?php endforeach; ?>
 

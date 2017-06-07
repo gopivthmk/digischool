@@ -35,65 +35,114 @@
 	</center>
 
           <table border="1" style="width:100%; border-collapse:collapse;border: 1px solid #ccc; margin-top: 10px;">
-                <thead>
-                    <tr>
-                        <td style="text-align: center;">
-    <?php echo get_phrase('students'); ?> <i class="entypo-down-thin"></i> | <?php echo get_phrase('date'); ?> <i class="entypo-right-thin"></i>
-                        </td>
-    <?php
-    $year = explode('-', $running_year);
-    $days = cal_days_in_month(CAL_GREGORIAN, $month, $sessional_year);
-    for ($i = 1; $i <= $days; $i++) {
-        ?>
-                            <td style="text-align: center;"><?php echo $i; ?></td>
-                    <?php } ?>
+						<thead>
+								<tr>
+										<td style="text-align: center;">
+<?php echo get_phrase('students'); ?> <i class="entypo-down-thin"></i> | <?php echo get_phrase('date'); ?> <i class="entypo-right-thin"></i>
+										</td>
+<?php
+$year = explode('-', $running_year);
+$days = cal_days_in_month(CAL_GREGORIAN, $month, $sessional_year);
 
-                    </tr>
-                </thead>
+for ($i = 1; $i <= $days; $i++) {
+		?>
+												<td style="text-align: center;" colspan="2"><?php echo $i; ?></td>
+								<?php } ?>
 
-                <tbody>
-                            <?php
-                            $data = array();
+								</tr>
+								<tr>
+									<td>
+									</td>
+									<?php
+for ($i = 1; $i <= $days; $i++) {
+									 ?>
+									 <td>Morning</td>
+									 <td>Evening</td>
+										 <?php }?>
+								</tr>
+						</thead>
 
-                            $students = $this->db->get_where('enroll', array('class_id' => $class_id, 'year' => $running_year, 'section_id' => $section_id))->result_array();
+						<tbody>
+												<?php
+												$data = array();
 
-                            foreach ($students as $row):
-                                ?>
-                        <tr>
-                            <td style="text-align: center;">
-                            <?php echo $this->db->get_where('student', array('student_id' => $row['student_id']))->row()->name; ?>
-                            </td>
-                            <?php
-                            $status = 0;
-                            for ($i = 1; $i <= $days; $i++) {
-                                $timestamp = strtotime($i . '-' . $month . '-' . $sessional_year);
-                                $this->db->group_by('attendance_date');
-                                $attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'attendance_date' => $timestamp, 'student_id' => $row['student_id']))->result_array();
+												$students = $this->db->get_where('enroll', array('class_id' => $class_id, 'year' => $running_year, 'section_id' => $section_id))->result_array();
+
+												foreach ($students as $row):
+														?>
+										<tr>
+												<td style="text-align: center;">
+												<?php echo $this->db->get_where('student', array('student_id' => $row['student_id']))->row()->name; ?>
+												</td>
+												<?php
+												$status = 0;
+																											//echo $sessional_year."-".$month;exit;
+												for ($i = 1; $i <= $days; $i++) {
+
+														$timestamp = date('Y-m-d', strtotime($sessional_year."-".$month."-".$i));
+														//$this->db->group_by('attendance_date');
+														$attendance = $this->db->get_where('attendance', array('section_id' => $section_id, 'class_id' => $class_id, 'year' => $running_year, 'attendance_date' => $timestamp, 'student_id' => $row['student_id']))->result_array();
+														//echo $this->db->last_query()."<br/>";//exit;
+//print_r($attendance);
+if(count($attendance) > 0){
+														foreach ($attendance as $row1):
+															$month_dummy   = date('d', strtotime($row1['attendance_date']));
+
+																if ($i == $month_dummy) {
+
+//echo $i."--------".$month_dummy;
+
+														?>
+
+				<?php if ($row1['session_id'] == 1 && $row1['status'] == 1) { ?>
+					<td style="text-align: center;">
+																		<i  style="color: #00a651;">&#10003;</i>
+
+																		</td>
+												<?php  } else if($row1['session_id'] == 1 && $row1['status'] == 2)  { ?>
+													<td style="text-align: center;">
+																		<i  style="color: #ee4749;">&#10007;</i>
+
+																			</td>
+				<?php  } ?>
 
 
-                                foreach ($attendance as $row1):
-                                    $month_dummy = date('m', $row1['attendance_date']);
-                                    if ($i == $month_dummy)
-                                        ;
-                                    $status = $row1['status'];
-                                endforeach;
-                                ?>
-                                <td style="text-align: center;" data-class="">
-            <?php if ($status == 1) { ?>
-                                    <div style="color: #00a651">P</div>
-                            <?php } else if ($status == 2) { ?>
-                                    <div style="color: #ff3030">A</div>
-            <?php }$status=0; ?>
-                                </td>
 
-        <?php } ?>
-    <?php endforeach; ?>
 
-                    </tr>
 
-    <?php ?>
+				<?php if ($row1['session_id'] == 2 && $row1['status'] == 1) { ?>
+					<td style="text-align: center;">
+																		<i style="color: #00a651;">&#10003;</i>
 
-                </tbody>
+																		</td>
+												<?php  } else if($row1['session_id'] == 2 && $row1['status'] == 2)  { ?>
+													<td style="text-align: center;">
+																		<i  style="color: #ee4749;">&#10007;</i>
+
+																		</td>
+				<?php  } ?>
+
+
+
+
+		<?php
+}
+	endforeach;
+}
+else{
+	?>
+	<td></td>
+	<td></td>
+	<?php
+}
+	} ?>
+<?php endforeach; ?>
+
+								</tr>
+
+<?php ?>
+
+						</tbody>
             </table>
 </div>
 
