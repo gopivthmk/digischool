@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<div class="main_content" style="clear: both; float: left; margin-left: 20px;">
-			<table class="main_content_header" style="margin-top: 15px; float: left; clear: both; width: 100%;">
+			<table class="main_content_header" style="margin-top: 5px; float: left; clear: both; width: 100%;">
 				<tr>
 					<td colspan="2" style="text-align:center">
 						<span style="text-transform: uppercase;
@@ -82,10 +82,14 @@
           <div class="content_heading" style="float:left">
           <ol>
             <li>Name of the School<br/>
-              <div style="position:relative; left:-29px;">(அ) பள்ளியின் பெயர் </div>
+              <div style="position:relative; left:-29px;">(அ)&nbsp;பள்ளியின் பெயர் </div>
             </li>
-            <li>Name of the Educational District</li>
-            <li>Name of the Revenue District</li>
+            <li>Name of the Educational District
+<div style="position:relative; left:-29px;">(ஆ)&nbsp;கல்வி மாவட்டத்தின் பெயர்</div>
+            </li>
+            <li>Name of the Revenue District
+<div style="position:relative; left:-29px;">(இ)&nbsp;வருவாய் மாவட்டத்தின் பெயர்</div>
+            </li>
           </ol>
           </div>
           <div class="content_data" style="float:left">
@@ -108,9 +112,10 @@
           </div>
           <div class="content_heading" style="float:left">
             Name of the pupil (in Block Letters)
+            <div>மாணவர் பெயர் (தனித்தனி எழுத்துக்களில)</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="name_of_student" class="header_values" style="margin-left:107px;">
+            <div id="name_of_student" class="header_values" style="margin-left: 57px;">
               <?php
               echo $this->db->get_where('student' , array('student_id' =>
               $edit_data[0]['student_id']))->row()->name;
@@ -124,9 +129,10 @@
           </div>
           <div class="content_heading" style="float:left">
           Name of the Father or Mother
+          <div>தந்தையின் பெயர்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="name_of_parent" class="header_values" style="margin-left:138px">
+            <div id="name_of_parent" class="header_values" style="margin-left:195px">
               <?php
               echo $edit_data[0]['parent_name'];
                ?>
@@ -139,9 +145,10 @@
           </div>
           <div class="content_heading" style="float:left">
             Nationality, Religion and Caste
+            <div>தேசிய இனம், சமயம் மற்றும் சாதி</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="nationality_and_religions" class="header_values" style="margin-left:134px" >
+            <div id="nationality_and_religions" class="header_values" style="margin-left:122px" >
               <?php
               echo $edit_data[0]['nationlity_religion'];
                ?>
@@ -154,16 +161,30 @@
           </div>
           <div class="content_heading" style="float:left">
             Community : Whether he/she belongs to
+            <div style="margin-bottom:10px">இனம்:அவன் /அவள் பின்வரும் ஐந்து பிரிவுகளில்
+                    <br/>எவையேனும் ஒன்றைச் சார்ந்தவரா?</div>
           <ol>
-            <li>Adi Dravidar (S.C) or (S.T)</li>
-            <li>Backward Class</li>
-            <li>Most Backward Class</li>
-            <li>Converted to Christainity from S.C</li>
-            <li>Denotified Tribes</li>
+            <li>Adi Dravidar (S.C) or (S.T)
+<div style="position:relative; left:-29px;">(அ)&nbsp;ஆதி திராவிடர் அல்லது பழங்குடி</div>
+            </li>
+            <li>Backward Class
+<div style="position:relative; left:-29px;">(ஆ)&nbsp;பின் தங்கிய வகுப்புி</div>
+            </li>
+            <li>Most Backward Class
+<div style="position:relative; left:-29px;">(இ)&nbsp;மிகவும் பின்திங்கிய வகுப்பு</div>
+            </li>
+            <li>Converted to Christainity from S.C
+<div style="position:relative; left:-29px;">(ஈ)&nbsp;ஆதி திராவிடர் இனத்திலிருந்து கிருஸ்துவ
+<br/>மதத்திற்கு மாறியவர் அல்லதுு</div>
+            </li>
+            <li>Denotified Tribes
+<div style="position:relative; left:-29px;">(உ)&nbsp;அட்டவணையிலிருந்து நீக்கப்பட்ட இனம்்ு</div>
+            </li>
           </ol>
           </div>
 
           <div class="content_data" style="float:left">
+            <div style="margin-bottom:46px"></div>
             <ul class="Community_info">
               <li style="height:40px !important"></li>
               <li></li>
@@ -179,9 +200,10 @@
           </div>
           <div class="content_heading" style="float:left">
             Sex
+            <div>பாலினம்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="sex_db_value" class="header_values" style="margin-left:292px" >
+            <div id="sex_db_value" class="header_values" style="margin-left:303px" >
               <?php echo $edit_data[0]['sex']; ?>
             </div>
           </div>
@@ -192,22 +214,24 @@
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Date of Birth, </br><span style="font-size:10px">(as entered in the admission register in figures and words)</span>
+            <div>பிறந்த தேதி....எண்ணிலும் எழுத்திலும் </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_birth_value" class="header_values" style="margin-left:49px" >
+            <div id="date_of_birth_value" class="header_values" style="margin-left:92px" >
               <?php echo ($edit_data[0]['dob'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['dob'])); ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 10px;">
           <div class="content_sno" style="float:left">
           8.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Personal Mark of Identification
+            <div>உடலில் அமைந்த அடையாளம் குறிகள்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pim_value" class="header_values" style="margin-left:140px" >
+            <div id="pim_value" class="header_values" style="margin-left:93px" >
               <?php echo $edit_data[0]['pim']; ?>
             </div>
           </div>
@@ -219,14 +243,15 @@
           <div class="content_heading" style="float:left; text-align:left;">
             Date of admission and standard in which admitted</br>
             <span style="font-size:10px">(the year to be entered in words)</span>
+            <div>பள்ளியின் சேர்க்கப்பிட்ட தேதி மற்றும் <br/>சேர்க்கப்பிட்ட</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_admission_value" class="header_values" style="margin-left:26px" >
+            <div id="date_of_admission_value" class="header_values" style="margin-left:78px" >
               <?php echo ($edit_data[0]['date_of_admission'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 10px;">
           <div class="content_sno" style="float:left">
           10.
           </div>
@@ -234,14 +259,17 @@
             Standard in which the pupil was studying
             </br>at the time of leaving
             <span style="font-size:10px">(in words)</span>
+            <div>
+              மாணவர் பள்ளியைவிட்டுச்செல்லும் <br/>நேரத்தில் படித்து வந்த வகுப்பு (எழுத்தில்)
+            </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:71px" >
+            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:70px" >
 <?php echo $edit_data[0]['standard_studied_while_leaving']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
           <div class="content_sno" style="float:left">
           11.
           </div>
@@ -249,63 +277,79 @@
             Whether the pupil has paid all the fees due
           </br>to the school
             <span style="font-size:10px">(in words)</span>
+            <div>
+              மாணவர் பள்ளிக்கு செலுத்த வேண்டிய <br/>கட்டணங்களை முழுமையாக செலுத்திவிட்டாரா
+            </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pupil_paid_all_fees" class="header_values" style="margin-left:62px" >
+            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 20px;" >
               <?php echo $edit_data[0]['is_paid_all_fees']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
           <div class="content_sno" style="float:left">
           12.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Whether qualified for promotion to Higher standard
+            <div>மேல்வகுப்பிற்கு உயர்வு பெறாத <br/>தகுதியுடையவரா என்பது</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_qualified_higher" class="header_values" style="margin-left:23px" >
+            <div id="whether_qualified_higher" class="header_values" style="margin-left:71px" >
               <?php echo $edit_data[0]['is_qualified_for_higher_standard']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
           <div class="content_sno" style="float:left">
           13.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Whether the pupil was in receipt of the scholarship
             </br>(Nature of the scholarship to be specified)
+            <div>
+              மாணவர் படிப்புதவித் தொகை என்றும்
+              <br/>பெற்றவரா (அதன் விவரத்தை குறிப்பிடுக)
+            </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:18px" >
+            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:64px" >
               <?php echo $edit_data[0]['scholarship']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
           <div class="content_sno" style="float:left">
           14.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Whether the pupil has undergone medical
           </br>inspection during the academic year, </br>(First or repeat to be specified)
+          <div>
+            மாணவர் கடைசி பள்ளி வருடத்தில் மருத்துவ
+            <br/>ஆய்வுக்குச்ச சென்றாரா (முதல் தடவை
+            <br/>அல்லது அதற்குமேல் குறிப்பிட்டு எழுதவும்)
+          </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="repeat_medical" class="header_values" style="margin-left:70px" >
+            <div id="repeat_medical" class="header_values" style="margin-left:46px" >
               <?php echo $edit_data[0]['under_medical_inspection']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
           <div class="content_sno" style="float:left">
           15.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Date on which the pupil actually left the school
+            <div>
+              மாணவர் பள்ளியைவிட்டு விலகிய தேதி
+            </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_left_school" class="header_values" style="margin-left:45px" >
+            <div id="date_of_left_school" class="header_values" style="margin-left:78px" >
 
               <?php echo ($edit_data[0]['date_of_left_school'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
@@ -317,9 +361,12 @@
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             The Pupil's conduct and character
+            <div>
+              மாணவரின் ஒழுக்கமும் பண்பும்
+            </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="conduct_value" class="header_values" style="margin-left:128px" >
+            <div id="conduct_value" class="header_values" style="margin-left:131px" >
               <?php echo $edit_data[0]['conduct_remarks']; ?>
             </div>
           </div>
@@ -331,22 +378,30 @@
           <div class="content_heading" style="float:left; text-align:left;">
             Date on which application for tranfer certificate <br/>was made
             on behalf of the pupil by his <br/>parent or Guardian
+            <div>
+              பெற்றோர் அல்லது பாதுகாவலர்,
+              <br/>மாணவரின் மாற்றுச் சான்றிதழ்
+              <br/> கோரி விண்ணப்பித்த தேதி
+            </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:49px" >
+            <div id="date_of_tc_application" class="header_values" style="margin-left:95px" >
               <?php echo ($edit_data[0]['date_of_application_for_transfer_certificate'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_application_for_transfer_certificate'])); ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 10px;">
           <div class="content_sno" style="float:left">
           18.
           </div>
           <div class="content_heading" style="float:left; text-align:left;">
             Date of the Transfer Certificate
+            <div>
+              மாற்றுச் சான்றிதழின் தேதி்
+            </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:141px" >
+            <div id="date_of_tc_application" class="header_values" style="margin-left:168px" >
               <?php echo ($edit_data[0]['date_of_tc'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_tc'])); ?>
             </div>
           </div>
@@ -489,13 +544,13 @@
     .content_heading ol li{
       text-align: left;
       list-style: lower-alpha;
-        margin-bottom:31px;
+        margin-bottom:12px;
     }
     .content_data ul li, .header_values {
       border-bottom: 1px solid #333;
       list-style: none;
       height: 22px;
-      margin-bottom:30px  ;
+      margin-bottom:27px  ;
         width: 300px;
         margin-left: 44px;
     }
@@ -503,14 +558,14 @@
       /*font-size: 14px;*/
     }
     .row_content{
-      clear: both; float: left; margin-bottom: 15px;
+      clear: both; float: left; margin-bottom: 0px;
     }
     .row_content .content_sno{
       padding-right: 10px;
     }
     .Community_info li{
-      height:17px !important;
-      margin-left: 33px !important;
+      height:25px !important;
+      margin-left: -49px !important;
     }
     .row_content .summay_tc th
     {
