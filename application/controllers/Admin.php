@@ -169,8 +169,8 @@ class Admin extends CI_Controller
             $data['name']         = $this->input->post('name');
             $data['birthday']     = $this->input->post('birthday');
             $data['sex']          = $this->input->post('sex');
-            $data['address']      = $this->input->post('address');
-            $data['email']        = $this->input->post('email');
+            //$data['address']      = $this->input->post('address');
+            //$data['email']        = $this->input->post('email');
             $data['concession_master_id'] = $this->input->post('concession_master_id');
             //$data['password']     = sha1($this->input->post('password'));
             $data['parent_id']    = $this->input->post('parent_id');
@@ -436,7 +436,7 @@ class Admin extends CI_Controller
         if ($param1 == 'create') {
             $data['name']        			= $this->input->post('name');
             $data['email']       			= $this->input->post('email');
-            $data['password']    			= sha1($this->input->post('password'));
+            //$data['password']    			= sha1($this->input->post('password'));
             $data['phone']       			= $this->input->post('phone');
             $data['address']     			= $this->input->post('address');
             $data['profession']  			= $this->input->post('profession');
@@ -444,7 +444,13 @@ class Admin extends CI_Controller
             $this->db->insert('parent', $data);
             $this->session->set_flashdata('flash_message' , get_phrase('data_added_successfully'));
             $this->email_model->account_opening_email('parent', $data['email']); //SEND EMAIL ACCOUNT OPENING EMAIL
-            redirect(base_url() . 'index.php?admin/parent/', 'refresh');
+
+            if($param2 == "student_add"){
+              redirect(base_url() . 'index.php?admin/'.$param2, 'refresh');
+            }
+            else{
+              redirect(base_url() . 'index.php?admin/parent', 'refresh');
+            }
         }
         if ($param1 == 'edit') {
             $data['name']                   = $this->input->post('name');

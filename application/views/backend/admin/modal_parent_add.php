@@ -8,9 +8,20 @@
             	</div>
             </div>
 			<div class="panel-body">
-
-                <?php echo form_open(base_url() . 'index.php?admin/parent/create/' , array('class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data'));?>
-
+				<script>
+				//alert($(window.location.href).slice("/"));
+				</script>
+<?php //echo 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>
+                <?php
+								$url_path = split("/", $_SERVER['HTTP_REFERER']);
+								//print_r($url_path);
+								if($url_path[5] == "student_add"){
+								echo form_open(base_url() . 'index.php?admin/parent/create/'.$url_path[5] , array('class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data'));
+								}
+								else{
+									echo form_open(base_url() . 'index.php?admin/parent/create/' , array('class' => 'form-horizontal form-groups-bordered validate', 'enctype' => 'multipart/form-data'));
+								}
+?>
 					<div class="form-group">
 						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('name');?></label>
 
@@ -29,13 +40,13 @@
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('password');?></label>
+					<!--<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('password');?></label>
 
 						<div class="col-sm-5">
 							<input type="password" class="form-control" name="password" value="">
 						</div>
-					</div>
+					</div>-->
 
 					<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('phone');?></label>

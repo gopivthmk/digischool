@@ -33,28 +33,32 @@
 						<span style="text-transform: uppercase;
 													font-weight: bold;
 													font-size: 18px;
-													letter-spacing: 6px;
+													letter-spacing: 3px;
 													font-family: monospace;">
-						Transfer Certificate
+						Transfer Certificate<br/>
+            மாற்றுச் சான்றிதழ்
 					</span>
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" style="text-align:center">
-						<span style="font-size: 12px;">
-						Recognised by the Director of School Education
+					<td colspan="2" style="text-align:center; padding-top:10px;">
+						<span style="font-size: 12px; ">
+						Recognised by the Director of School Education<br/>
+            பள்ளிக் கல்வி இயக்குநரால் அங்கீகரிக்கப்பட்டது
 					</span>
 					</td>
 				</tr>
 				<tr>
 					<td style=" text-align:left; padding-top:10px; padding-left:20px;">
 						<span style="font-size: 12px;">
-						Serial No&nbsp;:
+						Serial No&nbsp;:<br/>
+            வரிசை எண்&nbsp;:
 						</span>
 					</td>
 					<td style="text-align:right; padding-top:10px; padding-right:140px; ">
 						<span style="font-size: 12px; ">
-						Admission No&nbsp;:
+						Admission No&nbsp;:<br/>
+            சேர்க்கை எண்&nbsp;:
 						</span>
 					</td>
 				</tr>
@@ -77,7 +81,9 @@
           </div>
           <div class="content_heading" style="float:left">
           <ol>
-            <li>Name of the School</li>
+            <li>Name of the School<br/>
+              <div style="position:relative; left:-29px;">(அ) பள்ளியின் பெயர் </div>
+            </li>
             <li>Name of the Educational District</li>
             <li>Name of the Revenue District</li>
           </ol>

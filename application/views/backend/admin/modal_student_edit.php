@@ -54,7 +54,7 @@ foreach ($edit_data as $row):
 						</div>
 					</div>
 
-					
+
 
 					<div class="form-group">
 						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
@@ -116,23 +116,23 @@ foreach ($edit_data as $row):
 						</div>
 					</div>
 
-					<!--<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('parent');?></label>
+					<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('parent');?></label>
 
 						<div class="col-sm-5">
 							<select name="parent_id" class="form-control select2" data-validate="required" data-message-required="<?php //echo get_phrase('value_required');?>">
-                              <option value=""><?php //echo get_phrase('select');?></option>
+                              <option value=""><?php echo get_phrase('select');?></option>
                               <?php
-									//$parents = $this->db->get('parent')->result_array();
-									//$parent_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->parent_id;
-									//foreach($parents as $row3):
+									$parents = $this->db->get('parent')->result_array();
+									$parent_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->parent_id;
+									foreach($parents as $row3):
 										?>
-                                		<option value="<?php //echo $row3['parent_id'];?>"
-                                        	<?php //if($row3['parent_id'] == $parent_id)echo 'selected';?>>
-													<?php //echo $row3['name'];?>
+                                		<option value="<?php echo $row3['parent_id'];?>"
+                                        	<?php if($row3['parent_id'] == $parent_id)echo 'selected';?>>
+													<?php echo $row3['name'];?>
                                                 </option>
 	                                <?php
-									//endforeach;
+									endforeach;
 								  ?>
                           </select>
 						</div>

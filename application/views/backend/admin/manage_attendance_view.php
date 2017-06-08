@@ -89,7 +89,9 @@
                 <?php echo get_phrase('section'); ?> <?php echo $this->db->get_where('section', array('section_id' => $section_id))->row()->name; ?>
             </h4>
             <h4 style="color: #696969;">
-                <?php echo date("M D Y", strtotime($timestamp)); ?>
+                <?php
+                $tmpdate = date('d/m/Y', strtotime($timestamp));
+                echo date("j F, Y", strtotime($tmpdate)); ?>
             </h4>
         </div>
     </div>

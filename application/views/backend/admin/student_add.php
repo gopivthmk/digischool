@@ -289,13 +289,13 @@
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('address');?></label>
+					<!--<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('address');?></label>
 
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="address" value="" >
 						</div>
-					</div>
+					</div>-->
 
 					<!--<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('phone');?></label>
@@ -305,13 +305,13 @@
 						</div>
 					</div>-->
 
-					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('email');?></label>
+					<!--<div class="form-group">
+						<label for="field-1" class="col-sm-3 control-label"><?php //echo get_phrase('email');?></label>
 						<div class="col-sm-5">
 							<input type="text" class="form-control" name="email"
 							 value="">
 						</div>
-					</div>
+					</div>-->
 
 					<!--<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('password');?></label>
