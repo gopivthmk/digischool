@@ -136,7 +136,7 @@ foreach ($edit_data as $row):
 								  ?>
                           </select>
 						</div>
-					</div>-->
+					</div>
 
 
 

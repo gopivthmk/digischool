@@ -200,7 +200,9 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Personal Identification Mark');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="PIM" value="" data-start-view="2">
+							<!--<input type="text" class="form-control" name="PIM" value="" data-start-view="2">-->
+							<textarea name="PIM" id="PIM" class="form-control"></textarea>
+							<span id="validation-length" style="color:red;font-weight:bold;margin-left: 0px;margin-top: 10px;float: left;"></span>
 						</div>
 					</div>
 
@@ -411,5 +413,20 @@
         });
 
     }
+		$(document).ready(function() {
+			$('#PIM').on('keyup', function(e) {
+				var tval = $(this).val(),
+				tlength = tval.length,
+				set = 200,
+				remain = parseInt(set - tlength);
+				$('#validation-length').css('style', 'color:green');
+				$('#validation-length').text("You have total characters remains "+ remain);
+				if (remain <= 0 ) {
+				    $(this).val((tval).substring(0, tlength - 1))
+						$('#validation-length').css('style', 'color:red');
+						$('#validation-length').text("You have reached the character limit.");
+				}
+			})
+		});
 
 </script>

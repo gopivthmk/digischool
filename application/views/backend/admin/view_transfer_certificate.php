@@ -74,7 +74,7 @@
 				</tr>
 			</table>
 
-      <div class="body_content" style="float: left; clear: both; margin-top: 25px; font-size:13px;">
+      <div class="body_content" style="float: left; clear: both; margin-top: 25px; font-size: 13px; display: table;">
         <div class="row_content" style="clear: both; float: left;">
           <div class="content_sno" style="float:left">
           1.
@@ -106,16 +106,16 @@
             </ul>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; ">
+        <div class="row_content" style="clear: both; float: left; display:table-row; ">
           <div class="content_sno" style="float:left">
           2.
           </div>
-          <div class="content_heading" style="float:left">
+          <div class="content_heading" style="float:left; display:table-cell">
             Name of the pupil (in Block Letters)
             <div>மாணவர் பெயர் (தனித்தனி எழுத்துக்களில)</div>
           </div>
-          <div class="content_data" style="float:left">
-            <div id="name_of_student" class="header_values" style="margin-left: 57px;">
+          <div class="content_data" style="float:left; display:table-cell">
+            <div id="name_of_student" class="header_values" style="margin-left: 48px;">
               <?php
               echo $this->db->get_where('student' , array('student_id' =>
               $edit_data[0]['student_id']))->row()->name;
@@ -132,7 +132,7 @@
           <div>தந்தையின் பெயர்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="name_of_parent" class="header_values" style="margin-left:195px">
+            <div id="name_of_parent" class="header_values" style="margin-left:222px">
               <?php
               echo $edit_data[0]['parent_name'];
                ?>
@@ -203,7 +203,7 @@
             <div>பாலினம்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="sex_db_value" class="header_values" style="margin-left:303px" >
+            <div id="sex_db_value" class="header_values" style="margin-left:322px" >
               <?php echo $edit_data[0]['sex']; ?>
             </div>
           </div>
@@ -217,7 +217,7 @@
             <div>பிறந்த தேதி....எண்ணிலும் எழுத்திலும் </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_birth_value" class="header_values" style="margin-left:92px" >
+            <div id="date_of_birth_value" class="header_values" style="margin-left:85px" >
               <?php echo ($edit_data[0]['dob'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['dob'])); ?>
             </div>
           </div>
@@ -231,7 +231,7 @@
             <div>உடலில் அமைந்த அடையாளம் குறிகள்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pim_value" class="header_values" style="margin-left:93px" >
+            <div id="pim_value" class="header_values" style="margin-left:84px" >
               <?php echo $edit_data[0]['pim']; ?>
             </div>
           </div>
@@ -246,7 +246,7 @@
             <div>பள்ளியின் சேர்க்கப்பிட்ட தேதி மற்றும் <br/>சேர்க்கப்பிட்ட</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_admission_value" class="header_values" style="margin-left:78px" >
+            <div id="date_of_admission_value" class="header_values" style="margin-left:89px" >
               <?php echo ($edit_data[0]['date_of_admission'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
           </div>
@@ -264,12 +264,12 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:70px" >
+            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:60px" >
 <?php echo $edit_data[0]['standard_studied_while_leaving']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 5px;">
           <div class="content_sno" style="float:left">
           11.
           </div>
@@ -278,11 +278,11 @@
           </br>to the school
             <span style="font-size:10px">(in words)</span>
             <div>
-              மாணவர் பள்ளிக்கு செலுத்த வேண்டிய <br/>கட்டணங்களை முழுமையாக செலுத்திவிட்டாரா
+              மாணவர் பள்ளிக்கு செலுத்த <br/>வேண்டிய கட்டணங்களை <br/>முழுமையாக செலுத்திவிட்டாரா
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 20px;" >
+            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 60px;" >
               <?php echo $edit_data[0]['is_paid_all_fees']; ?>
             </div>
           </div>
@@ -296,7 +296,7 @@
             <div>மேல்வகுப்பிற்கு உயர்வு பெறாத <br/>தகுதியுடையவரா என்பது</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_qualified_higher" class="header_values" style="margin-left:71px" >
+            <div id="whether_qualified_higher" class="header_values" style="margin-left:90px" >
               <?php echo $edit_data[0]['is_qualified_for_higher_standard']; ?>
             </div>
           </div>
@@ -314,7 +314,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:64px" >
+            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:55px" >
               <?php echo $edit_data[0]['scholarship']; ?>
             </div>
           </div>
@@ -333,7 +333,7 @@
           </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="repeat_medical" class="header_values" style="margin-left:46px" >
+            <div id="repeat_medical" class="header_values" style="margin-left:30px" >
               <?php echo $edit_data[0]['under_medical_inspection']; ?>
             </div>
           </div>
@@ -349,7 +349,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_left_school" class="header_values" style="margin-left:78px" >
+            <div id="date_of_left_school" class="header_values" style="margin-left:70px" >
 
               <?php echo ($edit_data[0]['date_of_left_school'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
@@ -366,7 +366,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="conduct_value" class="header_values" style="margin-left:131px" >
+            <div id="conduct_value" class="header_values" style="margin-left:130px" >
               <?php echo $edit_data[0]['conduct_remarks']; ?>
             </div>
           </div>
@@ -385,7 +385,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:95px" >
+            <div id="date_of_tc_application" class="header_values" style="margin-left:112px" >
               <?php echo ($edit_data[0]['date_of_application_for_transfer_certificate'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_application_for_transfer_certificate'])); ?>
             </div>
           </div>
@@ -401,7 +401,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:168px" >
+            <div id="date_of_tc_application" class="header_values" style="margin-left:169px" >
               <?php echo ($edit_data[0]['date_of_tc'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_tc'])); ?>
             </div>
           </div>
@@ -411,18 +411,23 @@
             <tr>
               <th>
                 Name of the School
+                <div>பள்ளியின் பெயர்</div>
               </th>
               <th>
                 Academic Year (s)
+                <div>கல்வி ஆண்டு</div>
               </th>
               <th>
                 Standard(s) studied
+                <div>படித்த வகுப்பு</div>
               </th>
               <th>
                 First Langugage
+                <div>முதல் மொழி</div>
               </th>
               <th>
                 Medium of Instruction
+                <div>பயிற்சி மொழி</div>
               </th>
             </tr>
             <tr>
@@ -451,28 +456,73 @@
           <div class="content_heading" style="float:left; text-align:left; ">
             Signature of the Headmaster with date and
             </br>school date
+            <div>பள்ளி தலைமையாசிரியரின் கையொப்பம் ,<br/>தேதி பள்ளி முத்திரையுடன்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="signature_head_master_date" class="header_values" style="margin-left:58px" ></div>
+            <div id="signature_head_master_date" class="header_values" style="margin-left:40px" ></div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; margin-top:45px;">
-          <div class="content_heading" style="float:left; text-align:left; ">
-            Date : <?php echo date('d-m-Y'); ?>
+        <div class="row_content" style="clear: both; float: left; margin-top: 30px;">
+          <div class="content_sno" style="float:left">
+          Note / குறிப்பு :
           </div>
-          <div class="content_data" style="float:left">
-            <div id="signature_head_master_date" class="header_values" style="padding-left:397px; width:600px; border:none;" >
-              Signature of the Parent / Guardian
+          <div class="content_heading" style="float:left; text-align:left;">
+            1.&nbsp;&nbsp;Erasures and unauthenticateed or Fradulent alterations in the certificate will lead to its cancelations
+            <div style="margin-left:18px; margin-top:6px">
+              இச்சான்றிதழின் அழித்தல்கள் மற்றும் நம்பகமற்ற அல்லது மோசடியான <br/>திருத்தங்கள் செய்வது சான்றிதழை ரத்து செய்ய வழிவகுப்பதாகும்
+            </div>
+          </div>
+        </div>
+        <div class="row_content" style="clear: both; float: left; margin-top: 10px;">
+          <div class="content_sno" style="float:left">
+
+          </div>
+          <div class="content_heading" style="float:left;text-align:left;margin-left: 114px;">
+          2.&nbsp;&nbsp;Should be signed in ink by the Head of the institution who will be held responsible <div style="margin-left:20px">for the correctness of the entries</div>
+            <div style="margin-left:18px; margin-top:6px">
+              பள்ளி தலைமையாசிரியர் மையினால் கையொப்பம்மிட வேண்டும். <br/>பதிவு செய்யப்பட்ட விவரங்களை  சரியானவை என்பதற்கு அவரே பொறுப்பானவர்.
+            </div>
+          </div>
+        </div>
+        <div class="row_content" style="clear: both; float: left; margin-top: 10px;">
+          <div class="content_sno" style="float:left">
+
+          </div>
+          <div class="content_heading" style="float:left; text-align:left;">
+          Declare by Parent or Guardian / பெற்றோர் அல்லது பாதுகாவலர் அளிக்கும் உறுதி மொழி
+          </div>
+        </div>
+        <div class="row_content" style="clear: both; float: left; margin-top: 10px;">
+          <div class="content_sno" style="float:left">
+
+          </div>
+          <div class="content_heading" style="float:left; text-align:left;">
+        I hereby declare that the particulars recorded against items 2 to 7 are correct and that no change will be demanded by me in future
+            <div style="margin-top:6px">
+மேலே 2  முதல் 7 வரையிலுள்ள இணைகளுக்கெதிரே பதிவு செய்யப்பட்டுள்ள விவரங்கள் செரியானவை என்றும்,
+எதிர்காலத்தில் அவற்றில் மாற்றம் எதுவும் கேட்கமாட்டேன் என்றும் நான் உறுதியளிக்கிறேன்
             </div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left; margin-top:45px;">
           <div class="content_heading" style="float:left; text-align:left; ">
-            Date : <?php echo date('d-m-Y'); ?>
+            Date / தேதி: <?php echo date('d-m-Y'); ?>
+          </div>
+          <div class="content_data" style="float:left">
+            <div id="signature_head_master_date" class="header_values" style="padding-left:397px; width:600px; border:none;" >
+              Signature of the Parent / Guardian
+              <div>பெற்றோர் அல்லது பாத்து காவலரின் கையொப்பம்</div>
+            </div>
+          </div>
+        </div>
+        <div class="row_content" style="clear: both; float: left; margin-top:45px;">
+          <div class="content_heading" style="float:left; text-align:left; ">
+            Date / தேதி : <?php echo date('d-m-Y'); ?>
           </div>
           <div class="content_data" style="float:left">
             <div id="signature_head_master_date" class="header_values" style="padding-left:397px; width:600px; border:none;" >
               Signature of the Pupil
+              <div>மாணவரின் கையொப்பம்</div>
             </div>
           </div>
         </div>
@@ -565,7 +615,7 @@
     }
     .Community_info li{
       height:25px !important;
-      margin-left: -49px !important;
+      margin-left: -65px !important;
     }
     .row_content .summay_tc th
     {
@@ -621,6 +671,7 @@ function printDiv(divName) {
     $('#second_lang').val('English');
     $('#name_of_educational_district').html('Ponneri');
     $('#name_of_revenue_district').html('Thiruvallur');
+    $('#school_footer').html('Venkateshwara Matriculation School (JVMS)');
     disable_input_elements('first_lang_text', 'Tamil','val');
     disable_input_elements('second_lang', 'English','val');
     disable_input_elements('school_name', 'Venkateshwara Matriculation School (JVMS)','val');
