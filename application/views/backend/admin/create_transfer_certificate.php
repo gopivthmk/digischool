@@ -142,7 +142,9 @@
 
 						<div class="col-sm-5">
 							<input type="hidden" class="form-control" name="PIM" id="PIM" value="" data-start-view="2">
+							<input type="hidden" class="form-control" name="PIM1" id="PIM1" value="" data-start-view="2">
 							<div id="PIM_view" class="auto-fill-fields"></div>
+							<div id="PIM1_view" class="auto-fill-fields"></div>
 						</div>
 					</div>
 
@@ -407,10 +409,10 @@
             <div>மாணவர் பெயர் (தனித்தனி எழுத்துக்களில)</div>
           </div>
           <div class="content_data" style="float:left; display:table-cell">
-            <div id="name_of_student" class="header_values" style="margin-left: 48px;">
+            <div id="name_of_student" class="header_values" style="margin-left: 55px;">
               <?php
-              echo $this->db->get_where('student' , array('student_id' =>
-              $edit_data[0]['student_id']))->row()->name;
+              //echo $this->db->get_where('student' , array('student_id' =>
+              //$edit_data[0]['student_id']))->row()->name;
                ?>
             </div>
           </div>
@@ -424,9 +426,9 @@
           <div>தந்தையின் பெயர்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="name_of_parent" class="header_values" style="margin-left:222px">
+            <div id="name_of_parent" class="header_values" style="margin-left:190px">
               <?php
-              echo $edit_data[0]['parent_name'];
+              //echo $edit_data[0]['parent_name'];
                ?>
             </div>
           </div>
@@ -442,7 +444,7 @@
           <div class="content_data" style="float:left">
             <div id="nationality_and_religions" class="header_values" style="margin-left:122px" >
               <?php
-              echo $edit_data[0]['nationlity_religion'];
+              //echo $edit_data[0]['nationlity_religion'];
                ?>
             </div>
           </div>
@@ -495,8 +497,8 @@
             <div>பாலினம்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="sex_db_value" class="header_values" style="margin-left:322px" >
-              <?php echo $edit_data[0]['sex']; ?>
+            <div id="sex_db_value" class="header_values" style="margin-left:301px" >
+              <?php //echo $edit_data[0]['sex']; ?>
             </div>
           </div>
         </div>
@@ -509,8 +511,8 @@
             <div>பிறந்த தேதி....எண்ணிலும் எழுத்திலும் </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_birth_value" class="header_values" style="margin-left:85px" >
-              <?php echo ($edit_data[0]['dob'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['dob'])); ?>
+            <div id="date_of_birth_value" class="header_values" style="margin-left:90px" >
+              <?php //echo ($edit_data[0]['dob'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['dob'])); ?>
             </div>
           </div>
         </div>
@@ -523,9 +525,12 @@
             <div>உடலில் அமைந்த அடையாளம் குறிகள்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pim_value" class="header_values" style="margin-left:84px" >
-              <?php echo $edit_data[0]['pim']; ?>
+            <div id="pim_value" class="header_values" style="margin-left:90px" >
+              <?php //echo $edit_data[0]['pim']; ?><br/>
+              <?php //echo $edit_data[0]['pim1']; ?>
             </div>
+						<div id="pim1_value" class="header_values" style="margin-left:90px" >
+						</div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -538,8 +543,8 @@
             <div>பள்ளியின் சேர்க்கப்பிட்ட தேதி மற்றும் <br/>சேர்க்கப்பிட்ட</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_admission_value" class="header_values" style="margin-left:89px" >
-              <?php echo ($edit_data[0]['date_of_admission'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
+            <div id="date_of_admission_value" class="header_values" style="margin-left:75px" >
+              <?php //echo ($edit_data[0]['date_of_admission'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
           </div>
         </div>
@@ -556,8 +561,8 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:60px" >
-<?php echo $edit_data[0]['standard_studied_while_leaving']; ?>
+            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:75px" >
+<?php //echo $edit_data[0]['standard_studied_while_leaving']; ?>
             </div>
           </div>
         </div>
@@ -574,8 +579,8 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 60px;" >
-              <?php echo $edit_data[0]['is_paid_all_fees']; ?>
+            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 110px;" >
+              <?php //echo $edit_data[0]['is_paid_all_fees']; ?>
             </div>
           </div>
         </div>
@@ -588,8 +593,8 @@
             <div>மேல்வகுப்பிற்கு உயர்வு பெறாத <br/>தகுதியுடையவரா என்பது</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_qualified_higher" class="header_values" style="margin-left:90px" >
-              <?php echo $edit_data[0]['is_qualified_for_higher_standard']; ?>
+            <div id="whether_qualified_higher" class="header_values" style="margin-left:70px" >
+              <?php //echo $edit_data[0]['is_qualified_for_higher_standard']; ?>
             </div>
           </div>
         </div>
@@ -606,8 +611,8 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:55px" >
-              <?php echo $edit_data[0]['scholarship']; ?>
+            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:65px" >
+              <?php //echo $edit_data[0]['scholarship']; ?>
             </div>
           </div>
         </div>
@@ -625,8 +630,8 @@
           </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="repeat_medical" class="header_values" style="margin-left:30px" >
-              <?php echo $edit_data[0]['under_medical_inspection']; ?>
+            <div id="repeat_medical" class="header_values" style="margin-left:42px" >
+              <?php //echo $edit_data[0]['under_medical_inspection']; ?>
             </div>
           </div>
         </div>
@@ -641,9 +646,9 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_left_school" class="header_values" style="margin-left:70px" >
+            <div id="date_of_left_school" class="header_values" style="margin-left:83px" >
 
-              <?php echo ($edit_data[0]['date_of_left_school'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
+              <?php //echo ($edit_data[0]['date_of_left_school'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
           </div>
         </div>
@@ -658,8 +663,8 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="conduct_value" class="header_values" style="margin-left:130px" >
-              <?php echo $edit_data[0]['conduct_remarks']; ?>
+            <div id="conduct_value" class="header_values" style="margin-left:135px" >
+              <?php //echo $edit_data[0]['conduct_remarks']; ?>
             </div>
           </div>
         </div>
@@ -677,8 +682,8 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:112px" >
-              <?php echo ($edit_data[0]['date_of_application_for_transfer_certificate'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_application_for_transfer_certificate'])); ?>
+            <div id="date_of_tc_application" class="header_values" style="margin-left:89px" >
+              <?php //echo ($edit_data[0]['date_of_application_for_transfer_certificate'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_application_for_transfer_certificate'])); ?>
             </div>
           </div>
         </div>
@@ -694,7 +699,7 @@
           </div>
           <div class="content_data" style="float:left">
             <div id="date_of_tc_application" class="header_values" style="margin-left:169px" >
-              <?php echo ($edit_data[0]['date_of_tc'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_tc'])); ?>
+              <?php //echo ($edit_data[0]['date_of_tc'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_tc'])); ?>
             </div>
           </div>
         </div>
@@ -867,9 +872,6 @@
     .header_sub_title{
       font-style: italic;
     }
-		.auto-fill-fields{
-			margin-top: 8px;
-		}
     .header_content .left{
       float: left;
     }
@@ -910,7 +912,7 @@
     }
     .Community_info li{
       height:25px !important;
-      margin-left: -65px !important;
+      margin-left: -53px !important;
     }
     .row_content .summay_tc th
     {
@@ -979,12 +981,35 @@ function printDiv(divName) {
     }
 
 		function get_parent_name(student_id){
+
+			jQuery('#parent_name_view').html('');
+			jQuery('#nationality_view').html('');
+			jQuery('#sex_view').html('');
+			jQuery('#birthday_view').html('');
+			jQuery('#PIM_view').html('');
+			jQuery('#PIM1_view').html('');
+			jQuery('#academic_year_view').html('');
+			jQuery('#academic_year_view').html('');
+			jQuery('#standard_studied').val('');
+			//jQuery('#first_lang_text').val('');
+			//jQuery('#second_lang').val('');
+			jQuery('#date_of_admission_view').val('');
+			jQuery('#fees_paid').val('');
+			jQuery('#qualified_to_higher_standard').val('');
+			jQuery('#has_scholarship').val('');
+			jQuery('#has_medical_inspection').val('');
+			jQuery('#date_of_leave_from_school').val('');
+			jQuery('#conduct_of_student').val('');
+			jQuery('#date_of_application_of_tc').val('');
+			jQuery('#date_of_tc').val('');
+
 			$.ajax({
 					url: '<?php echo base_url();?>index.php?admin/get_parent_name/' + student_id ,
 					success: function(response)
 					{
 							//alert(response);
 							response = $.parseJSON(response);
+							//jQuery('#parent_name').html(response["parent_name"]);
 							jQuery('#parent_name_view').html(response["parent_name"]);
 							jQuery('#sex_view').html(response["sex"]);
 							jQuery('#nationality_view').html(response["nationality_religion"]);
@@ -998,14 +1023,28 @@ function printDiv(divName) {
 							//var pim_value = addNewlines(response["personal_identification_number"]);
 
 							jQuery('#PIM_view').html(response["personal_identification_number"]);
-							jQuery('#PIM').val(pim_value);
+							jQuery('#PIM1_view').html(response["personal_identification_number1"]);
+							jQuery('#PIM').val(response["personal_identification_number"]);
+							jQuery('#PIM1').val(response["personal_identification_number1"]);
 							if(response["date_of_admission"] == "0000-00-00"){
 								response["date_of_admission"] = "";
 							}
-							jQuery('#date_of_admission_view').html(response["date_of_admission"]);
+
+							var admission_date    = new Date(response["date_of_admission"]);
+							//var d = new Date();
+
+							var curr_date = admission_date.getDate();
+
+							var curr_month = admission_date.getMonth();
+
+							var curr_year = admission_date.getFullYear();
+
+							var dates = curr_date + "/" + curr_month + "/" + curr_year;
+
+							jQuery('#date_of_admission_view').html(dates);
 							jQuery('#academic_year_view').html(response["academic_year"]);
 
-							jQuery('#date_of_admission').val(response["date_of_admission"]);
+							jQuery('#date_of_admission').val(dates);
 							jQuery('#academic_year').val(response["academic_year"]);
 					}
 			});
@@ -1053,6 +1092,23 @@ function printDiv(divName) {
 					return false;
 				}
 
+				var admission_date    = new Date(jQuery('#date_of_admission').val());
+				var tc_date    = new Date(jQuery('#date_of_tc').val());
+				var newDate = admission_date.toString('dd/MM/yy');
+				var newDate1 = tc_date.toString('dd/MM/yy');
+				if(newDate > newDate1)
+				{
+					alert(newDate1);
+					alert(newDate);
+				 alert('End date should be greater than Start date');
+				 return false;
+				}
+				else{
+					alert(new Date(admission_date));
+					alert(new Date(tc_date));
+ 				 return false;
+				}
+
 				$.ajax({
            type: "POST",
            url: '<?php echo base_url();?>index.php?admin/get_tc_form_submission',
@@ -1073,9 +1129,10 @@ function printDiv(divName) {
 						$('#sex_db_value').html(data['sex']);
 						$('#date_of_birth_value').html(data['dob']);
 
-						var pim_value = addNewlines(data["pim"]);
+						//var pim_value = addNewlines(data["pim"]);
 
-						$('#pim_value').html(pim_value);
+						$('#pim_value').html(data["pim"]);
+						$('#pim1_value').html(data["pim1"]);
 						$('#date_of_admission_value').html(data['date_of_admission']);
 						$('#std_studied_at_time_of_leave_value').html(data['standard_studied_while_leaving']);
 						$('#pupil_paid_all_fees').html(data['is_paid_all_fees']);
@@ -1094,6 +1151,10 @@ function printDiv(divName) {
     		e.preventDefault();
 				return false;
 			});
+
+			//$('#date_of_tc').bind('click', function(){
+			//	alert($(this).val());
+			//});
 		});
 		function disable_input_elements(id, content, element_type){
 			$('#'+id).bind('keyup', function(e) {

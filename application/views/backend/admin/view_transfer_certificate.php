@@ -115,7 +115,7 @@
             <div>மாணவர் பெயர் (தனித்தனி எழுத்துக்களில)</div>
           </div>
           <div class="content_data" style="float:left; display:table-cell">
-            <div id="name_of_student" class="header_values" style="margin-left: 48px;">
+            <div id="name_of_student" class="header_values" style="margin-left: 55px;">
               <?php
               echo $this->db->get_where('student' , array('student_id' =>
               $edit_data[0]['student_id']))->row()->name;
@@ -132,7 +132,7 @@
           <div>தந்தையின் பெயர்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="name_of_parent" class="header_values" style="margin-left:222px">
+            <div id="name_of_parent" class="header_values" style="margin-left:190px">
               <?php
               echo $edit_data[0]['parent_name'];
                ?>
@@ -203,7 +203,7 @@
             <div>பாலினம்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="sex_db_value" class="header_values" style="margin-left:322px" >
+            <div id="sex_db_value" class="header_values" style="margin-left:301px" >
               <?php echo $edit_data[0]['sex']; ?>
             </div>
           </div>
@@ -217,7 +217,7 @@
             <div>பிறந்த தேதி....எண்ணிலும் எழுத்திலும் </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_birth_value" class="header_values" style="margin-left:85px" >
+            <div id="date_of_birth_value" class="header_values" style="margin-left:90px" >
               <?php echo ($edit_data[0]['dob'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['dob'])); ?>
             </div>
           </div>
@@ -231,8 +231,11 @@
             <div>உடலில் அமைந்த அடையாளம் குறிகள்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pim_value" class="header_values" style="margin-left:84px" >
+            <div id="pim_value" class="header_values" style="margin-left:90px" >
               <?php echo $edit_data[0]['pim']; ?>
+            </div>
+            <div id="pim1_value" class="header_values" style="margin-left:90px" >
+              <?php echo $edit_data[0]['pim1']; ?>
             </div>
           </div>
         </div>
@@ -246,7 +249,7 @@
             <div>பள்ளியின் சேர்க்கப்பிட்ட தேதி மற்றும் <br/>சேர்க்கப்பிட்ட</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_admission_value" class="header_values" style="margin-left:89px" >
+            <div id="date_of_admission_value" class="header_values" style="margin-left:75px" >
               <?php echo ($edit_data[0]['date_of_admission'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
           </div>
@@ -264,7 +267,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:60px" >
+            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:75px" >
 <?php echo $edit_data[0]['standard_studied_while_leaving']; ?>
             </div>
           </div>
@@ -282,7 +285,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 60px;" >
+            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 110px;" >
               <?php echo $edit_data[0]['is_paid_all_fees']; ?>
             </div>
           </div>
@@ -296,7 +299,7 @@
             <div>மேல்வகுப்பிற்கு உயர்வு பெறாத <br/>தகுதியுடையவரா என்பது</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_qualified_higher" class="header_values" style="margin-left:90px" >
+            <div id="whether_qualified_higher" class="header_values" style="margin-left:70px" >
               <?php echo $edit_data[0]['is_qualified_for_higher_standard']; ?>
             </div>
           </div>
@@ -314,7 +317,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:55px" >
+            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:65px" >
               <?php echo $edit_data[0]['scholarship']; ?>
             </div>
           </div>
@@ -333,7 +336,7 @@
           </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="repeat_medical" class="header_values" style="margin-left:30px" >
+            <div id="repeat_medical" class="header_values" style="margin-left:42px" >
               <?php echo $edit_data[0]['under_medical_inspection']; ?>
             </div>
           </div>
@@ -349,7 +352,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_left_school" class="header_values" style="margin-left:70px" >
+            <div id="date_of_left_school" class="header_values" style="margin-left:83px" >
 
               <?php echo ($edit_data[0]['date_of_left_school'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
@@ -366,7 +369,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="conduct_value" class="header_values" style="margin-left:130px" >
+            <div id="conduct_value" class="header_values" style="margin-left:135px" >
               <?php echo $edit_data[0]['conduct_remarks']; ?>
             </div>
           </div>
@@ -385,7 +388,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:112px" >
+            <div id="date_of_tc_application" class="header_values" style="margin-left:89px" >
               <?php echo ($edit_data[0]['date_of_application_for_transfer_certificate'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_application_for_transfer_certificate'])); ?>
             </div>
           </div>
@@ -615,7 +618,7 @@
     }
     .Community_info li{
       height:25px !important;
-      margin-left: -65px !important;
+      margin-left: -53px !important;
     }
     .row_content .summay_tc th
     {

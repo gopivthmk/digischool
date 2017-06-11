@@ -178,9 +178,11 @@ class Admin extends CI_Controller
             $data['caste_community'] = $this->input->post('caste');
             $data['mode_of_transport'] = $this->input->post('transport');
             $data['personal_identification_number'] = $this->input->post('PIM');
+            $data['personal_identification_number1'] = $this->input->post('PIM1');
             $data['medications'] = $this->input->post('medications');
             $data['admission_no'] = $this->input->post('admission_no');
             $data['date_of_admission'] = date('Y-m-d H:i:s', strtotime($this->input->post('date_of_admission')));
+            $data['blood_group']  			= $this->input->post('blood_group');
             //$data['father_name'] = $this->input->post('father_name');
             //$data['mother_name'] = $this->input->post('mother_name');
             //$data['father_mobile'] = $this->input->post('father_mobile');
@@ -2749,7 +2751,7 @@ class Admin extends CI_Controller
       ))->result_array();
 
       $student_information = array();
-      //$student_information['name'] = $get_student_informations[0]['name'];
+      $student_information['student_name'] = $get_student_informations[0]['name'];
       $student_information['parent_name'] = $this->db->get_where('parent' , array(
           'parent_id' => $get_student_informations[0]['parent_id']
           ))->row()->name;
@@ -2757,7 +2759,8 @@ class Admin extends CI_Controller
       $student_information['nationality_religion'] = $get_student_informations[0]['nationality'] . ", " . $get_student_informations[0]['religion'];
       $student_information['birthday'] = $get_student_informations[0]['birthday'];
       $student_information['personal_identification_number'] = $get_student_informations[0]['personal_identification_number'];
-      $student_information['date_of_admission'] = $get_student_informations[0]['date_of_admission'];
+      $student_information['personal_identification_number1'] = $get_student_informations[0]['personal_identification_number1'];
+      $student_information['date_of_admission'] = date('d/m/Y', strtotime($get_student_informations[0]['date_of_admission']));
       $student_information['caste_community'] = $get_student_informations[0]['caste_community'];
       $student_information['academic_year'] = $this->db->get_where('enroll' , array(
           'student_id' => $student_id
@@ -2824,6 +2827,7 @@ class Admin extends CI_Controller
         $data['sex'] = $this->input->post('sex');
         $data['dob'] = date('Y-m-d', strtotime($this->input->post('birthday')));
         $data['pim'] = $this->input->post('PIM');
+        $data['pim1'] = $this->input->post('PIM1');
         $data['academic_year'] = $this->input->post('academic_year');
         $data['standard_studied_while_leaving'] = $this->input->post('standard_studied');
         $data['first_langugage'] = $this->input->post('first_lang');
@@ -2852,7 +2856,7 @@ class Admin extends CI_Controller
           $data['dob'] = date('d/m/Y', strtotime($this->input->post('birthday')));
           $data['school_name'] = $this->input->post('school_name');
           $data['student_name'] = $this->db->get_where('student' , array(
-              'student_id' => $data['section_id']
+              'student_id' => $data['student_id']
               ))->row()->name;
 
           echo json_encode($data);

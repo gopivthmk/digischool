@@ -200,8 +200,9 @@
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('Personal Identification Mark');?></label>
 
 						<div class="col-sm-5">
-							<!--<input type="text" class="form-control" name="PIM" value="" data-start-view="2">-->
-							<textarea name="PIM" id="PIM" class="form-control"></textarea>
+							<input type="text" class="form-control" name="PIM" value="" data-start-view="2"><br/>
+							<input type="text" class="form-control" name="PIM1" value="" data-start-view="2">
+							<!--< name="PIM" id="PIM" class="form-control"></textarea>-->
 							<span id="validation-length" style="color:red;font-weight:bold;margin-left: 0px;margin-top: 10px;float: left;"></span>
 						</div>
 					</div>
