@@ -321,7 +321,7 @@
 			</div>
 		</div>
 		<div class="main_content" style="clear: both; float: left; margin-left: 20px;">
-			<table class="main_content_header" style="margin-top: 5px; float: left; clear: both; width: 100%;">
+			<table class="main_content_header" style="margin-top: 0px; float: left; clear: both; width: 100%;">
 				<tr>
 					<td colspan="2" style="text-align:center">
 						<span style="text-transform: uppercase;
@@ -335,7 +335,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="2" style="text-align:center; padding-top:10px;">
+					<td colspan="2" style="text-align:center; padding-top:5px;">
 						<span style="font-size: 12px; ">
 						Recognised by the Director of School Education<br/>
             பள்ளிக் கல்வி இயக்குநரால் அங்கீகரிக்கப்பட்டது
@@ -368,8 +368,8 @@
 				</tr>
 			</table>
 
-      <div class="body_content" style="float: left; clear: both; margin-top: 25px; font-size: 13px; display: table;">
-        <div class="row_content" style="clear: both; float: left;">
+      <div class="body_content" style="float: left; clear: both; margin-top: 25px; font-size: 12px; display: table;">
+        <div class="row_content" style="clear: both; float: left; ">
           <div class="content_sno" style="float:left">
           1.
           </div>
@@ -400,7 +400,7 @@
             </ul>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; display:table-row; ">
+        <div class="row_content" style="clear: both; float: left; display:table-row; margin-top:6px; ">
           <div class="content_sno" style="float:left">
           2.
           </div>
@@ -409,7 +409,7 @@
             <div>மாணவர் பெயர் (தனித்தனி எழுத்துக்களில)</div>
           </div>
           <div class="content_data" style="float:left; display:table-cell">
-            <div id="name_of_student" class="header_values" style="margin-left: 55px;">
+            <div id="name_of_student" class="header_values" style="margin-left: 64px;">
               <?php
               //echo $this->db->get_where('student' , array('student_id' =>
               //$edit_data[0]['student_id']))->row()->name;
@@ -417,7 +417,7 @@
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top:6px;">
           <div class="content_sno" style="float:left">
             3.
           </div>
@@ -426,14 +426,14 @@
           <div>தந்தையின் பெயர்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="name_of_parent" class="header_values" style="margin-left:190px">
+            <div id="name_of_parent" class="header_values" style="margin-left:186px">
               <?php
               //echo $edit_data[0]['parent_name'];
                ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top:6px;">
           <div class="content_sno" style="float:left">
           4.
           </div>
@@ -497,7 +497,7 @@
             <div>பாலினம்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="sex_db_value" class="header_values" style="margin-left:301px" >
+            <div id="sex_db_value" class="header_values" style="margin-left:295px" >
               <?php //echo $edit_data[0]['sex']; ?>
             </div>
           </div>
@@ -511,7 +511,7 @@
             <div>பிறந்த தேதி....எண்ணிலும் எழுத்திலும் </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_birth_value" class="header_values" style="margin-left:90px" >
+            <div id="date_of_birth_value" class="header_values" style="margin-left:87px" >
               <?php //echo ($edit_data[0]['dob'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['dob'])); ?>
             </div>
           </div>
@@ -525,12 +525,12 @@
             <div>உடலில் அமைந்த அடையாளம் குறிகள்</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pim_value" class="header_values" style="margin-left:90px" >
-              <?php //echo $edit_data[0]['pim']; ?><br/>
+            <div id="pim_value" class="header_values" style="margin-left:102px" >
+              <?php //echo $edit_data[0]['pim']; ?>
+            </div>
+            <div id="pim1_value" class="header_values" style="margin-left:102px" >
               <?php //echo $edit_data[0]['pim1']; ?>
             </div>
-						<div id="pim1_value" class="header_values" style="margin-left:90px" >
-						</div>
           </div>
         </div>
         <div class="row_content" style="clear: both; float: left;">
@@ -543,7 +543,7 @@
             <div>பள்ளியின் சேர்க்கப்பிட்ட தேதி மற்றும் <br/>சேர்க்கப்பிட்ட</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_admission_value" class="header_values" style="margin-left:75px" >
+            <div id="date_of_admission_value" class="header_values" style="margin-left:83px" >
               <?php //echo ($edit_data[0]['date_of_admission'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
           </div>
@@ -561,12 +561,12 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:75px" >
+            <div id="std_studied_at_time_of_leave_value" class="header_values" style="margin-left:85px" >
 <?php //echo $edit_data[0]['standard_studied_while_leaving']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; margin-top: 5px;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 7px;">
           <div class="content_sno" style="float:left">
           11.
           </div>
@@ -579,12 +579,12 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 110px;" >
+            <div id="pupil_paid_all_fees" class="header_values" style="margin-left: 116px;" >
               <?php //echo $edit_data[0]['is_paid_all_fees']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 12px;">
           <div class="content_sno" style="float:left">
           12.
           </div>
@@ -593,12 +593,12 @@
             <div>மேல்வகுப்பிற்கு உயர்வு பெறாத <br/>தகுதியுடையவரா என்பது</div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_qualified_higher" class="header_values" style="margin-left:70px" >
+            <div id="whether_qualified_higher" class="header_values" style="margin-left:75px" >
               <?php //echo $edit_data[0]['is_qualified_for_higher_standard']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 12px;">
           <div class="content_sno" style="float:left">
           13.
           </div>
@@ -611,12 +611,12 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:65px" >
+            <div id="whether_pupil_scholarship" class="header_values" style="margin-left:74px" >
               <?php //echo $edit_data[0]['scholarship']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 12px;">
           <div class="content_sno" style="float:left">
           14.
           </div>
@@ -630,12 +630,12 @@
           </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="repeat_medical" class="header_values" style="margin-left:42px" >
+            <div id="repeat_medical" class="header_values" style="margin-left:58px" >
               <?php //echo $edit_data[0]['under_medical_inspection']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left; margin-top: 15px;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 12px;">
           <div class="content_sno" style="float:left">
           15.
           </div>
@@ -646,13 +646,13 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_left_school" class="header_values" style="margin-left:83px" >
+            <div id="date_of_left_school" class="header_values" style="margin-left:94px" >
 
               <?php //echo ($edit_data[0]['date_of_left_school'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_admission'])); ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both;float: left;margin-top: 7px;">
           <div class="content_sno" style="float:left">
           16.
           </div>
@@ -663,12 +663,12 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="conduct_value" class="header_values" style="margin-left:135px" >
+            <div id="conduct_value" class="header_values" style="margin-left:140px" >
               <?php //echo $edit_data[0]['conduct_remarks']; ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top: 7px;">
           <div class="content_sno" style="float:left">
           17.
           </div>
@@ -682,7 +682,7 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:89px" >
+            <div id="date_of_tc_application" class="header_values" style="margin-left:97px" >
               <?php //echo ($edit_data[0]['date_of_application_for_transfer_certificate'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_application_for_transfer_certificate'])); ?>
             </div>
           </div>
@@ -698,12 +698,12 @@
             </div>
           </div>
           <div class="content_data" style="float:left">
-            <div id="date_of_tc_application" class="header_values" style="margin-left:169px" >
+            <div id="date_of_tc" class="header_values" style="margin-left:169px" >
               <?php //echo ($edit_data[0]['date_of_tc'] == '0000-00-00') ? "" : date('d/m/Y', strtotime($edit_data[0]['date_of_tc'])); ?>
             </div>
           </div>
         </div>
-        <div class="row_content" style="clear: both; float: left;">
+        <div class="row_content" style="clear: both; float: left; margin-top:10px;">
           <table border="1" class="summay_tc">
             <tr>
               <th>
@@ -746,7 +746,7 @@
             </tr>
           </table>
         </div>
-        <div class="row_content" style="clear: both; float: left; margin-top:45px;">
+        <div class="row_content" style="clear: both; float: left; margin-top:35px;">
           <div class="content_sno" style="float:left">
           19.
           </div>
@@ -774,7 +774,7 @@
           <div class="content_sno" style="float:left">
 
           </div>
-          <div class="content_heading" style="float:left;text-align:left;margin-left: 114px;">
+          <div class="content_heading" style="float:left;text-align:left;margin-left: 95px;">
           2.&nbsp;&nbsp;Should be signed in ink by the Head of the institution who will be held responsible <div style="margin-left:20px">for the correctness of the entries</div>
             <div style="margin-left:18px; margin-top:6px">
               பள்ளி தலைமையாசிரியர் மையினால் கையொப்பம்மிட வேண்டும். <br/>பதிவு செய்யப்பட்ட விவரங்களை  சரியானவை என்பதற்கு அவரே பொறுப்பானவர்.
@@ -803,7 +803,7 @@
         </div>
         <div class="row_content" style="clear: both; float: left; margin-top:45px;">
           <div class="content_heading" style="float:left; text-align:left; ">
-            Date / தேதி: <?php echo date('d-m-Y'); ?>
+            Date / தேதி: <?php echo date('d/m/Y'); ?>
           </div>
           <div class="content_data" style="float:left">
             <div id="signature_head_master_date" class="header_values" style="padding-left:397px; width:600px; border:none;" >
@@ -814,7 +814,7 @@
         </div>
         <div class="row_content" style="clear: both; float: left; margin-top:45px;">
           <div class="content_heading" style="float:left; text-align:left; ">
-            Date / தேதி : <?php echo date('d-m-Y'); ?>
+            Date / தேதி : <?php echo date('d/m/Y'); ?>
           </div>
           <div class="content_data" style="float:left">
             <div id="signature_head_master_date" class="header_values" style="padding-left:397px; width:600px; border:none;" >
@@ -891,13 +891,13 @@
     .content_heading ol li{
       text-align: left;
       list-style: lower-alpha;
-        margin-bottom:12px;
+        margin-bottom:6px;
     }
     .content_data ul li, .header_values {
       border-bottom: 1px solid #333;
       list-style: none;
-      height: 22px;
-      margin-bottom:27px  ;
+      height: 18px;
+      margin-bottom:17px  ;
         width: 300px;
         margin-left: 44px;
     }
@@ -912,11 +912,11 @@
     }
     .Community_info li{
       height:25px !important;
-      margin-left: -53px !important;
+      margin-left: -38px !important;
     }
     .row_content .summay_tc th
     {
-      padding: 10px;
+      padding: 7px;
       font-weight: bold;
     }
     .row_content .summay_tc td
@@ -1097,7 +1097,7 @@ function printDiv(divName) {
 				var tc_date    = new Date(jQuery('#date_of_tc').val());
 				var newDate = admission_date.toString('dd/MM/yy');
 				var newDate1 = tc_date.toString('dd/MM/yy');
-				if(newDate1 > newDate)
+				if(newDate > newDate1)
 				{
 					//alert(newDate1);
 					//alert(newDate);
@@ -1137,6 +1137,7 @@ function printDiv(divName) {
 						$('#repeat_medical').html(data['under_medical_inspection']);
 						$('#conduct_value').html(data['conduct_remarks']);
 						$('#date_of_tc_application').html(data['date_of_application_for_transfer_certificate']);
+						$('#date_of_tc').html(data['date_of_tc']);
 						//$('#name_of_parent').html(data['parent_name']);
 						//$('#name_of_parent').html(data['parent_name']);
 						//$('#first_lang').html(data['first_langugage']);

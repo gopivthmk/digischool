@@ -2854,6 +2854,7 @@ class Admin extends CI_Controller
           $data['date_of_left_school'] = date('d/m/Y', strtotime($this->input->post('date_of_leave_from_school')));
           $data['date_of_application_for_transfer_certificate'] = date('d/m/Y', strtotime($this->input->post('date_of_application_of_tc')));
           $data['dob'] = date('d/m/Y', strtotime($this->input->post('birthday')));
+          $data['date_of_admission'] = date('d/m/Y', strtotime($this->input->post('date_of_admission')));
           $data['school_name'] = $this->input->post('school_name');
           $data['student_name'] = $this->db->get_where('student' , array(
               'student_id' => $data['student_id']
