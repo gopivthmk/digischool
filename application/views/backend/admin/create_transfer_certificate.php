@@ -1033,9 +1033,10 @@ function printDiv(divName) {
 							var admission_date    = new Date(response["date_of_admission"]);
 							//var d = new Date();
 
-							var curr_date = admission_date.getDate();
+							var curr_date = ("0" + admission_date.getDate()).slice(-2);
 
-							var curr_month = admission_date.getMonth();
+							var curr_month = ("0" + (admission_date.getMonth())).slice(-2);
+							//alert(curr_month);
 
 							var curr_year = admission_date.getFullYear();
 
@@ -1096,17 +1097,12 @@ function printDiv(divName) {
 				var tc_date    = new Date(jQuery('#date_of_tc').val());
 				var newDate = admission_date.toString('dd/MM/yy');
 				var newDate1 = tc_date.toString('dd/MM/yy');
-				if(newDate > newDate1)
+				if(newDate1 > newDate)
 				{
-					alert(newDate1);
-					alert(newDate);
-				 alert('End date should be greater than Start date');
+					//alert(newDate1);
+					//alert(newDate);
+				 alert('TC date must be greater than admission date!!!');
 				 return false;
-				}
-				else{
-					alert(new Date(admission_date));
-					alert(new Date(tc_date));
- 				 return false;
 				}
 
 				$.ajax({
