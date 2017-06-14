@@ -3,6 +3,8 @@ $edit_data		=	$this->db->get_where('enroll' , array(
 	'student_id' => $param2 , 'year' => $this->db->get_where('settings' , array('type' => 'running_year'))->row()->description
 ))->result_array();
 
+//print_r($edit_data);
+
 $student_data = $this->db->get_where('student' , array(
 	'student_id' => $param2
 ))->result_array();
@@ -54,33 +56,90 @@ foreach ($edit_data as $row):
 						</div>
 					</div>
 
-
-
 					<div class="form-group">
-						<label for="field-1" class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('parent');?></label>
 
 						<div class="col-sm-5">
-							<input type="text" class="form-control" name="class" disabled
-								value="<?php echo $this->db->get_where('class' , array('class_id' => $row['class_id']))->row()->name; ?>">
+							<span style="width:100%; float:left;">
+							<select name="parent_id"
+							data-validate="required" data-message-required="<?php echo get_phrase('value_required');?>"
+							class="form-control select2">
+															<option value=""><?php echo get_phrase('select');?></option>
+															<?php
+								$parents = $this->db->get('parent')->result_array();
+								foreach($parents as $rowinner):
+
+									if($student_data[0]['parent_id'] == $rowinner['parent_id']){
+									?>
+																<option value="<?php echo $rowinner['parent_id'];?>" selected="selected">
+										<?php echo $rowinner['name'];?>
+																		</option>
+																<?php
+															} else{
+															?>
+															<option value="<?php echo $rowinner['parent_id'];?>" >
+									<?php echo $rowinner['name'];?>
+																	</option>
+															<?php
+														}
+								endforeach;
+								?>
+													</select>
+												</span>
+												<span style="float: left; margin-top: 10px;">
+													<a href="javascript:;" onclick="showAjaxModal('<?php echo base_url();?>index.php?modal/popup/modal_parent_add/');"
+															class="btn btn-primary pull-right">
+															<i class="entypo-plus-circled"></i>
+															<?php echo get_phrase('add_new_parent');?>
+															</a>
+														</span>
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('section');?></label>
+						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('class');?></label>
 
 						<div class="col-sm-5">
-							<select name="section_id" class="form-control selectboxit">
-                              <option value=""><?php echo get_phrase('select_section');?></option>
-                              <?php
-                              	$sections = $this->db->get_where('section' , array('class_id' => $row['class_id']))->result_array();
-                              	foreach($sections as $row2):
-                              ?>
-                              <option value="<?php echo $row2['section_id'];?>"
-                              	<?php if($row['section_id'] == $row2['section_id']) echo 'selected';?>><?php echo $row2['name'];?></option>
-                          <?php endforeach;?>
-                          </select>
+							<select name="class_id" class="form-control" data-validate="required" id="class_id"
+								data-message-required="<?php echo get_phrase('value_required');?>"
+									onchange="return get_class_sections(this.value)">
+															<option value=""><?php echo get_phrase('select');?></option>
+															<?php
+								$classes = $this->db->get('class')->result_array();
+								foreach($classes as $rowinner):
+									if($rowinner['class_id'] == $row['class_id']){
+									?>
+																<option value="<?php echo $rowinner['class_id'];?>" selected="selected">
+											<?php echo $rowinner['name'];?>
+																						</option>
+																<?php
+															}else {
+															?>
+															<option value="<?php echo $rowinner['class_id'];?>" >
+										<?php echo $rowinner['name'];?>
+																					</option>
+															<?php
+														}
+								endforeach;
+								?>
+													</select>
 						</div>
 					</div>
+
+					<!--<div class="form-group">
+						<label for="field-2" class="col-sm-3 control-label"><?php //echo get_phrase('section');?></label>
+		                    <div class="col-sm-5">
+		                        <select name="section_id"
+														data-validate="required" data-message-required="<?php //echo get_phrase('value_required');?>"
+														class="form-control" id="section_selector_holder">
+		                            <option value=""><?php //echo get_phrase('select_class_first');?></option>
+
+			                    </select>
+			                </div>
+					</div>-->
+
+
+
 
 					<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('gender');?></label>
@@ -89,6 +148,7 @@ foreach ($edit_data as $row):
 							<select name="sex" class="form-control selectboxit">
 							<?php
 								$gender = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->sex;
+
 							?>
 															<option value=""><?php echo get_phrase('select');?></option>
 															<option value="male" <?php if($gender == 'male')echo 'selected';?>><?php echo get_phrase('male');?></option>
@@ -116,31 +176,7 @@ foreach ($edit_data as $row):
 						</div>
 					</div>
 
-					<div class="form-group">
-						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('parent');?></label>
-
-						<div class="col-sm-5">
-							<select name="parent_id" class="form-control select2" data-validate="required" data-message-required="<?php //echo get_phrase('value_required');?>">
-                              <option value=""><?php echo get_phrase('select');?></option>
-                              <?php
-									$parents = $this->db->get('parent')->result_array();
-									$parent_id = $this->db->get_where('student' , array('student_id' => $row['student_id']))->row()->parent_id;
-									foreach($parents as $row3):
-										?>
-                                		<option value="<?php echo $row3['parent_id'];?>"
-                                        	<?php if($row3['parent_id'] == $parent_id)echo 'selected';?>>
-													<?php echo $row3['name'];?>
-                                                </option>
-	                                <?php
-									endforeach;
-								  ?>
-                          </select>
-						</div>
-					</div>
-
-
-
-					<div class="form-group">
+										<div class="form-group">
 						<label for="field-2" class="col-sm-3 control-label"><?php echo get_phrase('birthday');?></label>
 
 						<div class="col-sm-5">
@@ -368,4 +404,16 @@ foreach ($edit_data as $row):
 
 <?php
 endforeach;
-?>
+?><script>
+function get_class_sections(class_id) {
+
+		$.ajax({
+					url: '<?php echo base_url();?>index.php?admin/get_class_section/' + class_id ,
+					success: function(response)
+					{
+							jQuery('#section_selector_holder').html(response);
+					}
+			});
+
+	}
+</script>

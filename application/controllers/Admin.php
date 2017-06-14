@@ -279,7 +279,7 @@ class Admin extends CI_Controller
             //$data['phone']          = $this->input->post('phone');
             $data['email']          = $this->input->post('email');
             $data['concession_master_id'] = $this->input->post('concession_master_id');
-            //$data['parent_id']      = $this->input->post('parent_id');
+            $data['parent_id']      = $this->input->post('parent_id');
             //$data['dormitory_id']   = $this->input->post('dormitory_id');
             //$data['transport_id']   = $this->input->post('transport_id');
             $data['nationality'] = $this->input->post('nationality');
