@@ -345,6 +345,26 @@
             </ul>
         </li>
 
+
+        <!-- REPORTS -->
+        <li class="<?php if ($page_name == 'student_report')
+                                    echo 'opened active'; ?> ">
+            <a href="#">
+                <i class="entypo-chart-area"></i>
+                <span><?php echo get_phrase('Reports'); ?></span>
+            </a>
+            <ul>
+
+                    <li class="<?php if (($page_name == 'student_report')) echo 'active'; ?>">
+                        <a href="<?php echo base_url(); ?>index.php?admin/student_report">
+                            <span><i class="entypo-dot"></i><?php echo get_phrase('Student Report'); ?></span>
+                        </a>
+                    </li>
+
+            </ul>
+
+        </li>
+
         <!-- LIBRARY -->
         <li class="<?php if ($page_name == 'book') echo 'active'; ?> ">
             <a href="<?php echo base_url(); ?>index.php?admin/book">

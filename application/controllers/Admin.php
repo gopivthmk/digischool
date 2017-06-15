@@ -2708,6 +2708,19 @@ class Admin extends CI_Controller
         $this->load->view('backend/index', $page_data);
     }
 
+    function student_report()
+    {
+      if ($this->session->userdata('admin_login') != 1)
+      {
+          $this->session->set_userdata('last_page', current_url());
+          redirect(base_url(), 'refresh');
+      }
+
+      $data['page_name']  = 'student_report';
+      $data['page_title'] = get_phrase('student_report');
+      $this->load->view('backend/index', $data);
+    }
+
     function get_invoice_details($student_id)
     {
       //$this->db->order_by('fees_master_category_mapping_id', 'asc');
